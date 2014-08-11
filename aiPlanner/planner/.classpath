@@ -33,5 +33,6 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="C:/Dokumenty/Studia/magisterka/project/codebase/vendors/PDDL4J-v1.0.tar/PDDL4J-v1.0/PDDL4J-v1.0/lib/pddl4j.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
