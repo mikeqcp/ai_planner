@@ -1,19 +1,38 @@
 package planner;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import planner.model.State;
+
+
 @Path("")
 public class MainController {
 	
+	/**
+	 * Test method to check connectivity
+	 * @return Status OK
+	 */
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("test")
-	public Response getPatients() {
-		return Response.status(Status.OK).build();
+	public Response getStatusOk() {
+		return Response.status(Status.OK).header("Access-Control-Allow-Origin", "*").build();
+	}
+
+	@POST
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("solve")
+	public State solve(@Context HttpHeaders header, @Context HttpServletResponse response) {
+		response.setHeader("Access-Control-Allow-Origin", "*");
+		return new State("default");
 	}
 }
