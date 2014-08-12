@@ -1,0 +1,5 @@
+(define (problem bw1)
+  (:domain blocks-world)
+  (:objects a b c)
+  (:init (on a b) (on-table b) (on-table c) (clear a) (clear c))
+  (:goal (and (on c a) (on b c) (on-table a))))
