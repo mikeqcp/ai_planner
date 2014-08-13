@@ -1,7 +1,7 @@
 package planner.model;
 
 public class State {
-	String name;
+	private String name;
 	
 	public State(){};
 	
@@ -16,7 +16,7 @@ public class State {
 
 	public void setName(String name) {
 		this.name = name;
-	}
+	}	
 	
 	
 }
