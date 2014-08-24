@@ -33,6 +33,10 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Dokumenty/Studia/magisterka/project/codebase/vendors/PDDL4J-v1.0.tar/PDDL4J-v1.0/PDDL4J-v1.0/lib/pddl4j.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Dokumenty/Studia/magisterka/project/codebase/vendors/PDDL4J-v1.0.tar/PDDL4J-v1.0/PDDL4J-v1.0/lib/pddl4j.jar">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
