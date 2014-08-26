@@ -5,5 +5,4 @@ package planner.model;
  * Wrapper for pddl4j object
  */
 public interface State {
-	String getName();
 }

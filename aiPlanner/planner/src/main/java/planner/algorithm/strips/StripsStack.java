@@ -17,6 +17,10 @@ public class StripsStack {
 		return stack.pop();
 	}
 	
+	public StackItem peek(){
+		return stack.peek();
+	}
+	
 	public boolean isEmpty(){
 		return stack.isEmpty();
 	}

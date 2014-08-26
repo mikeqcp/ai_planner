@@ -9,8 +9,8 @@ import java.util.Set;
 import pddl4j.exp.AndExp;
 import pddl4j.exp.Exp;
 import pddl4j.exp.action.ActionDef;
+import planner.algorithm.strips.StripsAction;
 import planner.model.Action;
-import planner.model.StripsAction;
 
 public class TermOperations {
 	public static Exp joinExprElements(Exp... expressions){

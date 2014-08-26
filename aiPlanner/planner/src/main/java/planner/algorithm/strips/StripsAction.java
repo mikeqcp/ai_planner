@@ -1,6 +1,7 @@
-package planner.model;
+package planner.algorithm.strips;
 
 import pddl4j.exp.action.ActionDef;
+import planner.model.Action;
 
 public class StripsAction implements Action {	
 	private pddl4j.exp.action.Action action;
