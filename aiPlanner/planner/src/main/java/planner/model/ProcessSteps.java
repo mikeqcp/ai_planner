@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class ProcessHistory {
+public class ProcessSteps {
 	private List<ProcessStateDump> stateHistory;
 	private ResultPlan resultPlan;
 	
-	public ProcessHistory(List<ProcessStateDump> stateHistory, ResultPlan resultPlan) {
+	public ProcessSteps(List<ProcessStateDump> stateHistory, ResultPlan resultPlan) {
 		super();
 		this.stateHistory = stateHistory;
 		this.resultPlan = resultPlan;
