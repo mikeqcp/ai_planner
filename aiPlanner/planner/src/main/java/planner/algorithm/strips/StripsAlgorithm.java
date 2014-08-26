@@ -1,24 +1,21 @@
 package planner.algorithm.strips;
 
+import java.util.Collection;
 import java.util.Set;
 
 import pddl4j.PDDLObject;
 import pddl4j.exp.Exp;
-import pddl4j.exp.InitEl;
 import planner.algorithm.Algorithm;
 import planner.algorithm.logic.TermOperations;
-import planner.model.Action;
-import planner.model.ExprState;
 import planner.model.ProcessSteps;
 import planner.model.ResultPlan;
-import planner.model.State;
 
 public class StripsAlgorithm extends Algorithm {
 	private PDDLObject originalData;
-	private ExprState initialState;
-	private ExprState currentState;
-	private Set<Action> actions;
-	private ExprState goal;
+	private StripsState initialState;
+	private StripsState currentState;
+	private Set<StripsAction> actions;
+	private StripsState goal;
 	private ResultPlan plan;
 
 	private StripsStack stack;
@@ -37,13 +34,13 @@ public class StripsAlgorithm extends Algorithm {
 
 	private void initializeProblemData(PDDLObject input) {
 		this.originalData = input;
-		this.goal = new ExprState(input.getGoal());
+		this.goal = new StripsState(input.getGoal());
 
 		Exp[] initialExp = input.getInit().toArray(new Exp[0]);
-		this.initialState = new ExprState(
+		this.initialState = new StripsState(
 				TermOperations.joinExprElements(initialExp));
 
-		this.actions = TermOperations.createActionSet(input.actionsIterator());
+		this.actions = StripsUtils.createActionSet(input.actionsIterator());
 	}
 
 	private void initializeStructures() {
@@ -55,12 +52,12 @@ public class StripsAlgorithm extends Algorithm {
 		
 		Exp[] statesDiff = goal.minus(currentState);
 		for (Exp exp : statesDiff) {
-			ExprState expState = new ExprState(exp);
+			StripsState expState = new StripsState(exp);
 			stack.push(new StackItem(expState));
 		}
 	}
 	
-	private void initializeStructures(StripsStack stack, ExprState currentState, ResultPlan currentPlan) {
+	private void initializeStructures(StripsStack stack, StripsState currentState, ResultPlan currentPlan) {
 		this.stack = stack;
 		this.currentState = currentState;
 		this.plan = currentPlan;
@@ -88,10 +85,14 @@ public class StripsAlgorithm extends Algorithm {
 	
 	private void processStackItem(StackItem item){
 		if(item.isAction()) {
-			//TODO:apply action
-			plan.addNextStep(item.getAction());	//add action to plan
+			BindedStripsAction action = item.getAction();
+			currentState = action.applyTo(currentState);
+			plan.addNextStep(action);	//add action to plan
 		} else {
-			ExprState s = item.getState();
+			StripsState s = item.getState();
+			if(currentState.satisfies(s)){
+				return;
+			}
 			if(!s.isAtomic()){	//break complex state into simple ones
 				Exp[] stateExp = s.getTerms();
 				for (Exp exp : stateExp) {
@@ -103,12 +104,14 @@ public class StripsAlgorithm extends Algorithm {
 		}
 	}
 
-	private void processStateItem(ExprState s) {
-		if(currentState.satisfies(s)){
-			stack.pop();
-			return;
+	private void processStateItem(StripsState s) {
+		//find applicable action
+		Set<BindedStripsAction> applicableActions = StripsUtils.findApplicableActions(s, actions);
+		
+		//test
+		for (BindedStripsAction a : applicableActions) {
+			a.applyTo(currentState);
 		}
 		
-		//find applicable action
 	}
 }

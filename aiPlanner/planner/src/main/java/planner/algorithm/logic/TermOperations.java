@@ -29,13 +29,4 @@ public class TermOperations {
 		}
 		return exprList.toArray(new Exp[0]);
 	}
-
-	public static Set<Action> createActionSet(Iterator<pddl4j.exp.action.ActionDef> actionsIterator){
-		Set<Action> actionSet = new HashSet<Action>();
-		while(actionsIterator.hasNext()){
-			ActionDef srcAction = actionsIterator.next();
-			actionSet.add(new StripsAction(srcAction));
-		}
-		return actionSet;
-	}
 }

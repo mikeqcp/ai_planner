@@ -1,4 +1,4 @@
-package planner.model;
+package planner.algorithm.strips;
 
 import java.util.ArrayList;
 
@@ -6,15 +6,20 @@ import pddl4j.exp.AndExp;
 import pddl4j.exp.AtomicFormula;
 import pddl4j.exp.Exp;
 import planner.algorithm.logic.TermOperations;
+import planner.model.State;
 
 /**
  * @author MichalP
  *State defined by STIPS-type expression
  */
-public class ExprState implements State {	
+public class StripsState implements State {	
 	private Exp state;
 
-	public ExprState(Exp state) {
+	public StripsState(StripsState s) {
+		this(s.state);
+	}
+	
+	public StripsState(Exp state) {
 		this.state = state;
 	}
 	
@@ -22,7 +27,7 @@ public class ExprState implements State {
 	 * @param states
 	 * Create state with states connected with AND operator
 	 */
-	public ExprState(Exp... states){
+	public StripsState(Exp... states){
 		this.state = TermOperations.joinExprElements(states);
 	}
 
@@ -38,15 +43,14 @@ public class ExprState implements State {
 	}
 	
 	public boolean isAtomic() {
-		boolean test = state instanceof AtomicFormula;
 		return state instanceof AtomicFormula;
 	}
 	
-	public boolean equals(ExprState s){
+	public boolean equals(StripsState s){
 		return s.getState().equals(this.getState());
 	}
 	
-	public Exp[] minus(ExprState other){
+	public Exp[] minus(StripsState other){
 		Exp[] thisExpr = getTerms();
 		Exp[] otherExpr = other.getTerms();
 		ArrayList<Exp> result = new ArrayList<Exp>();
@@ -64,8 +68,7 @@ public class ExprState implements State {
 		return result.toArray(new Exp[0]);
 	}
 
-	
-	public boolean satisfies(ExprState s){
+	public boolean satisfies(StripsState s){
 		Exp[] terms = s.getTerms();
 		for (Exp exp : terms) {
 			if(!satisfiesTerm(exp)) return false;
