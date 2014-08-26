@@ -6,6 +6,10 @@ import java.util.List;
 public class ResultPlan {
 	private List<Action> plan;
 
+	public ResultPlan() {
+		this.plan = new ArrayList<Action>();
+	}
+	
 	public List<Action> getPlan() {
 		return plan;
 	}
@@ -13,8 +17,8 @@ public class ResultPlan {
 	public void setPlan(List<Action> plan) {
 		this.plan = plan;
 	}
-
-	public ResultPlan() {
-		this.plan = new ArrayList<Action>();
+	
+	public void addNextStep(Action action){
+		plan.add(action);
 	}
 }
