@@ -4,14 +4,14 @@ import java.util.HashMap;
 
 import pddl4j.exp.term.Term;
 
-public class ActionBinding {
+public class ParameterBinding {
 	private HashMap<Term, String> binding; //parameter -> value
 	
-	public ActionBinding() {
+	public ParameterBinding() {
 		binding = new HashMap<Term, String>();
 	}
 	
-	public ActionBinding(HashMap<Term, String> binding) {
+	public ParameterBinding(HashMap<Term, String> binding) {
 		super();
 		this.binding = binding;
 	}
@@ -24,5 +24,15 @@ public class ActionBinding {
 		return binding;
 	}
 	
+	public boolean containsTerm(Term t){
+		return binding.containsKey(t);
+	}
 	
+	public boolean containsValue(String val){
+		return binding.containsValue(val);
+	}
+	
+	public boolean isEmpty(){
+		return binding.isEmpty();
+	}
 }

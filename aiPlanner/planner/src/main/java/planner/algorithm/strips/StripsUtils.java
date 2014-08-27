@@ -7,15 +7,17 @@ import java.util.Set;
 
 import pddl4j.exp.action.ActionDef;
 import planner.model.Action;
+import planner.algorithm.strips.ParameterBinding;
 
 public class StripsUtils {
-	public static Set<BindedStripsAction> findApplicableActions(StripsState state, Set<StripsAction> availableActions){
+	public static Set<BindedStripsAction> findApplicableActions(AtomicState state, Set<StripsAction> availableActions){
 		Set<BindedStripsAction> applicableActions = new HashSet<BindedStripsAction>();
+		
+		ParameterBinding b;
 		for (StripsAction a : availableActions) {
-			if(a.canProduce(state)){
-				ActionBinding binding = new ActionBinding();
-				BindedStripsAction bAction = new BindedStripsAction(a, binding);
-				applicableActions.add(bAction);
+			if((b = a.bindToProduce(state)) != null){
+				BindedStripsAction action = a.bindParameters(b);
+				applicableActions.add(action);
 			}
 		}
 		return applicableActions;

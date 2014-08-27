@@ -44,8 +44,13 @@ public class StripsState implements State {
 	
 	public boolean isAtomic() {
 		return state instanceof AtomicFormula;
+	}	
+
+	public AtomicState toAtomic(){
+		if(!isAtomic()) return null;
+		return new AtomicState(this);
 	}
-	
+		
 	public boolean equals(StripsState s){
 		return s.getState().equals(this.getState());
 	}

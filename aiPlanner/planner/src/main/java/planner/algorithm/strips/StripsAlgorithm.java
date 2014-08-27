@@ -1,10 +1,12 @@
 package planner.algorithm.strips;
 
-import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 import pddl4j.PDDLObject;
 import pddl4j.exp.Exp;
+import pddl4j.exp.term.Constant;
 import planner.algorithm.Algorithm;
 import planner.algorithm.logic.TermOperations;
 import planner.model.ProcessSteps;
@@ -17,8 +19,8 @@ public class StripsAlgorithm extends Algorithm {
 	private Set<StripsAction> actions;
 	private StripsState goal;
 	private ResultPlan plan;
-
 	private StripsStack stack;
+	private Set<Constant> constants;
 
 	public StripsAlgorithm(PDDLObject input) {
 		super(input);
@@ -35,6 +37,7 @@ public class StripsAlgorithm extends Algorithm {
 	private void initializeProblemData(PDDLObject input) {
 		this.originalData = input;
 		this.goal = new StripsState(input.getGoal());
+		this.constants = getInstanceConstants(input);
 
 		Exp[] initialExp = input.getInit().toArray(new Exp[0]);
 		this.initialState = new StripsState(
@@ -43,6 +46,16 @@ public class StripsAlgorithm extends Algorithm {
 		this.actions = StripsUtils.createActionSet(input.actionsIterator());
 	}
 
+	private Set<Constant> getInstanceConstants(PDDLObject input){
+		Set<Constant> constants = new HashSet<Constant>();
+		
+		Iterator<Constant> iter = input.constantsIterator();
+		while(iter.hasNext()){
+			constants.add(iter.next());
+		}
+		return constants;
+	}
+	
 	private void initializeStructures() {
 		currentState = initialState;
 		plan = new ResultPlan();
@@ -99,17 +112,18 @@ public class StripsAlgorithm extends Algorithm {
 					stack.push(new StackItem(s));
 				}
 			} else {	//handle simple state
-				processStateItem(s);
+				processStateItem(s.toAtomic());
 			}
 		}
 	}
 
-	private void processStateItem(StripsState s) {
+	private void processStateItem(AtomicState s) {
 		//find applicable action
 		Set<BindedStripsAction> applicableActions = StripsUtils.findApplicableActions(s, actions);
 		
 		//test
 		for (BindedStripsAction a : applicableActions) {
+			a.fillFreeParameters(constants);
 			a.applyTo(currentState);
 		}
 		
