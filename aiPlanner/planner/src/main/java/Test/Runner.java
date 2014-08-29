@@ -13,7 +13,7 @@ import data.PddlParser;
 
 public class Runner {
 	private final static String TEST_DOMAIN = "C:\\Dokumenty\\Studia\\magisterka\\project\\codebase\\data\\pddl\\simple_00\\domain.txt";
-	private final static String TEST_INSTANCE = "C:\\Dokumenty\\Studia\\magisterka\\project\\codebase\\data\\pddl\\simple_00\\instance.txt";
+	private final static String TEST_INSTANCE = "C:\\Dokumenty\\Studia\\magisterka\\project\\codebase\\data\\pddl\\simple_00\\instance_test.txt";
 	
 	public static void main(String[] args) {
 		PddlParser problemParser = new PddlParser();
