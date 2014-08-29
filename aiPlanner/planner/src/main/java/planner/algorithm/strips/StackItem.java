@@ -1,6 +1,7 @@
 package planner.algorithm.strips;
 
 import planner.model.Action;
+import planner.model.State;
 
 public class StackItem {
 	private BindedStripsAction action = null;
@@ -32,5 +33,12 @@ public class StackItem {
 		return state;
 	}
 	
-	
+	@Override
+	public String toString() {
+		if(isAction())
+			return action.toString();
+		if(isState())
+			return state.toString();
+		return "{}";
+	}
 }

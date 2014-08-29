@@ -61,7 +61,7 @@ public class StripsAlgorithm extends Algorithm {
 		plan = new ResultPlan();
 		
 		stack = new StripsStack();
-		stack.push(new StackItem(initialState));
+		stack.push(new StackItem(goal));
 		
 		Exp[] statesDiff = goal.minus(currentState);
 		for (Exp exp : statesDiff) {
@@ -71,9 +71,9 @@ public class StripsAlgorithm extends Algorithm {
 	}
 	
 	private void initializeStructures(StripsStack stack, StripsState currentState, ResultPlan currentPlan) {
-		this.stack = stack;
-		this.currentState = currentState;
-		this.plan = currentPlan;
+		this.stack = new StripsStack(stack);
+		this.currentState = new StripsState(currentState);
+		this.plan = new ResultPlan(currentPlan);
 	}
 
 	@Override
@@ -91,8 +91,13 @@ public class StripsAlgorithm extends Algorithm {
 	private ResultPlan execute(){
 		while(!stack.isEmpty()){
 			StackItem topItem = stack.pop();
+			
+			System.out.println(topItem);
+			
 			processStackItem(topItem);
 		}
+		
+		System.out.println(plan);
 		return plan;
 	}
 	
@@ -107,9 +112,9 @@ public class StripsAlgorithm extends Algorithm {
 				return;
 			}
 			if(!s.isAtomic()){	//break complex state into simple ones
-				Exp[] stateExp = s.getTerms();
-				for (Exp exp : stateExp) {
-					stack.push(new StackItem(s));
+				StripsState[] states = s.breakIntoTerms();
+				for (StripsState st : states) {
+					stack.push(new StackItem(st));
 				}
 			} else {	//handle simple state
 				processStateItem(s.toAtomic());
@@ -120,12 +125,24 @@ public class StripsAlgorithm extends Algorithm {
 	private void processStateItem(AtomicState s) {
 		//find applicable action
 		Set<BindedStripsAction> applicableActions = StripsUtils.findApplicableActions(s, actions);
-		
-		//test
+
+		//use first of applicable actions
+		BindedStripsAction actionToUse = null;
 		for (BindedStripsAction a : applicableActions) {
-			a.fillFreeParameters(constants);
-			a.applyTo(currentState);
+			actionToUse = a;
+			break;
 		}
 		
+		actionToUse.fillFreeParameters(constants);
+		AtomicState[] preconditions = actionToUse.getBindedPreconditions();
+		
+		Exp joinedPreconditions = TermOperations.joinExprElements(preconditions);
+		StripsState joinedState = new StripsState(joinedPreconditions);
+		
+		this.stack.push(new StackItem(actionToUse));
+		this.stack.push(new StackItem(joinedState));
+		for (AtomicState atomic : preconditions) {
+			this.stack.push(new StackItem(atomic));
+		}
 	}
 }

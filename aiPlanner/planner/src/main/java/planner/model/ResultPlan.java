@@ -10,6 +10,10 @@ public class ResultPlan {
 		this.plan = new ArrayList<Action>();
 	}
 	
+	public ResultPlan(ResultPlan otherPlan) {
+		this.plan = new ArrayList<Action>(otherPlan.getPlan());
+	}
+
 	public List<Action> getPlan() {
 		return plan;
 	}

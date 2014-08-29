@@ -1,10 +1,13 @@
 package planner.algorithm.strips;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import pddl4j.exp.AndExp;
 import pddl4j.exp.AtomicFormula;
 import pddl4j.exp.Exp;
+import pddl4j.exp.NotAtomicFormula;
 import planner.algorithm.logic.TermOperations;
 import planner.model.State;
 
@@ -13,7 +16,7 @@ import planner.model.State;
  *State defined by STIPS-type expression
  */
 public class StripsState implements State {	
-	private Exp state;
+	protected Exp state;
 
 	public StripsState(StripsState s) {
 		this(s.state);
@@ -43,7 +46,7 @@ public class StripsState implements State {
 	}
 	
 	public boolean isAtomic() {
-		return state instanceof AtomicFormula;
+		return (state instanceof AtomicFormula) || (state instanceof NotAtomicFormula);
 	}	
 
 	public AtomicState toAtomic(){
@@ -87,5 +90,49 @@ public class StripsState implements State {
 			if(exp.equals(t)) return true;
 		}
 		return false;
+	}
+	
+	public StripsState[] breakIntoTerms(){
+		Exp[] terms = getTerms();
+		StripsState[] states = new StripsState[terms.length];
+		for (int i = 0; i < terms.length; i++) {
+			states[i] = new StripsState(terms[i]);
+		}
+		return states;
+	}
+
+	public StripsState addTerm(AtomicState s){
+		if(containsTerm(s.getFormula())) return this;
+		
+		Exp[] terms = getTerms();
+		Exp[] updatedTerms = Arrays.copyOf(terms, terms.length + 1);
+		updatedTerms[updatedTerms.length - 1] = s.getFormula();
+		
+		return new StripsState(updatedTerms);
+	}
+	
+	private boolean containsTerm(Exp target){
+		Exp[] terms = getTerms();
+		for (Exp t : terms) {
+			if(t.equals(target)) return true;
+		}
+		return false;
+	}
+	
+	public StripsState removeTerm(AtomicState s){
+		Exp[] terms = getTerms();
+		List<Exp> updatedTerms = new ArrayList<Exp>();
+		for (Exp t : terms) {
+			if(t.equals(s.getFormula())) continue;
+			
+			updatedTerms.add(t);
+		}
+		
+		return new StripsState(updatedTerms.toArray(new Exp[0]));
+	}
+	
+	@Override
+	public String toString() {
+		return state.toString();
 	}
 }

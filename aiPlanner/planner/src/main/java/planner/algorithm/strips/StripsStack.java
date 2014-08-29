@@ -5,6 +5,12 @@ import java.util.Stack;
 public class StripsStack {
 	private Stack<StackItem> stack = new Stack<StackItem>();
 
+	public StripsStack(){};
+	
+	public StripsStack(StripsStack otherStack) {
+		this.stack.addAll(otherStack.getStack());
+	}
+
 	public Stack<StackItem> getStack() {
 		return stack;
 	}

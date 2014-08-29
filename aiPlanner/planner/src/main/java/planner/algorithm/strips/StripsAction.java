@@ -33,7 +33,6 @@ public class StripsAction implements Action {
 	 */
 	public ParameterBinding bindToProduce(AtomicState s){		
 		Exp effects = action.getEffect();
-		Set<Term> parameters = action.getParameters();
 		
 		Exp[] allEffects;
 		if(effects instanceof AndExp)
@@ -42,8 +41,11 @@ public class StripsAction implements Action {
 			allEffects = new Exp[] { effects };	//single effect
 		
 		for (Exp e : allEffects) {
-			if (!(e instanceof AtomicFormula)) continue; 	//dont check negation -> it mean that action removes that term
-			AtomicState atomic = new AtomicState((AtomicFormula)e);
+			StripsState state = new StripsState(e);
+			if (!(state.isAtomic())) continue; 	//dont check negation -> it mean that action removes that term
+			AtomicState atomic = state.toAtomic();
+			
+			if(atomic.isNegated()) return null;	//skip negations
 			
 			ParameterBinding binding = atomic.bindToSatisfy(s);
 			if(binding != null) return binding;

@@ -9,10 +9,20 @@ import java.util.Set;
 import pddl4j.exp.AndExp;
 import pddl4j.exp.Exp;
 import pddl4j.exp.action.ActionDef;
+import planner.algorithm.strips.AtomicState;
 import planner.algorithm.strips.StripsAction;
 import planner.model.Action;
 
 public class TermOperations {
+	
+	public static Exp joinExprElements(AtomicState... expressions){
+		AndExp and = new AndExp();
+		for (AtomicState s : expressions) {
+			and.add(s.getFormula());
+		}
+		return and;
+	}
+	
 	public static Exp joinExprElements(Exp... expressions){
 		AndExp and = new AndExp();
 		for (Exp e : expressions) {

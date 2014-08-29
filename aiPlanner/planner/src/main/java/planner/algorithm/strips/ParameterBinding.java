@@ -24,6 +24,10 @@ public class ParameterBinding {
 		return binding;
 	}
 	
+	public String getBindingFor(Term t){
+		return binding.get(t);
+	}
+	
 	public boolean containsTerm(Term t){
 		return binding.containsKey(t);
 	}
