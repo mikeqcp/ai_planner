@@ -9,7 +9,8 @@ import pddl4j.exp.Exp;
 import pddl4j.exp.term.Constant;
 import planner.algorithm.Algorithm;
 import planner.algorithm.logic.TermOperations;
-import planner.model.ProcessSteps;
+import planner.algorithm.strips.logs.StripsLogBuilder;
+import planner.model.ProcessLog;
 import planner.model.ResultPlan;
 
 public class StripsAlgorithm extends Algorithm {
@@ -21,17 +22,20 @@ public class StripsAlgorithm extends Algorithm {
 	private ResultPlan plan;
 	private StripsStack stack;
 	private Set<Constant> constants;
+	private StripsLogBuilder logBuilder;
 
 	public StripsAlgorithm(PDDLObject input) {
 		super(input);
 		initializeProblemData(input);
 		initializeStructures();
+		this.logBuilder = new StripsLogBuilder();
 	}
 	
 	public StripsAlgorithm(StripsAlgorithm otherInstance){
 		super(otherInstance.originalData);
 		initializeProblemData(input);
 		initializeStructures(otherInstance.stack, otherInstance.currentState, otherInstance.plan);
+		this.logBuilder = otherInstance.logBuilder;
 	}
 
 	private void initializeProblemData(PDDLObject input) {
@@ -77,7 +81,7 @@ public class StripsAlgorithm extends Algorithm {
 	}
 
 	@Override
-	public ProcessSteps getProcessHistory() {
+	public ProcessLog getProcessHistory() {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -91,6 +95,8 @@ public class StripsAlgorithm extends Algorithm {
 	private ResultPlan execute(){
 		while(!stack.isEmpty()){
 			StackItem topItem = stack.pop();
+			
+			log();	//every item taken
 			
 			System.out.println(topItem);
 			
@@ -106,6 +112,7 @@ public class StripsAlgorithm extends Algorithm {
 			BindedStripsAction action = item.getAction();
 			currentState = action.applyTo(currentState);
 			plan.addNextStep(action);	//add action to plan
+			log();	//every action added to plan
 		} else {
 			StripsState s = item.getState();
 			if(currentState.satisfies(s)){
@@ -115,6 +122,7 @@ public class StripsAlgorithm extends Algorithm {
 				StripsState[] states = s.breakIntoTerms();
 				for (StripsState st : states) {
 					stack.push(new StackItem(st));
+					log();	//every item added to stack
 				}
 			} else {	//handle simple state
 				processStateItem(s.toAtomic());
@@ -140,9 +148,24 @@ public class StripsAlgorithm extends Algorithm {
 		StripsState joinedState = new StripsState(joinedPreconditions);
 		
 		this.stack.push(new StackItem(actionToUse));
+		log();	//afer selected action pushed on stack
+		
 		this.stack.push(new StackItem(joinedState));
+		log();	//after action preconditions added to stack
+		
 		for (AtomicState atomic : preconditions) {
 			this.stack.push(new StackItem(atomic));
+			log();	//after broken action preconditions added to stack
 		}
+	}
+	
+	private void log(){
+		if(logBuilder == null) return;
+		logBuilder.dump(this.currentState, this.stack, this.plan);
+	}
+
+	@Override
+	public ProcessLog getLog() {
+		return logBuilder.getProcessLog();
 	}
 }

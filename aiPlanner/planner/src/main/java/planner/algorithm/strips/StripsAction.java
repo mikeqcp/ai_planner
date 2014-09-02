@@ -52,4 +52,5 @@ public class StripsAction implements Action {
 		}
 		return null;
 	}
+
 }

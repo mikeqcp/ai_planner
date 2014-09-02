@@ -1,14 +1,16 @@
 package planner.model;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import planner.model.interfaces.PrintablePlan;
+import planner.model.interfaces.ProcessStateDump;
 
-public class ProcessSteps {
+
+public class ProcessLog {
 	private List<ProcessStateDump> stateHistory;
-	private ResultPlan resultPlan;
+	private PrintablePlan resultPlan;
 	
-	public ProcessSteps(List<ProcessStateDump> stateHistory, ResultPlan resultPlan) {
+	public ProcessLog(List<ProcessStateDump> stateHistory, PrintablePlan resultPlan) {
 		super();
 		this.stateHistory = stateHistory;
 		this.resultPlan = resultPlan;
@@ -22,11 +24,11 @@ public class ProcessSteps {
 		this.stateHistory = stateHistory;
 	}
 
-	public ResultPlan getResultPlan() {
+	public PrintablePlan getResultPlan() {
 		return resultPlan;
 	}
 
-	public void setResultPlan(ResultPlan resultPlan) {
+	public void setResultPlan(PrintablePlan resultPlan) {
 		this.resultPlan = resultPlan;
 	}
 	

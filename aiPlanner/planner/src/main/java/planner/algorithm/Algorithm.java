@@ -1,7 +1,7 @@
 package planner.algorithm;
 
 import pddl4j.PDDLObject;
-import planner.model.ProcessSteps;
+import planner.model.ProcessLog;
 import planner.model.ResultPlan;
 
 public abstract class Algorithm {
@@ -11,6 +11,7 @@ public abstract class Algorithm {
 		this.input = input;
 	}
 	
-	abstract public ProcessSteps getProcessHistory();
+	abstract public ProcessLog getProcessHistory();
 	abstract public ResultPlan solve();
+	abstract public ProcessLog getLog();
 }

@@ -1,9 +1,12 @@
 package planner.algorithm.strips;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import pddl4j.exp.AndExp;
 import pddl4j.exp.Exp;
@@ -113,6 +116,10 @@ public class BindedStripsAction extends StripsAction {
 	
 	@Override
 	public String toString() {
-		return "[" + binding.getBinding() + "]\\t" + action.toString();
+//		return "[" + binding.getBinding() + "]\\t" + action.toString();
+		Collection<String> vals = binding.getBinding().values();
+		String valuesStr = Arrays.stream(vals.toArray(new String[0])).collect(Collectors.joining(","));
+		
+		return action.getName() + "(" + valuesStr + ")";
 	}
 }

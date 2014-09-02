@@ -3,7 +3,9 @@ package planner.model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ResultPlan {
+import planner.model.interfaces.Printable;
+
+public class ResultPlan{
 	private List<Action> plan;
 
 	public ResultPlan() {
@@ -24,5 +26,17 @@ public class ResultPlan {
 	
 	public void addNextStep(Action action){
 		plan.add(action);
+	}
+	
+	@Override
+	public String toString() {
+		String planString = "";
+		
+		for (Action action : plan) {
+			planString += action.toString();
+			planString += " -> ";
+		}
+		
+		return planString.substring(0, planString.length() - 4);
 	}
 }

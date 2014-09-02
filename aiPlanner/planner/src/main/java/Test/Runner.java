@@ -8,6 +8,7 @@ import java.util.Scanner;
 import pddl4j.PDDLObject;
 import planner.algorithm.Algorithm;
 import planner.algorithm.strips.StripsAlgorithm;
+import planner.model.ProcessLog;
 import planner.model.ResultPlan;
 import data.PddlParser;
 
@@ -27,6 +28,7 @@ public class Runner {
 		Algorithm alg = new StripsAlgorithm(problemData);
 		
 		ResultPlan plan = alg.solve();
+		ProcessLog log = alg.getLog();
 		
 		System.out.println("Algorithm completed successfully.");
 	}

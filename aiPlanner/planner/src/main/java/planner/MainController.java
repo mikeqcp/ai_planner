@@ -15,10 +15,10 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import pddl4j.PDDLObject;
-import planner.model.ProcessSteps;
-import planner.model.ProcessStateDump;
+import planner.model.ProcessLog;
 import planner.model.ResultPlan;
 import planner.model.State;
+import planner.model.interfaces.ProcessStateDump;
 import data.PddlParser;
 
 
@@ -40,12 +40,12 @@ public class MainController {
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("solve")
-	public ProcessSteps solve(@Context HttpHeaders header, @Context HttpServletResponse response, 
+	public ProcessLog solve(@Context HttpHeaders header, @Context HttpServletResponse response, 
 			@FormParam("domain") String domain, @FormParam("instance") String instance) {
 		response.setHeader("Access-Control-Allow-Origin", "*");
 		
 		PDDLObject inputData = parser.parse(domain, instance);
 		
-		return new ProcessSteps(new ArrayList<ProcessStateDump>(5), new ResultPlan());
+		return null;	//TODO: return logs
 	}
 }
