@@ -30,6 +30,9 @@ public class StripsLogBuilder {
 	
 	public ProcessLog getProcessLog(){
 		PrintablePlan resultPlan = getResultPlan();
-		return new ProcessLog(stateHistory, resultPlan);
+		ProcessLog log = new ProcessLog(stateHistory, resultPlan);
+		log.setType(ProcessLog.AlgorithmType.STRIPS);
+		
+		return log;
 	}
 }

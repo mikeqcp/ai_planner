@@ -7,8 +7,11 @@ import planner.model.interfaces.ProcessStateDump;
 
 
 public class ProcessLog {
+	public static enum AlgorithmType {STRIPS};
+	
 	private List<ProcessStateDump> stateHistory;
 	private PrintablePlan resultPlan;
+	private AlgorithmType type;
 	
 	public ProcessLog(List<ProcessStateDump> stateHistory, PrintablePlan resultPlan) {
 		super();
@@ -30,6 +33,14 @@ public class ProcessLog {
 
 	public void setResultPlan(PrintablePlan resultPlan) {
 		this.resultPlan = resultPlan;
+	}
+
+	public AlgorithmType getType() {
+		return type;
+	}
+
+	public void setType(AlgorithmType type) {
+		this.type = type;
 	}
 	
 	
