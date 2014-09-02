@@ -66,9 +66,10 @@ public class StripsState implements State {
 		for (Exp exp : thisExpr) {
 			boolean contains = false; 
 			for (Exp expOther : otherExpr) {
-				if(exp.equals(expOther))
+				if(exp.equals(expOther)){
 					contains = true;
 					break;
+				}
 			}
 			if(!contains) result.add(exp);
 		}
