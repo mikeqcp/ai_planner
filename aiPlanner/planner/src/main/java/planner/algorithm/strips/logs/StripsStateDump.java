@@ -10,16 +10,16 @@ import planner.model.interfaces.ProcessStateDump;
 
 public class StripsStateDump implements ProcessStateDump {
 
-	private StripsStack stack;
-	private StripsState state;
+	private PrintableStripsStack stack;
+	private PrintableStripsState state;
 	private ResultPlan plan;
 	
 	public void setStack(StripsStack stack) {
-		this.stack = stack;
+		this.stack = new PrintableStripsStack(stack);
 	}
 
 	public void setState(StripsState state) {
-		this.state = state;
+		this.state = new PrintableStripsState(state);
 	}
 
 	public void setPlan(ResultPlan plan) {
@@ -30,7 +30,7 @@ public class StripsStateDump implements ProcessStateDump {
 		return new PrintableState() {
 			
 			public String getLabel() {
-				return state.toString();
+				return state.getLabel();
 			}
 			
 			@Override

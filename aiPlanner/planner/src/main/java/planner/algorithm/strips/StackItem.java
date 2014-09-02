@@ -1,5 +1,7 @@
 package planner.algorithm.strips;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import planner.model.Action;
 import planner.model.State;
 
@@ -17,11 +19,11 @@ public class StackItem {
 		this.state = state;
 	}
 	
-	public boolean isAction(){
+	public boolean isActionType(){
 		return this.action != null;
 	}
 	
-	public boolean isState(){
+	public boolean isStateType(){
 		return this.state != null;
 	}
 
@@ -35,9 +37,9 @@ public class StackItem {
 	
 	@Override
 	public String toString() {
-		if(isAction())
+		if(isActionType())
 			return action.toString();
-		if(isState())
+		if(isStateType())
 			return state.toString();
 		return "{}";
 	}

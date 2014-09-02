@@ -6,6 +6,4 @@ package planner.algorithm.logic;
  */
 public class Utils {	//implement all
 	
-//	public boolean satisfies(state, expected);
-//	public resultState executeAction(initialState, action);
 }

@@ -25,12 +25,15 @@ public class Runner {
 		PDDLObject problemData = problemParser.parse(testDomain, testInstance);
 		
 		//run algorithm
-		Algorithm alg = new StripsAlgorithm(problemData);
 		
-		ResultPlan plan = alg.solve();
-		ProcessLog log = alg.getLog();
-		
-		System.out.println("Algorithm completed successfully.");
+		for (int i = 0; i < 2; i++) {
+			Algorithm alg = new StripsAlgorithm(problemData);
+			
+			ResultPlan plan = alg.solve();
+			ProcessLog log = alg.getLog();
+			
+			System.out.println("Algorithm completed successfully.");
+		}
 	}
 	
 	private static String readFileToString(String file){

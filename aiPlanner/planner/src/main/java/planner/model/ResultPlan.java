@@ -37,6 +37,7 @@ public class ResultPlan{
 			planString += " -> ";
 		}
 		
-		return planString.substring(0, planString.length() - 4);
+		int endIndex = planString.length() - 4;
+		return planString.substring(0, endIndex >=0 ? endIndex : 0 );
 	}
 }

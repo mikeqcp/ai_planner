@@ -1,7 +1,5 @@
 package planner;
 
-import java.util.ArrayList;
-
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
@@ -15,10 +13,10 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import pddl4j.PDDLObject;
+import planner.algorithm.Algorithm;
+import planner.algorithm.Algorithm.AlgorithmType;
+import planner.algorithm.AlgorithmFactory;
 import planner.model.ProcessLog;
-import planner.model.ResultPlan;
-import planner.model.State;
-import planner.model.interfaces.ProcessStateDump;
 import data.PddlParser;
 
 
@@ -41,11 +39,15 @@ public class MainController {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("solve")
 	public ProcessLog solve(@Context HttpHeaders header, @Context HttpServletResponse response, 
-			@FormParam("domain") String domain, @FormParam("instance") String instance) {
+			@FormParam("domain") String domain, @FormParam("instance") String instance, @FormParam("type") String type) {
 		response.setHeader("Access-Control-Allow-Origin", "*");
 		
 		PDDLObject inputData = parser.parse(domain, instance);
+		AlgorithmType algType = Algorithm.typeFromString(type);
 		
-		return null;	//TODO: return logs
+		Algorithm alg = AlgorithmFactory.createAlgorithm(algType, inputData);
+		alg.solve();
+
+		return alg.getLog();
 	}
 }

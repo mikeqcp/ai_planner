@@ -93,6 +93,7 @@ public class StripsAlgorithm extends Algorithm {
 	}
 	
 	private ResultPlan execute(){
+		log();
 		while(!stack.isEmpty()){
 			StackItem topItem = stack.pop();
 			
@@ -106,13 +107,14 @@ public class StripsAlgorithm extends Algorithm {
 	}
 	
 	private void processStackItem(StackItem item){
-		if(item.isAction()) {
+		if(item.isActionType()) {
 			BindedStripsAction action = item.getAction();
 			currentState = action.applyTo(currentState);
 			plan.addNextStep(action);	//add action to plan
 			log();	//every action added to plan
 		} else {
 			StripsState s = item.getState();
+			boolean test = currentState.satisfies(s);
 			if(currentState.satisfies(s)){
 				return;
 			}

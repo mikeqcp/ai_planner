@@ -5,6 +5,7 @@ import planner.model.ProcessLog;
 import planner.model.ResultPlan;
 
 public abstract class Algorithm {
+	public static enum AlgorithmType {STRIPS};
 	protected PDDLObject input;
 	
 	public Algorithm(PDDLObject input) {
@@ -14,4 +15,10 @@ public abstract class Algorithm {
 	abstract public ProcessLog getProcessHistory();
 	abstract public ResultPlan solve();
 	abstract public ProcessLog getLog();
+	
+	public static AlgorithmType typeFromString(String type){
+		if(type.equalsIgnoreCase("strips")) return AlgorithmType.STRIPS;
+		
+		return null;
+	}
 }

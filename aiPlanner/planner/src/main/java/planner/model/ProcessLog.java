@@ -1,14 +1,14 @@
 package planner.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import planner.algorithm.Algorithm.AlgorithmType;
 import planner.model.interfaces.PrintablePlan;
 import planner.model.interfaces.ProcessStateDump;
 
 
-public class ProcessLog {
-	public static enum AlgorithmType {STRIPS};
-	
+public class ProcessLog {	
 	private List<ProcessStateDump> stateHistory;
 	private PrintablePlan resultPlan;
 	private AlgorithmType type;
