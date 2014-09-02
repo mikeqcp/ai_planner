@@ -13,6 +13,7 @@ angular.module('visualiserApp')
 
 		$scope.solve = () ->
 			data =
+				type: 'strips'	#only STRIPS for now
 				domain: $scope.domain
 				instance: $scope.instance
 

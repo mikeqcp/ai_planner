@@ -1,3 +1,17 @@
 <div class="result-view">
-	<textarea ng-model="parsedResult"></textarea>
+	<!--<textarea ng-model="parsedResult"></textarea>-->
+
+	<button ng-click="prevStep()">Prev</button>
+	<button ng-click="nextStep()">Next</button>
+
+	<div>STEP:<span>{{step}}</span></div>
+
+	<div>Plan:</div><div>{{result.resultPlan.label}}</div>
+
+	<!--<div>Stack:</div><div>{{currentStepState.structure.stack}}</div>-->
+	<div>Stack:</div><div id="stack-container"></div>
+
+	<div style="margin-top: 20px">Plan:</div><div>{{currentStepState.plan.label}}</div>
+	<div>State:</div><div>{{currentStepState.state.label}}</div>
+
 </div>
