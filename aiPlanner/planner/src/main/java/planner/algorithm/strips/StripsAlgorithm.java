@@ -98,8 +98,6 @@ public class StripsAlgorithm extends Algorithm {
 			
 			log();	//every item taken
 			
-			System.out.println(topItem);
-			
 			processStackItem(topItem);
 		}
 		
