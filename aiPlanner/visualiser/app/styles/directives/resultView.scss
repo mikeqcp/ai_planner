@@ -1,4 +1,29 @@
 .result-view {
+
+  .nav-buttons{
+	margin: auto;
+	width: 200px;
+
+	button{
+	  border: none;
+	  border-radius: 3px;
+	  padding: 3px 14px;
+	  text-transform: uppercase;
+
+	  &:hover {
+		background-color: #817D7D;
+	  }
+	}
+  }
+
+  .final-plan-container, .stack-container, .current-plan-container, .current-state-container {
+	> span {font-weight: bold;}
+  }
+
+  >div {
+	margin: 20px 0;
+  }
+
   textarea {
 	width: 100%;
 	min-height: 500px;
