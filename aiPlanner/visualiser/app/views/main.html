@@ -8,6 +8,7 @@
 						<div text-input data-content="instance" data-title="instance"></div>
 
 						<a class="btn btn-lg btn-success" ng-click="solve()">Solve<span class="glyphicon glyphicon-ok"></span></a>
+						<select ng-options="alg.label for alg in algorithms" ng-model="selectedAlgorithm"></select>
 					</div>
 					<div class="solution">
 						<div result-view data-result="result"></div>

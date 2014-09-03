@@ -2,6 +2,14 @@
 
 angular.module('visualiserApp')
 .controller 'MainCtrl', ($scope, $http, $log) ->
+		$scope.algorithms = [
+			{id:'strips', label:'STRIPS'},
+			{id:'opRegression', label:'Operator Regression'},
+			{id:'pop', label:'POP'}
+		]
+		$scope.selectedAlgorithm = $scope.algorithms[0]
+
+
 		$http.get('/data/domain.txt').then (response) ->
 			$scope.domain = response.data
 
@@ -13,7 +21,7 @@ angular.module('visualiserApp')
 
 		$scope.solve = () ->
 			data =
-				type: 'strips'	#only STRIPS for now
+				type: $scope.selectedAlgorithm.id
 				domain: $scope.domain
 				instance: $scope.instance
 
