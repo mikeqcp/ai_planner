@@ -2,6 +2,7 @@ package planner.algorithm.strips;
 
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 import pddl4j.PDDLObject;
@@ -89,24 +90,28 @@ public class StripsAlgorithm extends Algorithm {
 	@Override
 	public ResultPlan solve() {
 		System.out.println("STRIPS started");
-		return execute();
+		log();
+		ResultPlan finalPlan = execute();
+		
+		System.out.println(finalPlan);
+		
+		return finalPlan;
 	}
 	
 	private ResultPlan execute(){
-		log();
 		while(!stack.isEmpty()){
 			StackItem topItem = stack.pop();
 			
 			log();	//every item taken
 			
-			processStackItem(topItem);
+			boolean succeeded = processStackItem(topItem);
+			if(!succeeded) return null;
 		}
-		
-		System.out.println(plan);
 		return plan;
 	}
 	
-	private void processStackItem(StackItem item){
+	private boolean processStackItem(StackItem item){
+		boolean succeeded = true;
 		if(item.isActionType()) {
 			BindedStripsAction action = item.getAction();
 			currentState = action.applyTo(currentState);
@@ -114,9 +119,8 @@ public class StripsAlgorithm extends Algorithm {
 			log();	//every action added to plan
 		} else {
 			StripsState s = item.getState();
-			boolean test = currentState.satisfies(s);
 			if(currentState.satisfies(s)){
-				return;
+				return true;
 			}
 			if(!s.isAtomic()){	//break complex state into simple ones
 				StripsState[] states = s.breakIntoTerms();
@@ -125,23 +129,47 @@ public class StripsAlgorithm extends Algorithm {
 					log();	//every item added to stack
 				}
 			} else {	//handle simple state
-				processStateItem(s.toAtomic());
+				succeeded = processStateItem(s.toAtomic());
 			}
 		}
+		return succeeded;
 	}
 
-	private void processStateItem(AtomicState s) {
+	/**
+	 * @param s
+	 * @return true if succeeded, false if there is no solution was found
+	 */
+	private boolean processStateItem(AtomicState s) {
 		//find applicable action
 		Set<BindedStripsAction> applicableActions = StripsUtils.findApplicableActions(s, actions);
-
-		//use first of applicable actions
-		BindedStripsAction actionToUse = null;
+		if(applicableActions.isEmpty()) return false;
+		
 		for (BindedStripsAction a : applicableActions) {
-			actionToUse = a;
-			break;
+			a.fillFreeParameters(constants);
 		}
 		
-		actionToUse.fillFreeParameters(constants);
+		List<BindedStripsAction> sortedApplicableActions = StripsUtils.sortActions(applicableActions, currentState, goal);
+		
+		//use every applicable actions
+		for (BindedStripsAction a : sortedApplicableActions) {
+			//and now recursion
+			StripsAlgorithm inner = new StripsAlgorithm(this);
+			inner.prepareAction(a);
+			
+			ResultPlan p = inner.execute();
+			//solution found, stop process
+			if(p != null) {
+				this.currentState = inner.currentState;
+				this.plan = inner.plan;
+				this.stack = inner.stack;
+				return true;
+			}
+			break;
+		}
+		return true;
+	}
+	
+	private void prepareAction(BindedStripsAction actionToUse){		
 		AtomicState[] preconditions = actionToUse.getBindedPreconditions();
 		
 		Exp joinedPreconditions = TermOperations.joinExprElements(preconditions);

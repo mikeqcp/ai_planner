@@ -26,13 +26,15 @@ public class Runner {
 		
 		//run algorithm
 		
-		for (int i = 0; i < 2; i++) {
+		for (int i = 0; i < 10; i++) {
+			System.out.println("No." + i);
 			Algorithm alg = new StripsAlgorithm(problemData);
 			
 			ResultPlan plan = alg.solve();
 			ProcessLog log = alg.getLog();
 			
 			System.out.println("Algorithm completed successfully.");
+			System.out.println("---");
 		}
 	}
 	

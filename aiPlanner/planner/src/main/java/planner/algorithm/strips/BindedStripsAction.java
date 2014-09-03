@@ -42,7 +42,7 @@ public class BindedStripsAction extends StripsAction {
 		return resultState;	//TODO
 	}
 
-	private AtomicState[] getBindedEffects() {
+	public AtomicState[] getBindedEffects() {
 		Exp effects = action.getEffect();
 
 		Exp[] postStates;
@@ -116,8 +116,11 @@ public class BindedStripsAction extends StripsAction {
 	
 	@Override
 	public String toString() {
-//		return "[" + binding.getBinding() + "]\\t" + action.toString();
-		Collection<String> vals = binding.getBinding().values();
+		Collection<String> vals = new ArrayList<String>();
+		
+		for (Term t : action.getParameters()) {
+			vals.add(binding.getBindingFor(t));
+		}
 		String valuesStr = Arrays.stream(vals.toArray(new String[0])).collect(Collectors.joining(","));
 		
 		return action.getName() + "(" + valuesStr + ")";
