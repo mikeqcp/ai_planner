@@ -1,4 +1,4 @@
-package planner.algorithm.strips;
+package planner.algorithm.regression;
 
 import java.util.HashSet;
 import java.util.Iterator;
@@ -10,40 +10,49 @@ import pddl4j.exp.Exp;
 import pddl4j.exp.term.Constant;
 import planner.algorithm.Algorithm;
 import planner.algorithm.logic.TermOperations;
+import planner.algorithm.regression.logs.RegressionLogBuilder;
+import planner.algorithm.strips.AtomicState;
+import planner.algorithm.strips.BindedStripsAction;
+import planner.algorithm.strips.StackItem;
+import planner.algorithm.strips.StripsAction;
+import planner.algorithm.strips.StripsStack;
+import planner.algorithm.strips.StripsState;
+import planner.algorithm.strips.StripsUtils;
 import planner.algorithm.strips.logs.StripsLogBuilder;
 import planner.model.ProcessLog;
 import planner.model.ResultPlan;
 
-public class StripsAlgorithm extends Algorithm {
-	private StripsState initialState;
-	private StripsState currentState;
+public class RegressionAlgorithm extends Algorithm {
+	private RegState initialState;
+	private RegState currentState;
 	private Set<StripsAction> actions;
-	private StripsState goal;
+	private RegState goal;
 	private ResultPlan plan;
-	private StripsStack stack;
 	private Set<Constant> constants;
-	private StripsLogBuilder logBuilder;
+	private RegressionLogBuilder logBuilder;
+	private RegTree tree;
+	
 
-	public StripsAlgorithm(PDDLObject input) {
+	public RegressionAlgorithm(PDDLObject input) {
 		super(input);
 		initializeProblemData(input);
 		initializeStructures();
-		this.logBuilder = new StripsLogBuilder();
+		this.logBuilder = new RegressionLogBuilder();
 	}
-	
-	public StripsAlgorithm(StripsAlgorithm otherInstance){
+
+	public RegressionAlgorithm(RegressionAlgorithm otherInstance){
 		super(otherInstance.originalData);
 		initializeProblemData(originalData);
-		initializeStructures(otherInstance.stack, otherInstance.currentState, otherInstance.plan);
+		initializeStructures(otherInstance.tree, otherInstance.currentState, otherInstance.plan);
 		this.logBuilder = otherInstance.logBuilder;
 	}
 
 	private void initializeProblemData(PDDLObject input) {
-		this.goal = new StripsState(input.getGoal());
+		this.goal = new RegState(input.getGoal());
 		this.constants = getInstanceConstants();
 
 		Exp[] initialExp = input.getInit().toArray(new Exp[0]);
-		this.initialState = new StripsState(
+		this.initialState = new RegState(
 				TermOperations.joinExprElements(initialExp));
 
 		this.actions = StripsUtils.createActionSet(input.actionsIterator());
@@ -52,20 +61,19 @@ public class StripsAlgorithm extends Algorithm {
 	private void initializeStructures() {
 		currentState = initialState;
 		plan = new ResultPlan();
+		tree = new RegTree(currentState);
+
 		
-		stack = new StripsStack();
-		stack.push(new StackItem(goal));
-		
-		Exp[] statesDiff = goal.minus(currentState);
-		for (Exp exp : statesDiff) {
-			StripsState expState = new StripsState(exp);
-			stack.push(new StackItem(expState));
-		}
+//		Exp[] statesDiff = goal.minus(currentState);
+//		for (Exp exp : statesDiff) {
+//			RegState expState = new RegState(exp);
+////			stack.push(new StackItem(expState));
+//		}
 	}
 	
-	private void initializeStructures(StripsStack stack, StripsState currentState, ResultPlan currentPlan) {
-		this.stack = new StripsStack(stack);
-		this.currentState = new StripsState(currentState);
+	private void initializeStructures(RegTree tree, StripsState currentState, ResultPlan currentPlan) {
+		this.tree = new RegTree(tree);
+		this.currentState = new RegState(currentState);
 		this.plan = new ResultPlan(currentPlan);
 	}
 
@@ -82,22 +90,23 @@ public class StripsAlgorithm extends Algorithm {
 	}
 	
 	private ResultPlan execute(){
-		while(!stack.isEmpty()){
-			StackItem topItem = stack.pop();
-			
-			log();	//every item taken
-			
-			boolean succeeded = processStackItem(topItem);
-			if(!succeeded) return null;
-		}
-		return plan;
+//		while(!stack.isEmpty()){
+//			StackItem topItem = stack.pop();
+//			
+//			log();	//every item taken
+//			
+//			boolean succeeded = processStackItem(topItem);
+//			if(!succeeded) return null;
+//		}
+//		return plan;
+		return null;
 	}
 	
 	private boolean processStackItem(StackItem item){
 		boolean succeeded = true;
 		if(item.isActionType()) {
 			BindedStripsAction action = item.getAction();
-			currentState = action.applyTo(currentState);
+			currentState = new RegState(action.applyTo(currentState));
 			plan.addNextStep(action);	//add action to plan
 			log();	//every action added to plan
 		} else {
@@ -108,7 +117,7 @@ public class StripsAlgorithm extends Algorithm {
 			if(!s.isAtomic()){	//break complex state into simple ones
 				StripsState[] states = s.breakIntoTerms();
 				for (StripsState st : states) {
-					stack.push(new StackItem(st));
+//					stack.push(new StackItem(st));
 					log();	//every item added to stack
 				}
 			} else {	//handle simple state
@@ -136,7 +145,7 @@ public class StripsAlgorithm extends Algorithm {
 		//use every applicable actions
 		for (BindedStripsAction a : sortedApplicableActions) {
 			//and now recursion
-			StripsAlgorithm inner = new StripsAlgorithm(this);
+			RegressionAlgorithm inner = new RegressionAlgorithm(this);
 			inner.prepareAction(a);
 			
 			ResultPlan p = inner.execute();
@@ -144,7 +153,7 @@ public class StripsAlgorithm extends Algorithm {
 			if(p != null) {
 				this.currentState = inner.currentState;
 				this.plan = inner.plan;
-				this.stack = inner.stack;
+//				this.stack = inner.stack;
 				return true;
 			}
 			break;
@@ -158,21 +167,21 @@ public class StripsAlgorithm extends Algorithm {
 		Exp joinedPreconditions = TermOperations.joinExprElements(preconditions);
 		StripsState joinedState = new StripsState(joinedPreconditions);
 		
-		this.stack.push(new StackItem(actionToUse));
+//		this.stack.push(new StackItem(actionToUse));
 		log();	//afer selected action pushed on stack
 		
-		this.stack.push(new StackItem(joinedState));
+//		this.stack.push(new StackItem(joinedState));
 		log();	//after action preconditions added to stack
 		
 		for (AtomicState atomic : preconditions) {
-			this.stack.push(new StackItem(atomic));
+//			this.stack.push(new StackItem(atomic));
 			log();	//after broken action preconditions added to stack
 		}
 	}
 	
 	private void log(){
 		if(logBuilder == null) return;
-		logBuilder.dump(this.currentState, this.stack, this.plan);
+		logBuilder.dump(this.currentState, this.tree, this.plan);
 	}
 
 	@Override

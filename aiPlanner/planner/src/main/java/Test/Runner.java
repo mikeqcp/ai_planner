@@ -7,6 +7,7 @@ import java.util.Scanner;
 
 import pddl4j.PDDLObject;
 import planner.algorithm.Algorithm;
+import planner.algorithm.regression.RegressionAlgorithm;
 import planner.algorithm.strips.StripsAlgorithm;
 import planner.model.ProcessLog;
 import planner.model.ResultPlan;
@@ -26,9 +27,10 @@ public class Runner {
 		
 		//run algorithm
 		
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < 0; i++) {
 			System.out.println("No." + i);
-			Algorithm alg = new StripsAlgorithm(problemData);
+//			Algorithm alg = new StripsAlgorithm(problemData);
+			Algorithm alg = new RegressionAlgorithm(problemData);
 			
 			ResultPlan plan = alg.solve();
 			ProcessLog log = alg.getLog();

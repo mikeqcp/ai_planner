@@ -73,6 +73,7 @@ public class StripsUtils {
 		Set<StripsAction> actionSet = new HashSet<StripsAction>();
 		while(actionsIterator.hasNext()){
 			ActionDef srcAction = actionsIterator.next();
+			if(srcAction.getName().startsWith("constraint_fake")) continue;
 			actionSet.add(new StripsAction(srcAction));
 		}
 		return actionSet;

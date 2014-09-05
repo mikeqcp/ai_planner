@@ -93,11 +93,11 @@ public class StripsState implements State {
 		return false;
 	}
 	
-	public StripsState[] breakIntoTerms(){
+	public AtomicState[] breakIntoTerms(){
 		Exp[] terms = getTerms();
-		StripsState[] states = new StripsState[terms.length];
+		AtomicState[] states = new AtomicState[terms.length];
 		for (int i = 0; i < terms.length; i++) {
-			states[i] = new StripsState(terms[i]);
+			states[i] = new StripsState(terms[i]).toAtomic();
 		}
 		return states;
 	}
