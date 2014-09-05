@@ -1,0 +1,13 @@
+.toggle-problem {
+  float: right;
+  cursor: pointer;
+
+  &:hover {
+	opacity: 0.5;
+  }
+}
+
+.footer {
+  clear: both;
+  margin-top: 70px;
+}

@@ -9,7 +9,6 @@ angular.module('visualiserApp')
 		]
 		$scope.selectedAlgorithm = $scope.algorithms[0]
 
-
 		$http.get('/data/domain.txt').then (response) ->
 			$scope.domain = response.data
 
@@ -18,6 +17,10 @@ angular.module('visualiserApp')
 
 		$http.defaults.headers.post =
 			'Content-Type' : 'application/x-www-form-urlencoded; charset=UTF-8'
+
+		$scope.toggleProblem = () ->
+			$('.problem').slideToggle(400)
+			$('.toggle-problem').toggleClass('glyphicon-minus glyphicon-plus')
 
 		$scope.solve = () ->
 			data =
@@ -28,5 +31,6 @@ angular.module('visualiserApp')
 			$http.post("http://127.0.0.1:8085/planner/solve", $.param data)
 			.then (d) ->
 				$scope.result = d.data
+				$scope.toggleProblem()
 			.catch (e) ->
 					$log.error 'error: ', e
