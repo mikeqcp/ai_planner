@@ -16,10 +16,6 @@
 	}
   }
 
-  .final-plan-container, .stack-container, .current-plan-container, .current-state-container {
-	> span {font-weight: bold;}
-  }
-
   >div {
 	margin: 20px 0;
   }
@@ -28,6 +24,11 @@
 	width: 100%;
 	min-height: 500px;
 	margin-top: 10px;
+  }
+
+//  STRIPS
+  .final-plan-container, .stack-container, .current-plan-container, .current-state-container {
+	> span {font-weight: bold;}
   }
 
   .stack-item {

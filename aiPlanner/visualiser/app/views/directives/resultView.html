@@ -6,10 +6,5 @@
 		<span>STEP:<span>{{step}}</span></span>
 	</div>
 
-	<div class="final-plan-container"><span>Final plan:</span><div>{{result.resultPlan.label}}</div></div>
-
-	<div class="stack-container"><span>Stack [size: {{currentStepState.structure.stack.length}} ]:</span><div id="stack-container"></div></div>
-
-	<div class="current-plan-container"><span>Current plan:</span><div>{{currentStepState.plan.label}}</div></div>
-	<div class="current-state-container"><span>Current state:</span><div>{{currentStepState.state.label}}</div></div>
+	<div ng-if="result.type=='STRIPS'" data-strips-display data-result="result" data-step="step"></div>
 </div>
