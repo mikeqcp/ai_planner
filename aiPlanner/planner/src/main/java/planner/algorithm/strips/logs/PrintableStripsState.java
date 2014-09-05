@@ -1,6 +1,6 @@
 package planner.algorithm.strips.logs;
 
-import planner.algorithm.strips.StripsState;
+import planner.model.StripsState;
 import planner.model.interfaces.PrintableState;
 
 public class PrintableStripsState implements PrintableState{

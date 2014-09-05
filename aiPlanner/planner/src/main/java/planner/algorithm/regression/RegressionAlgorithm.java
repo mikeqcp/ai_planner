@@ -14,21 +14,23 @@ import planner.algorithm.regression.logs.RegressionLogBuilder;
 import planner.algorithm.strips.AtomicState;
 import planner.algorithm.strips.BindedStripsAction;
 import planner.algorithm.strips.StackItem;
-import planner.algorithm.strips.StripsAction;
 import planner.algorithm.strips.StripsStack;
-import planner.algorithm.strips.StripsState;
 import planner.algorithm.strips.StripsUtils;
 import planner.algorithm.strips.logs.StripsLogBuilder;
+import planner.model.Action;
+import planner.model.Constraint;
 import planner.model.ProcessLog;
 import planner.model.ResultPlan;
+import planner.model.StripsState;
 
 public class RegressionAlgorithm extends Algorithm {
 	private RegState initialState;
 	private RegState currentState;
-	private Set<StripsAction> actions;
+	private Set<Action> actions;
 	private RegState goal;
 	private ResultPlan plan;
 	private Set<Constant> constants;
+	private Set<Constraint> constraints;
 	private RegressionLogBuilder logBuilder;
 	private RegTree tree;
 	
@@ -55,20 +57,14 @@ public class RegressionAlgorithm extends Algorithm {
 		this.initialState = new RegState(
 				TermOperations.joinExprElements(initialExp));
 
-		this.actions = StripsUtils.createActionSet(input.actionsIterator());
+		this.actions = getInstanceActions();
+		this.constraints = getInstanceConstraints();
 	}
 	
 	private void initializeStructures() {
 		currentState = initialState;
 		plan = new ResultPlan();
 		tree = new RegTree(currentState);
-
-		
-//		Exp[] statesDiff = goal.minus(currentState);
-//		for (Exp exp : statesDiff) {
-//			RegState expState = new RegState(exp);
-////			stack.push(new StackItem(expState));
-//		}
 	}
 	
 	private void initializeStructures(RegTree tree, StripsState currentState, ResultPlan currentPlan) {

@@ -11,13 +11,15 @@ import pddl4j.exp.term.Constant;
 import planner.algorithm.Algorithm;
 import planner.algorithm.logic.TermOperations;
 import planner.algorithm.strips.logs.StripsLogBuilder;
+import planner.model.Action;
 import planner.model.ProcessLog;
 import planner.model.ResultPlan;
+import planner.model.StripsState;
 
 public class StripsAlgorithm extends Algorithm {
 	private StripsState initialState;
 	private StripsState currentState;
-	private Set<StripsAction> actions;
+	private Set<Action> actions;
 	private StripsState goal;
 	private ResultPlan plan;
 	private StripsStack stack;
@@ -46,7 +48,7 @@ public class StripsAlgorithm extends Algorithm {
 		this.initialState = new StripsState(
 				TermOperations.joinExprElements(initialExp));
 
-		this.actions = StripsUtils.createActionSet(input.actionsIterator());
+		this.actions = getInstanceActions();
 	}
 	
 	private void initializeStructures() {

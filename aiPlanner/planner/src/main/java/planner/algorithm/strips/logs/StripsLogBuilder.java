@@ -5,9 +5,9 @@ import java.util.List;
 
 import planner.algorithm.Algorithm.AlgorithmType;
 import planner.algorithm.strips.StripsStack;
-import planner.algorithm.strips.StripsState;
 import planner.model.ProcessLog;
 import planner.model.ResultPlan;
+import planner.model.StripsState;
 import planner.model.interfaces.PrintablePlan;
 import planner.model.interfaces.ProcessStateDump;
 

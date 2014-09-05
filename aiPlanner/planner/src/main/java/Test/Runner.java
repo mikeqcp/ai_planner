@@ -27,7 +27,7 @@ public class Runner {
 		
 		//run algorithm
 		
-		for (int i = 0; i < 0; i++) {
+		for (int i = 0; i < 1; i++) {
 			System.out.println("No." + i);
 //			Algorithm alg = new StripsAlgorithm(problemData);
 			Algorithm alg = new RegressionAlgorithm(problemData);

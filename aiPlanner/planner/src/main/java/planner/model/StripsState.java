@@ -1,4 +1,4 @@
-package planner.algorithm.strips;
+package planner.model;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -9,13 +9,13 @@ import pddl4j.exp.AtomicFormula;
 import pddl4j.exp.Exp;
 import pddl4j.exp.NotAtomicFormula;
 import planner.algorithm.logic.TermOperations;
-import planner.model.State;
+import planner.algorithm.strips.AtomicState;
 
 /**
  * @author MichalP
  *State defined by STIPS-type expression
  */
-public class StripsState implements State {	
+public class StripsState {	
 	protected Exp state;
 
 	public StripsState(StripsState s) {

@@ -1,9 +1,7 @@
 package planner.algorithm.strips;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import planner.model.StripsState;
 
-import planner.model.Action;
-import planner.model.State;
 
 public class StackItem {
 	private BindedStripsAction action = null;

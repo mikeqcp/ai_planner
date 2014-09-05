@@ -2,7 +2,7 @@ package planner.algorithm.regression;
 
 import pddl4j.exp.Exp;
 import planner.algorithm.logic.TermOperations;
-import planner.algorithm.strips.StripsState;
+import planner.model.StripsState;
 
 public class RegState extends StripsState {
 	public RegState(StripsState s) {

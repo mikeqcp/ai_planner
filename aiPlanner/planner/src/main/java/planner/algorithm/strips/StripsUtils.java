@@ -9,13 +9,15 @@ import java.util.List;
 import java.util.Set;
 
 import pddl4j.exp.action.ActionDef;
+import planner.model.Action;
+import planner.model.StripsState;
 
 public class StripsUtils {
-	public static Set<BindedStripsAction> findApplicableActions(AtomicState state, Set<StripsAction> availableActions){
+	public static Set<BindedStripsAction> findApplicableActions(AtomicState state, Set<Action> availableActions){
 		Set<BindedStripsAction> applicableActions = new HashSet<BindedStripsAction>();
 		
 		ParameterBinding b;
-		for (StripsAction a : availableActions) {
+		for (Action a : availableActions) {
 			if((b = a.bindToProduce(state)) != null){
 				BindedStripsAction action = a.bindParameters(b);
 				applicableActions.add(action);
@@ -67,15 +69,5 @@ public class StripsUtils {
 			if(!goal.satisfies(e)) count++;
 		}
 		return count;
-	}
-	
-	public static Set<StripsAction> createActionSet(Iterator<pddl4j.exp.action.ActionDef> actionsIterator){
-		Set<StripsAction> actionSet = new HashSet<StripsAction>();
-		while(actionsIterator.hasNext()){
-			ActionDef srcAction = actionsIterator.next();
-			if(srcAction.getName().startsWith("constraint_fake")) continue;
-			actionSet.add(new StripsAction(srcAction));
-		}
-		return actionSet;
 	}
 }

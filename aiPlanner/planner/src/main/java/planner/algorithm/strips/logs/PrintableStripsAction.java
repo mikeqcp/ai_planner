@@ -1,11 +1,11 @@
 package planner.algorithm.strips.logs;
 
-import planner.algorithm.strips.StripsAction;
+import planner.model.Action;
 
 public class PrintableStripsAction{
 	private String label;
 	
-	public PrintableStripsAction(StripsAction a) {
+	public PrintableStripsAction(Action a) {
 		label = a.toString();
 	}
 

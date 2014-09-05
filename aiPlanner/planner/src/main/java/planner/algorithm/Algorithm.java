@@ -1,12 +1,16 @@
 package planner.algorithm;
 
+import java.awt.Container;
+import java.awt.PageAttributes.OriginType;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
 import pddl4j.PDDLObject;
 import pddl4j.RequireKey;
+import pddl4j.exp.action.ActionDef;
 import pddl4j.exp.term.Constant;
+import planner.model.Action;
 import planner.model.Constraint;
 import planner.model.ProcessLog;
 import planner.model.ResultPlan;
@@ -40,15 +44,28 @@ public abstract class Algorithm {
 		return constants;
 	}
 	
+	public Set<Action> getInstanceActions(){
+		Iterator<ActionDef> actionsIterator = originalData.actionsIterator(); 
+		Set<Action> actionSet = new HashSet<Action>();
+		while(actionsIterator.hasNext()){
+			ActionDef srcAction = actionsIterator.next();
+			if(srcAction.getName().startsWith("fake_constraint")) continue;
+			actionSet.add(new Action(srcAction));
+		}
+		return actionSet;
+	}
+	
 	protected Set<Constraint> getInstanceConstraints(){
 		Set<Constraint> constraints = new HashSet<Constraint>();
+		Iterator<ActionDef> actionsIterator = originalData.actionsIterator();	//exract from fake actions
 		
-		Iterator<RequireKey> i = originalData.requirementsIterator();
-		
-//		Iterator<Constraint> iter = originalData.constantsIterator();
-//		while(iter.hasNext()){
-//			constraints.add(iter.next());
-//		}
+		while(actionsIterator.hasNext()){
+			ActionDef srcAction = actionsIterator.next();
+			if(srcAction.getName().startsWith("fake_constraint")){
+				pddl4j.exp.action.Action actionInst = (pddl4j.exp.action.Action)srcAction;
+				constraints.add(new Constraint(actionInst));
+			}
+		}
 		return constraints;
 	}
 }

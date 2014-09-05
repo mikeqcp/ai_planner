@@ -10,7 +10,6 @@ import pddl4j.exp.AndExp;
 import pddl4j.exp.Exp;
 import pddl4j.exp.action.ActionDef;
 import planner.algorithm.strips.AtomicState;
-import planner.algorithm.strips.StripsAction;
 import planner.model.Action;
 
 public class TermOperations {

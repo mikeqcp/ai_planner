@@ -33,6 +33,18 @@ public class TreeNode {
 		return consistent;
 	}
 
+	
+	public Set<AtomicState> getAtomicStates() {
+		return atomicStates;
+	}
+	
+	
+	
+
+	public RegState getState() {
+		return state;
+	}
+
 	/**
 	 * Creates link from this node to target node
 	 * @param src - source atomic state, used to create link

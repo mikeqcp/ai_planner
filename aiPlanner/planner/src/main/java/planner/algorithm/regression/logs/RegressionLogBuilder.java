@@ -7,10 +7,10 @@ import planner.algorithm.Algorithm.AlgorithmType;
 import planner.algorithm.regression.RegState;
 import planner.algorithm.regression.RegTree;
 import planner.algorithm.strips.StripsStack;
-import planner.algorithm.strips.StripsState;
 import planner.algorithm.strips.logs.StripsStateDump;
 import planner.model.ProcessLog;
 import planner.model.ResultPlan;
+import planner.model.StripsState;
 import planner.model.interfaces.ProcessStateDump;
 
 public class RegressionLogBuilder {

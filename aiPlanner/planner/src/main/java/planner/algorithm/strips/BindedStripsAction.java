@@ -13,14 +13,16 @@ import pddl4j.exp.Exp;
 import pddl4j.exp.term.Constant;
 import pddl4j.exp.term.Term;
 import planner.algorithm.logic.TermOperations;
+import planner.model.Action;
+import planner.model.StripsState;
 
-public class BindedStripsAction extends StripsAction {
+public class BindedStripsAction extends Action {
 	private Random rand = new Random();
 	private ParameterBinding binding;
 	
 	
-	public BindedStripsAction(StripsAction parent, ParameterBinding binding) {
-		super(parent.action);
+	public BindedStripsAction(Action parent, ParameterBinding binding) {
+		super(parent.getAction());
 		this.binding = binding;
 	}
 

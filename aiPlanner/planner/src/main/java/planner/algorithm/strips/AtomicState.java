@@ -12,6 +12,7 @@ import pddl4j.exp.term.Substitution;
 import pddl4j.exp.term.Term;
 import pddl4j.exp.term.Variable;
 import planner.algorithm.logic.TermOperations;
+import planner.model.StripsState;
 
 public class AtomicState extends StripsState {
 	private AtomicFormula state;
