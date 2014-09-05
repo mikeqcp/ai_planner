@@ -21,6 +21,9 @@ public class PddlParser {
 		try {
 			createMissingDirectory(TMP_PATH);
 			
+			ConstraintParser cp = new ConstraintParser(domain);
+			domain = cp.parse();
+			
 			String[] files = createFiles(domain, instance);
 			return parseFiles(files);
 		} catch (IOException ex) {
@@ -75,6 +78,8 @@ public class PddlParser {
 		Domain domain = parser.parse(new File(files[0]));
 		Problem problem = parser.parse(new File(files[1]));
 		PDDLObject obj = parser.link(domain, problem);
+		
+		
 		// Gets the error manager of the pddl parser
 		ErrorManager mgr = parser.getErrorManager();
 		if (mgr.contains(Message.ERROR)) {
