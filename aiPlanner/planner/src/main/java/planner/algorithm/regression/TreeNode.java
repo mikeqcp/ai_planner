@@ -21,8 +21,8 @@ public class TreeNode {
 	}
 	
 	public TreeNode(TreeNode other) {
-		this.state = other.state;
-		this.atomicStates = other.atomicStates;
+		this.state = new RegState(other.state);
+		this.atomicStates = new HashSet<AtomicState>(other.atomicStates);
 		this.outcomingLinks = new HashSet<TreeLink>(other.outcomingLinks);
 		this.incomingLinks = new HashSet<TreeLink>(other.incomingLinks);
 	}
@@ -32,21 +32,17 @@ public class TreeNode {
 			consistent = state.isConsistent();
 		return consistent;
 	}
-
 	
 	public Set<AtomicState> getAtomicStates() {
 		return atomicStates;
 	}
-	
-	
-	
 
 	public RegState getState() {
 		return state;
 	}
 
 	/**
-	 * Creates link from this node to target node
+	 * Creates link from atomic state in this node to target node
 	 * @param src - source atomic state, used to create link
 	 * @param target - target node
 	 * @return created link
