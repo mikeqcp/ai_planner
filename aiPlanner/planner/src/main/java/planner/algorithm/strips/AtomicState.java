@@ -3,7 +3,6 @@ package planner.algorithm.strips;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import pddl4j.exp.AndExp;
 import pddl4j.exp.AtomicFormula;
 import pddl4j.exp.Exp;
 import pddl4j.exp.NotAtomicFormula;
@@ -11,7 +10,6 @@ import pddl4j.exp.term.Constant;
 import pddl4j.exp.term.Substitution;
 import pddl4j.exp.term.Term;
 import pddl4j.exp.term.Variable;
-import planner.algorithm.logic.TermOperations;
 import planner.model.StripsState;
 
 public class AtomicState extends StripsState {

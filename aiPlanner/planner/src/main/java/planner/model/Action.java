@@ -1,13 +1,8 @@
 package planner.model;
 
-import java.util.Set;
-
 import pddl4j.exp.AndExp;
-import pddl4j.exp.AtomicFormula;
 import pddl4j.exp.Exp;
-import pddl4j.exp.NotAtomicFormula;
 import pddl4j.exp.action.ActionDef;
-import pddl4j.exp.term.Term;
 import planner.algorithm.logic.TermOperations;
 import planner.algorithm.strips.AtomicState;
 import planner.algorithm.strips.BindedStripsAction;

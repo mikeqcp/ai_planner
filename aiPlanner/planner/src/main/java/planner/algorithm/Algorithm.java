@@ -1,13 +1,10 @@
 package planner.algorithm;
 
-import java.awt.Container;
-import java.awt.PageAttributes.OriginType;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
 import pddl4j.PDDLObject;
-import pddl4j.RequireKey;
 import pddl4j.exp.action.ActionDef;
 import pddl4j.exp.term.Constant;
 import planner.model.Action;

@@ -14,6 +14,4 @@ public class RegTree {
 	public TreeNode getRoot() {
 		return root;
 	}
-	
-	
 }

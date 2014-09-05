@@ -1,9 +1,5 @@
 package planner.algorithm.regression;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
-
 import planner.algorithm.strips.AtomicState;
 
 public class TreeLink {

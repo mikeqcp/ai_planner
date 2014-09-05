@@ -2,13 +2,11 @@ package Test;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.sql.ResultSetMetaData;
 import java.util.Scanner;
 
 import pddl4j.PDDLObject;
 import planner.algorithm.Algorithm;
 import planner.algorithm.regression.RegressionAlgorithm;
-import planner.algorithm.strips.StripsAlgorithm;
 import planner.model.ProcessLog;
 import planner.model.ResultPlan;
 import data.PddlParser;

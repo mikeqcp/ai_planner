@@ -1,6 +1,5 @@
 package planner.model;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import planner.algorithm.Algorithm.AlgorithmType;

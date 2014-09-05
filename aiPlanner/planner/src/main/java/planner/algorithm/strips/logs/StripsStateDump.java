@@ -4,7 +4,6 @@ import planner.algorithm.strips.StripsStack;
 import planner.model.ResultPlan;
 import planner.model.StripsState;
 import planner.model.interfaces.PrintablePlan;
-import planner.model.interfaces.PrintableStack;
 import planner.model.interfaces.PrintableState;
 import planner.model.interfaces.ProcessStateDump;
 

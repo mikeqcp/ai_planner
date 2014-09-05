@@ -3,8 +3,6 @@ package planner.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import planner.model.interfaces.Printable;
-
 public class ResultPlan{
 	private List<Action> plan;
 
