@@ -1,17 +1,22 @@
 package planner.algorithm.regression;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 
 import planner.algorithm.strips.AtomicState;
+import planner.model.State;
 
 public class WalkQueue {
 	private Queue<TreeNode> nodesQueue;	//nodes waiting for being visited
 	private Queue<AtomicState> statesQueue;	//states waiting for being regressed
+	private State goal;
 	
-	public WalkQueue(TreeNode startNode) {
+	public WalkQueue(TreeNode startNode, State initial) {
 		this.nodesQueue = new LinkedList<TreeNode>();
 		this.statesQueue = new LinkedList<AtomicState>();
+		this.goal = initial;
 		addNodeToVisit(startNode);
 	}
 	
@@ -19,7 +24,18 @@ public class WalkQueue {
 	 * Enqueue states that need to be regressed
 	 */
 	public void enqueueNodeStates(TreeNode n){
+		List<AtomicState> unsatisfied = new ArrayList<AtomicState>();
+		
+		//add satisfied first
 		for (AtomicState s : n.getAtomicStates()) {
+			if(!goal.satisfies(s))
+				addStateToRegress(s);
+			else
+				unsatisfied.add(s);
+		}
+		
+		//and then unsatisfied
+		for (AtomicState s : unsatisfied) {
 			addStateToRegress(s);
 		}
 	}
@@ -44,10 +60,10 @@ public class WalkQueue {
 	}
 	
 	public boolean hasNodesToVisit(){
-		return nodesQueue.isEmpty();
+		return !nodesQueue.isEmpty();
 	}
 	
 	public boolean hasStatesToVisit(){
-		return statesQueue.isEmpty();
+		return !statesQueue.isEmpty();
 	}
 }

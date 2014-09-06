@@ -10,9 +10,9 @@ import pddl4j.exp.term.Constant;
 import pddl4j.exp.term.Substitution;
 import pddl4j.exp.term.Term;
 import pddl4j.exp.term.Variable;
-import planner.model.StripsState;
+import planner.model.State;
 
-public class AtomicState extends StripsState {
+public class AtomicState extends State {
 	private AtomicFormula state;
 	private boolean negation = false;
 
@@ -29,7 +29,7 @@ public class AtomicState extends StripsState {
 		return state;
 	}
 	
-	public AtomicState(StripsState state) {
+	public AtomicState(State state) {
 		if(state instanceof AtomicState)
 			this.state = ((AtomicState)state).state;
 		

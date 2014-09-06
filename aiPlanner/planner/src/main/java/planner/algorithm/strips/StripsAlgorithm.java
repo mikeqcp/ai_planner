@@ -12,13 +12,13 @@ import planner.algorithm.strips.logs.StripsLogBuilder;
 import planner.model.Action;
 import planner.model.ProcessLog;
 import planner.model.ResultPlan;
-import planner.model.StripsState;
+import planner.model.State;
 
 public class StripsAlgorithm extends Algorithm {
-	private StripsState initialState;
-	private StripsState currentState;
+	private State initialState;
+	private State currentState;
 	private Set<Action> actions;
-	private StripsState goal;
+	private State goal;
 	private ResultPlan plan;
 	private StripsStack stack;
 	private Set<Constant> constants;
@@ -39,11 +39,11 @@ public class StripsAlgorithm extends Algorithm {
 	}
 
 	private void initializeProblemData(PDDLObject input) {
-		this.goal = new StripsState(input.getGoal());
+		this.goal = new State(input.getGoal());
 		this.constants = getInstanceConstants();
 
 		Exp[] initialExp = input.getInit().toArray(new Exp[0]);
-		this.initialState = new StripsState(
+		this.initialState = new State(
 				TermOperations.joinExprElements(initialExp));
 
 		this.actions = getInstanceActions();
@@ -58,14 +58,14 @@ public class StripsAlgorithm extends Algorithm {
 		
 		Exp[] statesDiff = goal.minus(currentState);
 		for (Exp exp : statesDiff) {
-			StripsState expState = new StripsState(exp);
+			State expState = new State(exp);
 			stack.push(new StackItem(expState));
 		}
 	}
 	
-	private void initializeStructures(StripsStack stack, StripsState currentState, ResultPlan currentPlan) {
+	private void initializeStructures(StripsStack stack, State currentState, ResultPlan currentPlan) {
 		this.stack = new StripsStack(stack);
-		this.currentState = new StripsState(currentState);
+		this.currentState = new State(currentState);
 		this.plan = new ResultPlan(currentPlan);
 	}
 
@@ -96,18 +96,18 @@ public class StripsAlgorithm extends Algorithm {
 	private boolean processStackItem(StackItem item){
 		boolean succeeded = true;
 		if(item.isActionType()) {
-			BindedStripsAction action = item.getAction();
+			BindedAction action = item.getAction();
 			currentState = action.applyTo(currentState);
 			plan.addNextStep(action);	//add action to plan
 			log();	//every action added to plan
 		} else {
-			StripsState s = item.getState();
+			State s = item.getState();
 			if(currentState.satisfies(s)){
 				return true;
 			}
 			if(!s.isAtomic()){	//break complex state into simple ones
-				StripsState[] states = s.breakIntoTerms();
-				for (StripsState st : states) {
+				State[] states = s.breakIntoTerms();
+				for (State st : states) {
 					stack.push(new StackItem(st));
 					log();	//every item added to stack
 				}
@@ -124,17 +124,17 @@ public class StripsAlgorithm extends Algorithm {
 	 */
 	private boolean processStateItem(AtomicState s) {
 		//find applicable action
-		Set<BindedStripsAction> applicableActions = StripsUtils.findApplicableActions(s, actions);
+		Set<BindedAction> applicableActions = StripsUtils.findApplicableActions(s, actions);
 		if(applicableActions.isEmpty()) return false;
 		
-		for (BindedStripsAction a : applicableActions) {
+		for (BindedAction a : applicableActions) {
 			a.fillFreeParameters(constants);
 		}
 		
-		List<BindedStripsAction> sortedApplicableActions = StripsUtils.sortActions(applicableActions, currentState, goal);
+		List<BindedAction> sortedApplicableActions = StripsUtils.sortActions(applicableActions, currentState, goal);
 		
 		//use every applicable actions
-		for (BindedStripsAction a : sortedApplicableActions) {
+		for (BindedAction a : sortedApplicableActions) {
 			//and now recursion
 			StripsAlgorithm inner = new StripsAlgorithm(this);
 			inner.prepareAction(a);
@@ -152,11 +152,11 @@ public class StripsAlgorithm extends Algorithm {
 		return true;
 	}
 	
-	private void prepareAction(BindedStripsAction actionToUse){		
+	private void prepareAction(BindedAction actionToUse){		
 		AtomicState[] preconditions = actionToUse.getBindedPreconditions();
 		
 		Exp joinedPreconditions = TermOperations.joinExprElements(preconditions);
-		StripsState joinedState = new StripsState(joinedPreconditions);
+		State joinedState = new State(joinedPreconditions);
 		
 		this.stack.push(new StackItem(actionToUse));
 		log();	//afer selected action pushed on stack

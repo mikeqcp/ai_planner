@@ -7,14 +7,14 @@ import planner.algorithm.Algorithm.AlgorithmType;
 import planner.algorithm.strips.StripsStack;
 import planner.model.ProcessLog;
 import planner.model.ResultPlan;
-import planner.model.StripsState;
+import planner.model.State;
 import planner.model.interfaces.PrintablePlan;
 import planner.model.interfaces.ProcessStateDump;
 
 public class StripsLogBuilder {
 	List<ProcessStateDump> stateHistory = new ArrayList<ProcessStateDump>();
 	
-	public void dump(StripsState currentState, StripsStack stack, ResultPlan currentPlan){
+	public void dump(State currentState, StripsStack stack, ResultPlan currentPlan){
 		StripsStateDump dump = new StripsStateDump();
 		
 		dump.setPlan(new ResultPlan(currentPlan));

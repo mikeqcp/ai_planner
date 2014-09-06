@@ -14,14 +14,14 @@ import pddl4j.exp.term.Constant;
 import pddl4j.exp.term.Term;
 import planner.algorithm.logic.TermOperations;
 import planner.model.Action;
-import planner.model.StripsState;
+import planner.model.State;
 
-public class BindedStripsAction extends Action {
+public class BindedAction extends Action {
 	private Random rand = new Random();
 	private ParameterBinding binding;
 	
 	
-	public BindedStripsAction(Action parent, ParameterBinding binding) {
+	public BindedAction(Action parent, ParameterBinding binding) {
 		super(parent.getAction());
 		this.binding = binding;
 	}
@@ -30,8 +30,8 @@ public class BindedStripsAction extends Action {
 	 * @param initial state
 	 * @return state after applying action (new object is created, old one is unchanged)
 	 */
-	public StripsState applyTo(StripsState srcState){
-		StripsState resultState = new StripsState(srcState);
+	public State applyTo(State srcState){
+		State resultState = new State(srcState);
 
 		AtomicState[] effects = getBindedEffects();
 		for (AtomicState effect : effects) {
@@ -55,7 +55,7 @@ public class BindedStripsAction extends Action {
 		
 		List<AtomicState> bindedStates = new ArrayList<AtomicState>();
 		for (Exp ex : postStates) {
-			StripsState exState = new StripsState(ex);
+			State exState = new State(ex);
 			AtomicState atomic = new AtomicState(exState);
 			
 			AtomicState binded = atomic.bind(this.binding);
@@ -76,7 +76,7 @@ public class BindedStripsAction extends Action {
 		
 		List<AtomicState> bindedStates = new ArrayList<AtomicState>();
 		for (Exp ex : preStates) {
-			StripsState exState = new StripsState(ex);
+			State exState = new State(ex);
 			AtomicState atomic = new AtomicState(exState);
 			
 			AtomicState binded = atomic.bind(this.binding);

@@ -5,26 +5,36 @@ import java.util.HashSet;
 import java.util.Set;
 
 import planner.algorithm.strips.AtomicState;
+import planner.model.Action;
+import planner.model.State;
 
 public class TreeNode {
-	private RegState state;
+	private State state;
 	private Set<AtomicState> atomicStates;
 	private Set<TreeLink> outcomingLinks;
-	private Set<TreeLink> incomingLinks;
+	private TreeLink incomingLink;
 	private Boolean consistent;
+	private int id;
 	
-	public TreeNode(RegState state) {
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public TreeNode(State state) {
 		this.state = state;
 		this.atomicStates = new HashSet<AtomicState>(Arrays.asList(state.breakIntoTerms()));
 		this.outcomingLinks = new HashSet<TreeLink>();
-		this.incomingLinks = new HashSet<TreeLink>();
 	}
 	
 	public TreeNode(TreeNode other) {
-		this.state = new RegState(other.state);
+		this.state = new State(other.state);
 		this.atomicStates = new HashSet<AtomicState>(other.atomicStates);
 		this.outcomingLinks = new HashSet<TreeLink>(other.outcomingLinks);
-		this.incomingLinks = new HashSet<TreeLink>(other.incomingLinks);
+		this.incomingLink = other.incomingLink;
 	}
 	
 	public boolean isConsistent(){
@@ -37,8 +47,12 @@ public class TreeNode {
 		return atomicStates;
 	}
 
-	public RegState getState() {
+	public State getState() {
 		return state;
+	}
+	
+	public TreeNode getParentNode(){
+		return incomingLink.getSourceNode();
 	}
 
 	/**
@@ -47,10 +61,20 @@ public class TreeNode {
 	 * @param target - target node
 	 * @return created link
 	 */
-	public TreeLink addLink(AtomicState src, TreeNode target){
-		TreeLink link = new TreeLink(this, src, target);
+	public TreeLink addLink(AtomicState src, TreeNode target, Action action){
+		TreeLink link = new TreeLink(this, src, action, target);
 		this.outcomingLinks.add(link);
-		target.incomingLinks.add(link);
+		target.incomingLink = link;
 		return link;
 	}
+
+	public Set<TreeLink> getOutcomingLinks() {
+		return outcomingLinks;
+	}
+
+	public TreeLink getIncomingLink() {
+		return incomingLink;
+	}
+	
+	
 }

@@ -1,13 +1,15 @@
 package planner.model;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import pddl4j.exp.AndExp;
 import pddl4j.exp.Exp;
 import pddl4j.exp.action.ActionDef;
 import planner.algorithm.logic.TermOperations;
 import planner.algorithm.strips.AtomicState;
-import planner.algorithm.strips.BindedStripsAction;
+import planner.algorithm.strips.BindedAction;
 import planner.algorithm.strips.ParameterBinding;
-import planner.model.Action;
 
 public class Action {	
 	protected pddl4j.exp.action.Action action;
@@ -21,10 +23,19 @@ public class Action {
 		return action;
 	}
 	
-	public BindedStripsAction bindParameters(ParameterBinding binding){
-		return new BindedStripsAction(this, binding);
+	public BindedAction bindParameters(ParameterBinding binding){
+		return new BindedAction(this, binding);
 	}
 
+	public AtomicState[] getPreconditions(){
+		Set<AtomicState> pre = new HashSet<AtomicState>();
+		for (Exp e : TermOperations.splitExprElements(action.getPrecondition())) {
+			AtomicState state = new State(e).toAtomic();
+			pre.add(state);
+		}
+		return pre.toArray(new AtomicState[0]);
+	}
+	
 	/**
 	 * @param s - target state
 	 * @return Parameters that allow achieve target state, null if there are none
@@ -39,8 +50,8 @@ public class Action {
 			allEffects = new Exp[] { effects };	//single effect
 		
 		for (Exp e : allEffects) {
-			StripsState state = new StripsState(e);
-			if (!(state.isAtomic())) continue; 	//dont check negation -> it mean that action removes that term
+			State state = new State(e);
+			if (!(state.isAtomic())) continue;
 			AtomicState atomic = state.toAtomic();
 			
 			if(atomic.isNegated()) return null;	//skip negations

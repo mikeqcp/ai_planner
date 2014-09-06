@@ -25,12 +25,16 @@ public class TermOperations {
 		return and;
 	}
 	
-	public static Exp[] splitExprElements(AndExp expr){
-		List<Exp> exprList = new ArrayList<Exp>();
-		Iterator<Exp> elementsIterator = expr.iterator();
-		while(elementsIterator.hasNext()){
-			exprList.add(elementsIterator.next());
+	public static Exp[] splitExprElements(Exp expr){
+		if(expr instanceof AndExp){
+			List<Exp> exprList = new ArrayList<Exp>();
+			Iterator<Exp> elementsIterator = ((AndExp)expr).iterator();
+			while(elementsIterator.hasNext()){
+				exprList.add(elementsIterator.next());
+			}
+			return exprList.toArray(new Exp[0]);
+		} else {
+			return new Exp[] {expr};
 		}
-		return exprList.toArray(new Exp[0]);
 	}
 }

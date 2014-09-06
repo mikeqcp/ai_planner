@@ -2,7 +2,7 @@ package planner.algorithm.strips.logs;
 
 import planner.algorithm.strips.StripsStack;
 import planner.model.ResultPlan;
-import planner.model.StripsState;
+import planner.model.State;
 import planner.model.interfaces.PrintablePlan;
 import planner.model.interfaces.PrintableState;
 import planner.model.interfaces.ProcessStateDump;
@@ -17,7 +17,7 @@ public class StripsStateDump implements ProcessStateDump {
 		this.stack = new PrintableStripsStack(stack);
 	}
 
-	public void setState(StripsState state) {
+	public void setState(State state) {
 		this.state = new PrintableStripsState(state);
 	}
 

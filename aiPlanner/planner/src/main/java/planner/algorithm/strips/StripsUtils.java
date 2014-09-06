@@ -8,16 +8,16 @@ import java.util.List;
 import java.util.Set;
 
 import planner.model.Action;
-import planner.model.StripsState;
+import planner.model.State;
 
 public class StripsUtils {
-	public static Set<BindedStripsAction> findApplicableActions(AtomicState state, Set<Action> availableActions){
-		Set<BindedStripsAction> applicableActions = new HashSet<BindedStripsAction>();
+	public static Set<BindedAction> findApplicableActions(AtomicState state, Set<Action> availableActions){
+		Set<BindedAction> applicableActions = new HashSet<BindedAction>();
 		
 		ParameterBinding b;
 		for (Action a : availableActions) {
 			if((b = a.bindToProduce(state)) != null){
-				BindedStripsAction action = a.bindParameters(b);
+				BindedAction action = a.bindParameters(b);
 				applicableActions.add(action);
 			}
 		}
@@ -29,12 +29,12 @@ public class StripsUtils {
 	 * @param actions - actions to sort
 	 * @param currentState	- current state
 	 */
-	public static List<BindedStripsAction> sortActions(Set<BindedStripsAction> actions, final StripsState currentState, final StripsState goal){
-		List<BindedStripsAction> actionList = new ArrayList<BindedStripsAction>(actions);
+	public static List<BindedAction> sortActions(Set<BindedAction> actions, final State currentState, final State goal){
+		List<BindedAction> actionList = new ArrayList<BindedAction>(actions);
 		
-		Collections.sort(actionList, new Comparator<BindedStripsAction>(){
+		Collections.sort(actionList, new Comparator<BindedAction>(){
 
-			public int compare(BindedStripsAction o1, BindedStripsAction o2) {
+			public int compare(BindedAction o1, BindedAction o2) {
 				int o1PreCount = getUnsatisfiedPreconditions(o1, currentState);
 				int o2PreCount = getUnsatisfiedPreconditions(o2, currentState);
 				
@@ -51,7 +51,7 @@ public class StripsUtils {
 		return actionList;
 	}
 	
-	private static int getUnsatisfiedPreconditions(BindedStripsAction a, StripsState s){
+	private static int getUnsatisfiedPreconditions(BindedAction a, State s){
 		int count = 0;
 		AtomicState[] pres = a.getBindedPreconditions();
 		for (AtomicState pre : pres) {
@@ -60,7 +60,7 @@ public class StripsUtils {
 		return count;
 	}
 	
-	private static int getUnsatisfiedEffects(BindedStripsAction a, StripsState goal){
+	private static int getUnsatisfiedEffects(BindedAction a, State goal){
 		int count = 0;
 		AtomicState[] effs = a.getBindedEffects();
 		for (AtomicState e : effs) {

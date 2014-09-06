@@ -1,18 +1,18 @@
 package planner.algorithm.strips;
 
-import planner.model.StripsState;
+import planner.model.State;
 
 
 public class StackItem {
-	private BindedStripsAction action = null;
-	private StripsState state = null;
+	private BindedAction action = null;
+	private State state = null;
 	
-	public StackItem(BindedStripsAction action) {
+	public StackItem(BindedAction action) {
 		super();
 		this.action = action;
 	}
 
-	public StackItem(StripsState state) {
+	public StackItem(State state) {
 		super();
 		this.state = state;
 	}
@@ -25,11 +25,11 @@ public class StackItem {
 		return this.state != null;
 	}
 
-	public BindedStripsAction getAction() {
+	public BindedAction getAction() {
 		return action;
 	}
 
-	public StripsState getState() {
+	public State getState() {
 		return state;
 	}
 	

@@ -1,12 +1,12 @@
 package planner.algorithm.strips.logs;
 
-import planner.model.StripsState;
+import planner.model.State;
 import planner.model.interfaces.PrintableState;
 
 public class PrintableStripsState implements PrintableState{
 	private String label;
 	
-	public PrintableStripsState(StripsState s) {
+	public PrintableStripsState(State s) {
 		label = s.toString();
 	}
 

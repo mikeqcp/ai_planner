@@ -15,14 +15,14 @@ import planner.algorithm.strips.AtomicState;
  * @author MichalP
  *State defined by STIPS-type expression
  */
-public class StripsState {	
+public class State {	
 	protected Exp state;
 
-	public StripsState(StripsState s) {
+	public State(State s) {
 		this(s.state);
 	}
 	
-	public StripsState(Exp state) {
+	public State(Exp state) {
 		this.state = state;
 	}
 	
@@ -30,7 +30,7 @@ public class StripsState {
 	 * @param states
 	 * Create state with states connected with AND operator
 	 */
-	public StripsState(Exp... states){
+	public State(Exp... states){
 		this.state = TermOperations.joinExprElements(states);
 	}
 
@@ -54,11 +54,11 @@ public class StripsState {
 		return new AtomicState(this);
 	}
 		
-	public boolean equals(StripsState s){
+	public boolean equals(State s){
 		return s.getState().equals(this.getState());
 	}
 	
-	public Exp[] minus(StripsState other){
+	public Exp[] minus(State other){
 		Exp[] thisExpr = getTerms();
 		Exp[] otherExpr = other.getTerms();
 		ArrayList<Exp> result = new ArrayList<Exp>();
@@ -77,7 +77,7 @@ public class StripsState {
 		return result.toArray(new Exp[0]);
 	}
 
-	public boolean satisfies(StripsState s){
+	public boolean satisfies(State s){
 		Exp[] terms = s.getTerms();
 		for (Exp exp : terms) {
 			if(!satisfiesTerm(exp)) return false;
@@ -97,19 +97,19 @@ public class StripsState {
 		Exp[] terms = getTerms();
 		AtomicState[] states = new AtomicState[terms.length];
 		for (int i = 0; i < terms.length; i++) {
-			states[i] = new StripsState(terms[i]).toAtomic();
+			states[i] = new State(terms[i]).toAtomic();
 		}
 		return states;
 	}
 
-	public StripsState addTerm(AtomicState s){
+	public State addTerm(AtomicState s){
 		if(containsTerm(s.getFormula())) return this;
 		
 		Exp[] terms = getTerms();
 		Exp[] updatedTerms = Arrays.copyOf(terms, terms.length + 1);
 		updatedTerms[updatedTerms.length - 1] = s.getFormula();
 		
-		return new StripsState(updatedTerms);
+		return new State(updatedTerms);
 	}
 	
 	private boolean containsTerm(Exp target){
@@ -120,7 +120,7 @@ public class StripsState {
 		return false;
 	}
 	
-	public StripsState removeTerm(AtomicState s){
+	public State removeTerm(AtomicState s){
 		Exp[] terms = getTerms();
 		List<Exp> updatedTerms = new ArrayList<Exp>();
 		for (Exp t : terms) {
@@ -129,11 +129,15 @@ public class StripsState {
 			updatedTerms.add(t);
 		}
 		
-		return new StripsState(updatedTerms.toArray(new Exp[0]));
+		return new State(updatedTerms.toArray(new Exp[0]));
 	}
 	
 	@Override
 	public String toString() {
 		return state.toString();
+	}
+	
+	public boolean isConsistent(){
+		return true;
 	}
 }
