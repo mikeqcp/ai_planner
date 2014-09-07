@@ -15,10 +15,13 @@ import planner.model.ResultPlan;
 public abstract class Algorithm {
 	public static enum AlgorithmType {STRIPS, REGRESSION};
 	protected PDDLObject originalData;
+	protected Set<Constant> constants;
+	protected Set<Constraint> constraints;
+	protected Set<Action> actions;
 	
 	public Algorithm(PDDLObject input) {
 		this.originalData = input;
-		getInstanceConstraints();
+		this.constraints = produceInstanceConstraints();
 	}
 	
 	abstract public ResultPlan solve();
@@ -31,7 +34,7 @@ public abstract class Algorithm {
 		return null;
 	}
 	
-	protected Set<Constant> getInstanceConstants(){
+	protected Set<Constant> produceInstanceConstants(){
 		Set<Constant> constants = new HashSet<Constant>();
 		
 		Iterator<Constant> iter = originalData.constantsIterator();
@@ -41,7 +44,7 @@ public abstract class Algorithm {
 		return constants;
 	}
 	
-	public Set<Action> getInstanceActions(){
+	public Set<Action> produceInstanceActions(){
 		Iterator<ActionDef> actionsIterator = originalData.actionsIterator(); 
 		Set<Action> actionSet = new HashSet<Action>();
 		while(actionsIterator.hasNext()){
@@ -52,7 +55,7 @@ public abstract class Algorithm {
 		return actionSet;
 	}
 	
-	protected Set<Constraint> getInstanceConstraints(){
+	protected Set<Constraint> produceInstanceConstraints(){
 		Set<Constraint> constraints = new HashSet<Constraint>();
 		Iterator<ActionDef> actionsIterator = originalData.actionsIterator();	//exract from fake actions
 		
@@ -65,4 +68,18 @@ public abstract class Algorithm {
 		}
 		return constraints;
 	}
+
+	public Set<Constant> getConstants() {
+		return constants;
+	}
+
+	public Set<Constraint> getConstraints() {
+		return constraints;
+	}
+
+	public Set<Action> getActions() {
+		return actions;
+	}
+
+	
 }

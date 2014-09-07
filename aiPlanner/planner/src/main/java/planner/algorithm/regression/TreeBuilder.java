@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+import planner.algorithm.Algorithm;
 import planner.algorithm.strips.AtomicState;
 import planner.algorithm.strips.BindedAction;
 import planner.algorithm.strips.StripsUtils;
@@ -14,10 +15,11 @@ public class TreeBuilder {
 //	private RegTree tree;
 	private WalkQueue queue;
 	private Set<Action> actions = new HashSet<Action>();
+	private Algorithm parent;
 	
-	public TreeBuilder(RegTree tree, State initial) {
-//		this.tree = tree;
+	public TreeBuilder(RegTree tree, State initial, Algorithm parent) {
 		this.queue = new WalkQueue(tree.getRoot(), initial);
+		this.parent = parent;
 	}
 
 	public WalkQueue getWalker() {
@@ -53,7 +55,7 @@ public class TreeBuilder {
 	private Collection<TreeNode> generateNodesForState(AtomicState srcState, TreeNode parentNode){
 		Set<TreeNode> nodes = new HashSet<TreeNode>();
 		
-		Set<BindedAction> applicable = StripsUtils.findApplicableActions(srcState, actions);
+		Set<BindedAction> applicable = StripsUtils.findApplicableActions(srcState, actions, parent.getConstants());
 		for (BindedAction action : applicable) {
 			TreeNode newNode = generateNewState(parentNode.getState(), action, srcState);
 			parentNode.addLink(srcState, newNode, action);
@@ -67,7 +69,11 @@ public class TreeBuilder {
 		AtomicState[] effects = action.getBindedEffects();
 		
 		State generatedState = new State(oldState);
-		generatedState = generatedState.removeTerm(srcState);
+		
+		for (AtomicState s : effects) {
+			generatedState = generatedState.removeTerm(s);
+		}
+		
 		for (AtomicState s : preconditions) {
 			generatedState = generatedState.addTerm(s);
 		}

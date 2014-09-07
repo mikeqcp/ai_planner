@@ -7,17 +7,19 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import pddl4j.exp.term.Constant;
 import planner.model.Action;
 import planner.model.State;
 
 public class StripsUtils {
-	public static Set<BindedAction> findApplicableActions(AtomicState state, Set<Action> availableActions){
+	public static Set<BindedAction> findApplicableActions(AtomicState state, Set<Action> availableActions, Set<Constant> constants){
 		Set<BindedAction> applicableActions = new HashSet<BindedAction>();
 		
 		ParameterBinding b;
 		for (Action a : availableActions) {
 			if((b = a.bindToProduce(state)) != null){
 				BindedAction action = a.bindParameters(b);
+				action.fillFreeParameters(constants);
 				applicableActions.add(action);
 			}
 		}

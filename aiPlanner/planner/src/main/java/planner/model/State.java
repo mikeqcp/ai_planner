@@ -54,10 +54,7 @@ public class State {
 		return new AtomicState(this);
 	}
 		
-	public boolean equals(State s){
-		return s.getState().equals(this.getState());
-	}
-	
+
 	public Exp[] minus(State other){
 		Exp[] thisExpr = getTerms();
 		Exp[] otherExpr = other.getTerms();
@@ -77,6 +74,19 @@ public class State {
 		return result.toArray(new Exp[0]);
 	}
 
+	/**
+	 * @param s
+	 * @return True if has exactly the same terms like s
+	 */
+	public boolean equals(State s){
+		return satisfies(s) && 
+				(s.getTerms().length == this.getTerms().length);
+	}
+	
+	/**
+	 * @param s
+	 * @return True if satisfied all terms from s
+	 */
 	public boolean satisfies(State s){
 		Exp[] terms = s.getTerms();
 		for (Exp exp : terms) {

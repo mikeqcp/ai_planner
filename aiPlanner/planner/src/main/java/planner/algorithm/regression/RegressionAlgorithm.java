@@ -22,11 +22,8 @@ import planner.model.State;
 public class RegressionAlgorithm extends Algorithm {
 	private State initialState;
 	private State currentState;
-	private Set<Action> actions;
 	private State goal;
 	private ResultPlan plan;
-	private Set<Constant> constants;
-	private Set<Constraint> constraints;
 	private RegressionLogBuilder logBuilder;
 	
 	private RegTree tree;
@@ -44,20 +41,20 @@ public class RegressionAlgorithm extends Algorithm {
 
 	private void initializeProblemData(PDDLObject input) {
 		this.goal = new State(input.getGoal());
-		this.constants = getInstanceConstants();
+		this.constants = produceInstanceConstants();
 
 		Exp[] initialExp = input.getInit().toArray(new Exp[0]);
 		this.initialState = new State(
 				TermOperations.joinExprElements(initialExp));
 
-		this.actions = getInstanceActions();
-		this.constraints = getInstanceConstraints();
+		this.actions = produceInstanceActions();
+		this.constraints = produceInstanceConstraints();
 	}
 	
 	private void initializeStructures() {
 		plan = new ResultPlan();
 		tree = new RegTree(goal);
-		builder = new TreeBuilder(tree, goal);
+		builder = new TreeBuilder(tree, goal, this);
 		builder.setActions(this.actions);
 		walker = builder.getWalker();
 	}
@@ -80,7 +77,7 @@ public class RegressionAlgorithm extends Algorithm {
 			if(!node.isConsistent()) continue;
 			
 			State nodeState = node.getState();
-			if(nodeState.satisfies(initialState)) 
+			if(nodeState.equals(initialState)) 
 				return tree.findPlanForNode(node);	//final plan
 			
 			builder.generateNextLevel(node);

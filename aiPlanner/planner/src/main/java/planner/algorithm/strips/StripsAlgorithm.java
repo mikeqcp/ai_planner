@@ -40,13 +40,13 @@ public class StripsAlgorithm extends Algorithm {
 
 	private void initializeProblemData(PDDLObject input) {
 		this.goal = new State(input.getGoal());
-		this.constants = getInstanceConstants();
+		this.constants = produceInstanceConstants();
 
 		Exp[] initialExp = input.getInit().toArray(new Exp[0]);
 		this.initialState = new State(
 				TermOperations.joinExprElements(initialExp));
 
-		this.actions = getInstanceActions();
+		this.actions = produceInstanceActions();
 	}
 	
 	private void initializeStructures() {
@@ -124,12 +124,9 @@ public class StripsAlgorithm extends Algorithm {
 	 */
 	private boolean processStateItem(AtomicState s) {
 		//find applicable action
-		Set<BindedAction> applicableActions = StripsUtils.findApplicableActions(s, actions);
+		Set<BindedAction> applicableActions = StripsUtils.findApplicableActions(s, actions, constants);
 		if(applicableActions.isEmpty()) return false;
-		
-		for (BindedAction a : applicableActions) {
-			a.fillFreeParameters(constants);
-		}
+
 		
 		List<BindedAction> sortedApplicableActions = StripsUtils.sortActions(applicableActions, currentState, goal);
 		
