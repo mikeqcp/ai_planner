@@ -10,18 +10,64 @@ angular.module('visualiserApp')
 			step: '='
 
 		link: (scope, elem) ->
-#			createDOM = (stack) ->
-#				dom = $('<div></div>').addClass('stack')
-#				$.each stack, (k,v) ->
-#					dom.prepend $('<div></div>').append(v.label).addClass('stack-item')
-#				dom
-#
-			refreshTree = () ->
-#				scope.currentStepState = scope.result.stateHistory[scope.step]
-#				currentStepStackDOM = createDOM(scope.currentStepState.structure.stack)
-#				elem.find('#stack-container').empty().append currentStepStackDOM
+			plumbInstance = null
 
-			scope.$watch 'result', (res) ->
+			createDOM = (node) ->
+				dom = $('<div></div>').addClass('node')
+
+				if not node.valid then dom.addClass 'invalid'
+
+				$.each node.items, (k,v) ->
+					dom.append $('<div></div>').append(v.label).addClass('node-state')
+				dom
+
+			drawNode = (node) ->
+				currentStepNode = createDOM node
+				elem.find('#tree-container').append currentStepNode
+
+				node.items.forEach (i) ->
+					i.children.forEach (c) ->
+						childNode = drawNode c
+						drawLink currentStepNode, childNode, c.parentAction
+				return currentStepNode
+
+			initLinks = () ->
+				plumbInstance = jsPlumb.getInstance({
+					Endpoint : ["Dot", {radius:2}],
+					HoverPaintStyle : {strokeStyle:"#1e8151", lineWidth:2 },
+					ConnectionOverlays : [
+						[ "Arrow", {
+							location:1,
+							id:"arrow",
+							length:14,
+							foldback:0.8
+						} ],
+						[ "Label", { id:"label", cssClass:"aLabel" }]
+					],
+					Container:"tree-container"
+				});
+
+			refreshLinks = () ->
+				boxes = jsPlumb.getSelector("#tree-container .node");
+				plumbInstance.draggable(boxes);
+
+				$(boxes).one 'mousedown', () ->
+					$(this).css 'position', 'absolute'
+
+			drawLink = (nodeParent, nodeChild, label) ->
+				link = plumbInstance.connect {source: nodeParent, target: nodeChild}
+				link.setLabel label
+
+
+
+			refreshTree = () ->
+				elem.find('#tree-container').empty()
+				scope.currentStepState = scope.result.stateHistory[scope.step]
+				drawNode scope.currentStepState.structure.root
+				refreshLinks()
+
+			scope.$watch 'result', () ->
 				refreshTree()
 
 			scope.$watch 'step', refreshTree
+			initLinks()

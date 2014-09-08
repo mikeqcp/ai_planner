@@ -42,5 +42,21 @@
 	  border-bottom-width: 2px;
 	}
   }
+
+  //REGRESSION
+  .node {
+	width: auto;
+	position: relative;
+	display: inline-block;
+	margin: 10px;
+
+	&.invalid .node-state {background-color: rgb(255, 192, 192)}
+
+	.node-state {
+	  border: 1px solid;
+	  margin: -1px -6px;
+	  padding: 2px;
+	}
+  }
 }
 
