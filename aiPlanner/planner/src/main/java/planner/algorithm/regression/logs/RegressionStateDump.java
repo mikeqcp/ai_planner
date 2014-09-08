@@ -39,12 +39,12 @@ public class RegressionStateDump implements ProcessStateDump {
 		return new PrintablePlan() {
 			
 			public String getLabel() {
-				return plan.toString();
+				return "";
 			}
 			
 			@Override
 			public String toString() {
-				return getLabel();
+				return "";
 			}
 		};
 	}

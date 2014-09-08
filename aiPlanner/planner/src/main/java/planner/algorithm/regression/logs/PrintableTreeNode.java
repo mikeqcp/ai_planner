@@ -9,9 +9,11 @@ public class PrintableTreeNode {
 	private String id;
 	private Collection<PrintableNodeState> items;
 	private TreeNode contextNode;
+	private String parentAction;
 	
-	public PrintableTreeNode(TreeNode node) {
+	public PrintableTreeNode(TreeNode node, String parentAction) {
 		this.contextNode = node;
+		this.parentAction = parentAction;
 		items = new HashSet<PrintableNodeState>();
 	}
 
@@ -30,4 +32,10 @@ public class PrintableTreeNode {
 	public boolean isValid(){
 		return contextNode.isConsistent();
 	}
+
+	public String getParentAction() {
+		return parentAction;
+	}
+	
+	
 }

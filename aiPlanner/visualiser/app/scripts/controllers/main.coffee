@@ -4,7 +4,7 @@ angular.module('visualiserApp')
 .controller 'MainCtrl', ($scope, $http, $log) ->
 		$scope.algorithms = [
 			{id:'strips', label:'STRIPS'},
-			{id:'opRegression', label:'Operator Regression'},
+			{id:'regression', label:'Regression'},
 			{id:'pop', label:'POP'}
 		]
 		$scope.selectedAlgorithm = $scope.algorithms[0]
@@ -21,6 +21,7 @@ angular.module('visualiserApp')
 		$scope.toggleProblem = () ->
 			$('.problem').slideToggle(400)
 			$('.toggle-problem').toggleClass('glyphicon-minus glyphicon-plus')
+			return
 
 		$scope.solve = () ->
 			data =
@@ -30,6 +31,7 @@ angular.module('visualiserApp')
 
 			$http.post("http://127.0.0.1:8085/planner/solve", $.param data)
 			.then (d) ->
+				console.log 'Algorithm result', d.data
 				$scope.result = d.data
 				$scope.toggleProblem()
 			.catch (e) ->

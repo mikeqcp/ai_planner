@@ -53,7 +53,7 @@ public class TreeNode {
 	 * Return previously computed value
 	 */
 	public boolean isConsistent(){
-		return consistent;
+		return consistent!= null ? consistent : true;
 	}
 	
 	public Set<AtomicState> getAtomicStates() {

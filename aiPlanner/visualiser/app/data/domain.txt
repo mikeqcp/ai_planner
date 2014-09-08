@@ -1,5 +1,5 @@
 (define (domain blocksworld)
-  (:requirements :strips)
+  (:requirements :strips :disjunctive-preconditions :negative-preconditions)
 (:predicates (clear ?x)
              (on-table ?x)
              (arm-empty)
@@ -29,3 +29,5 @@
   :precondition (and (on ?ob ?underob) (clear ?ob) (arm-empty))
   :effect (and (holding ?ob) (clear ?underob)
                (not (on ?ob ?underob)) (not (clear ?ob)) (not (arm-empty)))))
+
+(:safety (forall(?x) (or (and (not(arm-empty)) (holding ?x)) (not(holding ?x)))))
