@@ -8,25 +8,41 @@ import planner.algorithm.regression.RegTree;
 import planner.model.ProcessLog;
 import planner.model.ResultPlan;
 import planner.model.State;
+import planner.model.interfaces.PrintablePlan;
 import planner.model.interfaces.ProcessStateDump;
 
 public class RegressionLogBuilder {
 	List<ProcessStateDump> stateHistory = new ArrayList<ProcessStateDump>();
+	private ResultPlan finalPlan;
 	
-	public void dump(State currentState, RegTree tree, ResultPlan currentPlan){
-//		System.out.println("Log: " + currentState);
+	public void setResultPlan(ResultPlan plan){
+		this.finalPlan = plan;
+	}
+	
+	public void dump(RegTree tree){
 		
-//		RegStateDump dump = new StripsStateDump();
-//		
-//		dump.setPlan(new ResultPlan(currentPlan));
-//		dump.setStack(new StripsStack(stack));
-//		dump.setState(currentState);
-//		
-//		stateHistory.add(dump);
+		RegressionStateDump dump = new RegressionStateDump();
+		dump.setTree(tree);
+
+		stateHistory.add(dump);
+	}
+	
+	private PrintablePlan getPrintablePlan() {
+		return new PrintablePlan() {
+
+			public String getLabel() {
+				return finalPlan.toString();
+			}
+
+			@Override
+			public String toString() {
+				return getLabel();
+			}
+		};
 	}
 	
 	public ProcessLog getProcessLog(){
-		ProcessLog log = new ProcessLog(null, null);
+		ProcessLog log = new ProcessLog(stateHistory, getPrintablePlan());
 		log.setType(AlgorithmType.REGRESSION);
 		return log;
 	}

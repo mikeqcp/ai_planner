@@ -57,6 +57,8 @@ public class RegressionAlgorithm extends Algorithm {
 		
 		System.out.println(finalPlan);
 		
+		logFinalPlan(finalPlan);
+		
 		return finalPlan;
 	}
 	
@@ -81,7 +83,12 @@ public class RegressionAlgorithm extends Algorithm {
 	
 	private void log(){
 		if(logBuilder == null) return;
-		logBuilder.dump(this.currentState, this.tree, this.plan);
+		logBuilder.dump(this.tree);
+	}
+	
+	private void logFinalPlan(ResultPlan plan){
+		if(logBuilder == null) return;
+		logBuilder.setResultPlan(plan);
 	}
 
 	@Override

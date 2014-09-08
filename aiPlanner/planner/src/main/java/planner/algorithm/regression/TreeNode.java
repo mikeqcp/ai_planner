@@ -1,6 +1,7 @@
 package planner.algorithm.regression;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -39,9 +40,19 @@ public class TreeNode {
 		this.incomingLink = other.incomingLink;
 	}
 	
+	/**
+	 * Check if is consistent
+	 */
 	public boolean isConsistent(Set<Constraint> constraints, Set<Constant> paramValues){
 		if(consistent == null)
 			consistent = state.isConsistent(constraints, paramValues);
+		return consistent;
+	}
+	
+	/**
+	 * Return previously computed value
+	 */
+	public boolean isConsistent(){
 		return consistent;
 	}
 	
@@ -76,6 +87,24 @@ public class TreeNode {
 
 	public TreeLink getIncomingLink() {
 		return incomingLink;
+	}
+	
+	public TreeLink[] getLinksFromState(AtomicState s){
+		Collection<TreeLink> links = new HashSet<TreeLink>();
+		for (TreeLink l : getOutcomingLinks()) {
+			if(l.getSourceState() == s)
+				links.add(l);
+		}
+		return links.toArray(new TreeLink[0]);
+	}
+	
+	public TreeNode[] getChildrenFromState(AtomicState s){
+		TreeLink[] links = getLinksFromState(s);
+		Collection<TreeNode> children = new HashSet<TreeNode>();
+		for (TreeLink link : links) {
+			children.add(link.getTargetNode());
+		}
+		return children.toArray(new TreeNode[0]);
 	}
 	
 	@Override
