@@ -72,6 +72,8 @@ public class PddlParser {
 	private PDDLObject parseFiles(String[] files) throws FileNotFoundException {
 		Properties options = new Properties();
 		options.put(RequireKey.STRIPS, true);
+		options.put(RequireKey.NEGATIVE_PRECONDITIONS, true);
+		options.put(RequireKey.DISJUNCTIVE_PRECONDITIONS, true);
 
 		// Creates an instance of the java pddl parser
 		Parser parser = new Parser(options);

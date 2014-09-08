@@ -6,6 +6,7 @@ import java.util.Iterator;
 import pddl4j.exp.AtomicFormula;
 import pddl4j.exp.Exp;
 import pddl4j.exp.NotAtomicFormula;
+import pddl4j.exp.NotExp;
 import pddl4j.exp.term.Constant;
 import pddl4j.exp.term.Substitution;
 import pddl4j.exp.term.Term;
@@ -30,14 +31,20 @@ public class AtomicState extends State {
 	}
 	
 	public AtomicState(State state) {
-		if(state instanceof AtomicState)
+		if(state instanceof AtomicState){
 			this.state = ((AtomicState)state).state;
+			this.negation = ((AtomicState)state).negation;
+		}
 		
 		if(state.isAtomic()){
 			if(state.getState() instanceof AtomicFormula)
 				this.state = (AtomicFormula)state.getState();
 			if(state.getState() instanceof NotAtomicFormula){
 				this.state = ((NotAtomicFormula)state.getState()).getExp();
+				this.negation = true;
+			}
+			if(state.getState() instanceof NotExp){
+				this.state = (AtomicFormula)(((NotExp)state.getState()).getExp());
 				this.negation = true;
 			}
 		}
@@ -118,6 +125,7 @@ public class AtomicState extends State {
 	
 	@Override
 	public String toString() {
-		return this.state.toString();
+		String negation = isNegated() ? "not " : "";
+		return negation + this.state.toString();
 	}
 }

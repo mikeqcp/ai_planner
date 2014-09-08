@@ -3,11 +3,14 @@ package planner.model;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 import pddl4j.exp.AndExp;
 import pddl4j.exp.AtomicFormula;
 import pddl4j.exp.Exp;
 import pddl4j.exp.NotAtomicFormula;
+import pddl4j.exp.NotExp;
+import pddl4j.exp.term.Constant;
 import planner.algorithm.logic.TermOperations;
 import planner.algorithm.strips.AtomicState;
 
@@ -46,8 +49,9 @@ public class State {
 	}
 	
 	public boolean isAtomic() {
-		return (state instanceof AtomicFormula) || (state instanceof NotAtomicFormula);
-	}	
+		return (state instanceof AtomicFormula) || (state instanceof NotAtomicFormula) ||
+				(state instanceof NotExp && ((NotExp)state).getExp() instanceof AtomicFormula);
+	}
 
 	public AtomicState toAtomic(){
 		if(!isAtomic()) return null;
@@ -103,7 +107,7 @@ public class State {
 		return false;
 	}
 	
-	public AtomicState[] breakIntoTerms(){
+	public AtomicState[] breakIntoAtomic(){
 		Exp[] terms = getTerms();
 		AtomicState[] states = new AtomicState[terms.length];
 		for (int i = 0; i < terms.length; i++) {
@@ -142,12 +146,59 @@ public class State {
 		return new State(updatedTerms.toArray(new Exp[0]));
 	}
 	
+	/**
+	 * Evaluated expression, created from array elements joined with AND operator
+	 * @param expr
+	 * @return TRUE - if both are true or both are false, FALSE -otherwise
+	 */
+	public boolean evaluateAndExpression(AtomicState[] expr){
+		boolean[] vals = new boolean[expr.length];
+		for (int i = 0; i < expr.length; i++) {
+			AtomicState e = expr[i];
+			vals[i] = this.satisfies(e);
+			if(e.isNegated()) vals[i] = !vals[i];
+		}
+		
+		boolean startVal = vals[0];
+		for (boolean v : vals) {
+			if(v != startVal) return false;
+		}
+		
+		return true;
+	}
+	
+	/**
+	 * Evaluated expression, created from array elements joined with OR operator
+	 * @param expr
+	 * @return TRUE - if at least one element is true
+	 */
+	public boolean evaluateOrExpression(AtomicState[] expr){
+		boolean val;
+		for (int i = 0; i < expr.length; i++) {
+			AtomicState e = expr[i];
+			val = this.satisfies(e);
+			if(e.isNegated()) val = !val;
+			
+			if(val) return true;	//at least one is true
+		}
+		
+		return false;
+	}
+	
+	public State getConjunctiveNormalForm(){
+		AndExp conjFormExpr = (AndExp)this.state.toConjunctiveNormalForm();
+		return new State(conjFormExpr);
+	}
+	
 	@Override
 	public String toString() {
 		return state.toString();
 	}
 	
-	public boolean isConsistent(){
+	public boolean isConsistent(Set<Constraint> constraints, Set<Constant> paramValues){
+		for (Constraint c : constraints) {
+			if(!c.isSatisfiedIn(this, paramValues)) return false;
+		}
 		return true;
 	}
 }

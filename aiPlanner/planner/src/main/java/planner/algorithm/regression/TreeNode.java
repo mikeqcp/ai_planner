@@ -4,8 +4,10 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+import pddl4j.exp.term.Constant;
 import planner.algorithm.strips.AtomicState;
 import planner.model.Action;
+import planner.model.Constraint;
 import planner.model.State;
 
 public class TreeNode {
@@ -26,7 +28,7 @@ public class TreeNode {
 
 	public TreeNode(State state) {
 		this.state = state;
-		this.atomicStates = new HashSet<AtomicState>(Arrays.asList(state.breakIntoTerms()));
+		this.atomicStates = new HashSet<AtomicState>(Arrays.asList(state.breakIntoAtomic()));
 		this.outcomingLinks = new HashSet<TreeLink>();
 	}
 	
@@ -37,9 +39,9 @@ public class TreeNode {
 		this.incomingLink = other.incomingLink;
 	}
 	
-	public boolean isConsistent(){
+	public boolean isConsistent(Set<Constraint> constraints, Set<Constant> paramValues){
 		if(consistent == null)
-			consistent = state.isConsistent();
+			consistent = state.isConsistent(constraints, paramValues);
 		return consistent;
 	}
 	
@@ -76,5 +78,8 @@ public class TreeNode {
 		return incomingLink;
 	}
 	
-	
+	@Override
+	public String toString() {
+		return state.toString();
+	}
 }

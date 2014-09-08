@@ -17,8 +17,8 @@ public class ConstraintParser {
 		String name = "fake_constraint_" + counter++;
 		return "(:action " + name + " \n"
 				+ ":parameters (" + params + "\n"
-				+ ":precondition ()\n"
-				+ ":effect " + constraint + ")))\n";
+				+ ":precondition " + constraint +  "\n"
+				+ ":effect " + "(arm-empty)" + ")\n";
 	}
 	
 	
@@ -31,7 +31,7 @@ public class ConstraintParser {
 			char c = input.charAt(i++);
 			
 			values[0] += c;
-			if(bracketsOpened >= 3 && fullfilled == 1)			
+			if(bracketsOpened >= 3 && fullfilled >= 1)			
 				values[1] += c;
 			
 			if(bracketsOpened ==3 && fullfilled == 0)			

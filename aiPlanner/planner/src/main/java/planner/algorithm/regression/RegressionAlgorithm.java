@@ -1,20 +1,10 @@
 package planner.algorithm.regression;
 
-import java.util.List;
-import java.util.Set;
-
 import pddl4j.PDDLObject;
 import pddl4j.exp.Exp;
-import pddl4j.exp.term.Constant;
 import planner.algorithm.Algorithm;
 import planner.algorithm.logic.TermOperations;
 import planner.algorithm.regression.logs.RegressionLogBuilder;
-import planner.algorithm.strips.AtomicState;
-import planner.algorithm.strips.BindedAction;
-import planner.algorithm.strips.StackItem;
-import planner.algorithm.strips.StripsUtils;
-import planner.model.Action;
-import planner.model.Constraint;
 import planner.model.ProcessLog;
 import planner.model.ResultPlan;
 import planner.model.State;
@@ -74,7 +64,7 @@ public class RegressionAlgorithm extends Algorithm {
 		while(walker.hasNodesToVisit()){
 			TreeNode node = walker.getNextNode();
 			
-			if(!node.isConsistent()) continue;
+			if(!node.isConsistent(constraints, constants)) continue;
 			
 			State nodeState = node.getState();
 			if(nodeState.equals(initialState)) 

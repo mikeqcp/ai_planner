@@ -106,7 +106,7 @@ public class StripsAlgorithm extends Algorithm {
 				return true;
 			}
 			if(!s.isAtomic()){	//break complex state into simple ones
-				State[] states = s.breakIntoTerms();
+				State[] states = s.breakIntoAtomic();
 				for (State st : states) {
 					stack.push(new StackItem(st));
 					log();	//every item added to stack
