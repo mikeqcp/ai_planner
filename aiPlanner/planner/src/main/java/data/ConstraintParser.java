@@ -22,7 +22,7 @@ public class ConstraintParser {
 	}
 	
 	
-	private String[] getConstraintValue(int startInd){	
+	private String[] getConstraintValue(String input, int startInd){	
 		String[] values = new String[] {"(", "(", ""};
 		int i = startInd + 1;
 		int bracketsOpened = 1;
@@ -55,7 +55,7 @@ public class ConstraintParser {
 			int pos = parsed.indexOf(safetyStr);
 			if(pos < 0) break;
 			
-			String[] oldValues = getConstraintValue(pos);
+			String[] oldValues = getConstraintValue(parsed, pos);
 			String newValue = insertFakeAction(oldValues[1], oldValues[2]);
 			parsed = parsed.replace(oldValues[0], newValue);
 		}
