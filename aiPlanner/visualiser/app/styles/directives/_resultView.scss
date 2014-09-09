@@ -51,6 +51,7 @@
 	margin: 10px;
 
 	&.invalid .node-state {background-color: rgb(255, 192, 192)}
+	&.plan-node .node-state {background-color: darkseagreen}
 
 	.node-state {
 	  border: 1px solid;
@@ -59,4 +60,10 @@
 	}
   }
 }
+
+._jsPlumb_connector > path {
+  stroke: #1e8151 ;
+  stroke-width: 2 ;
+}
+
 

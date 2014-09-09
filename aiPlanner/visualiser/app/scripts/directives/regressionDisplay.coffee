@@ -16,6 +16,10 @@ angular.module('visualiserApp')
 				dom = $('<div></div>').addClass('node')
 
 				if not node.valid then dom.addClass 'invalid'
+				if ($.inArray node.id, scope.result.resultPlan.planIds) >= 0
+					dom.addClass 'plan-node'
+				else
+					dom.removeClass 'plan-node'
 
 				$.each node.items, (k,v) ->
 					dom.append $('<div></div>').append(v.label).addClass('node-state')
@@ -40,11 +44,9 @@ angular.module('visualiserApp')
 							location:1,
 							id:"arrow",
 							length:14,
-							foldback:0.8
-						} ],
-						[ "Label", { id:"label", cssClass:"aLabel" }]
-					],
-					Container:"tree-container"
+							foldback:0.8,
+						}]
+						]
 				});
 
 			refreshLinks = () ->
@@ -61,6 +63,11 @@ angular.module('visualiserApp')
 
 
 			refreshTree = () ->
+				$('._jsPlumb_endpoint').remove()
+				$('._jsPlumb_connector').remove()
+				$('._jsPlumb_overlay').remove()
+				$('._jsPlumb_endpoint').remove()
+
 				elem.find('#tree-container').empty()
 				scope.currentStepState = scope.result.stateHistory[scope.step]
 				drawNode scope.currentStepState.structure.root

@@ -30,6 +30,10 @@ public class RegressionLogBuilder {
 	private PrintablePlan getPrintablePlan() {
 		return new PrintablePlan() {
 
+			public Integer[] getPlanIds() {
+				return finalPlan.getPlanIds();
+			}
+			
 			public String getLabel() {
 				return finalPlan.toString();
 			}

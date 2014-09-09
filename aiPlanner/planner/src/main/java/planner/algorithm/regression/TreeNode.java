@@ -18,6 +18,7 @@ public class TreeNode {
 	private TreeLink incomingLink;
 	private Boolean consistent;
 	private int id;
+	private boolean mark = false;
 	
 	public int getId() {
 		return id;
@@ -25,6 +26,15 @@ public class TreeNode {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+	
+
+	public void setMark(boolean mark) {
+		this.mark = mark;
+	}
+
+	public boolean isMarked() {
+		return mark;
 	}
 
 	public TreeNode(State state) {
@@ -38,6 +48,7 @@ public class TreeNode {
 		this.atomicStates = new HashSet<AtomicState>(other.atomicStates);
 		this.outcomingLinks = new HashSet<TreeLink>(other.outcomingLinks);
 		this.incomingLink = other.incomingLink;
+		this.id = other.id;
 	}
 	
 	/**

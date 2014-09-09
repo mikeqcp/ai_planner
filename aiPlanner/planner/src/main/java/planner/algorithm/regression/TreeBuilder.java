@@ -16,10 +16,12 @@ public class TreeBuilder {
 	private WalkQueue queue;
 	private Set<Action> actions = new HashSet<Action>();
 	private Algorithm parent;
+	private int nextNodeId = 0;
 	
 	public TreeBuilder(RegTree tree, State initial, Algorithm parent) {
 		this.queue = new WalkQueue(tree.getRoot(), initial);
 		this.parent = parent;
+		tree.getRoot().setId(nextNodeId++);
 	}
 
 	public WalkQueue getWalker() {
@@ -77,6 +79,8 @@ public class TreeBuilder {
 		for (AtomicState s : preconditions) {
 			generatedState = generatedState.addTerm(s);
 		}
-		return new TreeNode(generatedState);
+		TreeNode newNode = new TreeNode(generatedState);
+		newNode.setId(nextNodeId++);
+		return newNode;
 	}
 }

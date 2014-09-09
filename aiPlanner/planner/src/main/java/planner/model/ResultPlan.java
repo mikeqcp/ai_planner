@@ -5,6 +5,7 @@ import java.util.List;
 
 public class ResultPlan{
 	private List<Action> plan;
+	private Integer[] planIds;
 
 	public ResultPlan() {
 		this.plan = new ArrayList<Action>();
@@ -38,4 +39,14 @@ public class ResultPlan{
 		int endIndex = planString.length() - 4;
 		return planString.substring(0, endIndex >=0 ? endIndex : 0 );
 	}
+
+	public Integer[] getPlanIds() {
+		return planIds;
+	}
+
+	public void setPlanIds(Integer[] planIds) {
+		this.planIds = planIds;
+	}
+	
+	
 }

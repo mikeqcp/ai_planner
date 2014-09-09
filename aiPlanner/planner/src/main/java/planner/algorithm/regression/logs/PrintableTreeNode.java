@@ -6,7 +6,7 @@ import java.util.HashSet;
 import planner.algorithm.regression.TreeNode;
 
 public class PrintableTreeNode {
-	private String id;
+	private int id;
 	private Collection<PrintableNodeState> items;
 	private TreeNode contextNode;
 	private String parentAction;
@@ -15,9 +15,10 @@ public class PrintableTreeNode {
 		this.contextNode = node;
 		this.parentAction = parentAction;
 		items = new HashSet<PrintableNodeState>();
+		this.id = node.getId();
 	}
 
-	public String getId() {
+	public int getId() {
 		return id;
 	}
 
@@ -36,6 +37,4 @@ public class PrintableTreeNode {
 	public String getParentAction() {
 		return parentAction;
 	}
-	
-	
 }
