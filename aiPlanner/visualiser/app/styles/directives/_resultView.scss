@@ -44,14 +44,22 @@
   }
 
   //REGRESSION
+  $color-visited: grey;
+  $color-invalid: rgb(255, 192, 192);
+  $color-final: darkseagreen;
+  #tree-container {
+	position: relative;
+  }
+
   .node {
 	width: auto;
-	position: relative;
+	position: absolute;
 	display: inline-block;
 	margin: 10px;
+	min-width: 100px;
 
-	&.invalid .node-state {background-color: rgb(255, 192, 192)}
-	&.plan-node .node-state {background-color: darkseagreen}
+	&.invalid .node-state {background-color: $color-invalid}
+	&.plan-node .node-state {background-color: $color-final}
 
 	.node-state {
 	  border: 1px solid;
