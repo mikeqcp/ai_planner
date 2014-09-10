@@ -41,6 +41,14 @@
 	&:last-child {
 	  border-bottom-width: 2px;
 	}
+
+	&.action {
+	  background-color: #01a3c6;
+	}
+
+	&.state {
+	  background-color: antiquewhite;
+	}
   }
 
   //REGRESSION

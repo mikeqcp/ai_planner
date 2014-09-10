@@ -13,7 +13,7 @@ angular.module('visualiserApp')
 			createDOM = (stack) ->
 				dom = $('<div></div>').addClass('stack')
 				$.each stack, (k,v) ->
-					dom.prepend $('<div></div>').append(v.label).addClass('stack-item')
+					dom.prepend $('<div></div>').append(v.label).addClass('stack-item').addClass(v.type)
 				dom
 
 			refreshStack = () ->
