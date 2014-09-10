@@ -32,4 +32,5 @@
 
 (:safety (forall(?x) (or (and (not(arm-empty)) (holding ?x)) (not(holding ?x)))))
 (:safety (forall(?x ?y) (not (and (holding ?x) (holding ?y)))))
+(:safety (forall(?x) (not (and (holding ?x) (on-table ?x)))))
 )

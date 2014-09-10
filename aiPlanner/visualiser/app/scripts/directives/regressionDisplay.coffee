@@ -17,6 +17,8 @@ angular.module('visualiserApp')
 			nextNodePos = {x: 0, y:0}
 			nodeMargin = {x:150, y: 150}
 			rowHeight = 0
+			rowWidth = 0
+			nodesToDraw = []
 
 			createDOM = (node) ->
 				dom = $('<div></div>').addClass('node')
@@ -47,27 +49,43 @@ angular.module('visualiserApp')
 					newX = 0
 					newY += rowHeight + nodeMargin.y
 					rowHeight = nodeHeight
+					rowWidth = nodeWidth
 
 				if nodeHeight > rowHeight then rowHeight = nodeHeight
+				rowWidth += nodeWidth
 
 				nextNodePos.x = newX
 				nextNodePos.y = newY
 
+			clearRow = () ->
+				nextNodePos.x = 0
+				nextNodePos.y += rowHeight + nodeMargin.y
 
-			drawNode = (node) ->
-				nodeDomElem = createDOM node
-				elem.find('#tree-container').append nodeDomElem
-				calcNextNodePosition(nodeDomElem)
 
-				node.items.forEach (i) ->
-					i.children.forEach (c) ->
-						childNode = drawNode c
-						drawLink nodeDomElem, childNode, c.parentAction
-				return nodeDomElem
+			drawTree = () ->
+				while nodesToDraw.length > 0
+					lvl = nodesToDraw.shift()
+					drawTreeLvl lvl
+					clearRow()
+
+			drawTreeLvl = (lvl) ->
+				lvl.nodes.forEach (node) ->
+					nodeDomElem = createDOM node
+					elem.find('#tree-container').append nodeDomElem
+					if lvl.parent?
+						drawLink lvl.parent, nodeDomElem, node.parentAction
+					calcNextNodePosition(nodeDomElem)
+
+					nextItems = []
+					node.items.forEach (i) ->
+						i.children.forEach (c) ->
+							nextItems.push c
+					if nextItems.length > 0
+						nodesToDraw.push {parent:nodeDomElem, nodes:nextItems}
 
 			#breadth-first-search all nodes
 			foreachNode = (callback) ->
-
+				console.log 'Nothing so far..'
 
 			initLinks = () ->
 				plumbInstance = jsPlumb.getInstance({
@@ -98,18 +116,15 @@ angular.module('visualiserApp')
 
 
 			refreshTree = () ->
-#				$('._jsPlumb_endpoint').remove()
-#				$('._jsPlumb_connector').remove()
-#				$('._jsPlumb_overlay').remove()
-#				$('._jsPlumb_endpoint').remove()
 				jsPlumb.detachEveryConnection()
-
 
 				nextNodePos = {x: 0, y:0}
 
 				elem.find('#tree-container').empty()
 				scope.currentStepState = scope.result.stateHistory[scope.step]
-				drawNode scope.currentStepState.structure.root
+
+				nodesToDraw.push {parent: null, nodes: [scope.currentStepState.structure.root]}
+				drawTree()
 				refreshLinks()
 
 			scope.$watch 'result', () ->
