@@ -52,7 +52,7 @@
   }
 
   //REGRESSION
-  $color-visited: grey;
+  $color-visited: #ccc9c9;
   $color-invalid: rgb(255, 192, 192);
   $color-final: darkseagreen;
   #tree-container {
@@ -66,6 +66,7 @@
 	margin: 10px;
 	min-width: 100px;
 
+	&.visited .node-state {background-color: $color-visited}
 	&.invalid .node-state {background-color: $color-invalid}
 	&.plan-node .node-state {background-color: $color-final}
 

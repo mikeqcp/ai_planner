@@ -18,7 +18,9 @@ public class TreeNode {
 	private TreeLink incomingLink;
 	private Boolean consistent;
 	private int id;
-	private boolean mark = false;
+	
+	private boolean belongsToFinalPlan = false;
+	private boolean wasVisited = false; 
 	
 	public int getId() {
 		return id;
@@ -28,13 +30,21 @@ public class TreeNode {
 		this.id = id;
 	}
 	
-
-	public void setMark(boolean mark) {
-		this.mark = mark;
+	public void markFinal(boolean mark) {
+		this.belongsToFinalPlan = mark;
 	}
 
-	public boolean isMarked() {
-		return mark;
+	public boolean isMarkedFinal() {
+		return belongsToFinalPlan;
+	}
+	
+
+	public boolean isVisited() {
+		return wasVisited;
+	}
+
+	public void visit() {
+		this.wasVisited = true;
 	}
 
 	public TreeNode(State state) {
@@ -65,6 +75,10 @@ public class TreeNode {
 	 */
 	public boolean isConsistent(){
 		return consistent!= null ? consistent : true;
+	}
+	
+	public void markUnconsistent(){
+		this.consistent = false;
 	}
 	
 	public Set<AtomicState> getAtomicStates() {

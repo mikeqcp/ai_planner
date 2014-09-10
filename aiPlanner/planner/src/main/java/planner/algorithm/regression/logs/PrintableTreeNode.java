@@ -10,12 +10,14 @@ public class PrintableTreeNode {
 	private Collection<PrintableNodeState> items;
 	private TreeNode contextNode;
 	private String parentAction;
+	private boolean wasVisited;
 	
 	public PrintableTreeNode(TreeNode node, String parentAction) {
 		this.contextNode = node;
 		this.parentAction = parentAction;
 		items = new HashSet<PrintableNodeState>();
 		this.id = node.getId();
+		this.wasVisited = node.isVisited();
 	}
 
 	public int getId() {
@@ -37,4 +39,10 @@ public class PrintableTreeNode {
 	public String getParentAction() {
 		return parentAction;
 	}
+
+	public boolean isVisited() {
+		return wasVisited;
+	}
+	
+	
 }

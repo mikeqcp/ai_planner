@@ -22,6 +22,9 @@ angular.module('visualiserApp')
 				dom = $('<div></div>').addClass('node')
 
 				if not node.valid then dom.addClass 'invalid'
+
+				if node.visited then dom.addClass 'visited'
+
 				if ($.inArray node.id, scope.result.resultPlan.planIds) >= 0
 					dom.addClass 'plan-node'
 				else
