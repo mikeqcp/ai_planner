@@ -71,16 +71,27 @@ public class TreeBuilder {
 		AtomicState[] effects = action.getBindedEffects();
 		
 		State generatedState = new State(oldState);
-		
 		for (AtomicState s : effects) {
-			generatedState = generatedState.removeTerm(s);
-		}
-		
+            generatedState = generatedState.removeTerm(s);
+        }
 		for (AtomicState s : preconditions) {
 			generatedState = generatedState.addTerm(s);
 		}
+        
+
 		TreeNode newNode = new TreeNode(generatedState);
 		newNode.setId(nextNodeId++);
+		
+		int notEvalatedStates = 0;
+		for (AtomicState e : effects) {
+			if(e.isNegated() && !oldState.evaluate(e)){
+				if(++notEvalatedStates > 1){
+					newNode.markUnconsistent();
+					break;
+				}
+			}
+		}
+		
 		return newNode;
 	}
 }

@@ -146,6 +146,13 @@ public class State {
 		return new State(updatedTerms.toArray(new Exp[0]));
 	}
 	
+	public boolean evaluate(AtomicState expr){
+		boolean satisifies = this.satisfies(expr);
+		if(expr.isNegated())
+			return !satisifies;
+		return satisifies;
+	}
+	
 	/**
 	 * Evaluated expression, created from array elements joined with AND operator
 	 * @param expr

@@ -56,7 +56,9 @@ public class WalkQueue {
 	}
 	
 	public TreeNode getNextNode(){
-		return nodesQueue.poll();
+		TreeNode nextNode = nodesQueue.poll();
+		nextNode.visit();
+		return nextNode;
 	}
 	
 	public boolean hasNodesToVisit(){

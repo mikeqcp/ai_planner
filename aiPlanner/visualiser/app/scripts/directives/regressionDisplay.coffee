@@ -53,6 +53,7 @@ angular.module('visualiserApp')
 				nextNodePos.x = newX
 				nextNodePos.y = newY
 
+
 			drawNode = (node) ->
 				nodeDomElem = createDOM node
 				elem.find('#tree-container').append nodeDomElem
@@ -63,6 +64,10 @@ angular.module('visualiserApp')
 						childNode = drawNode c
 						drawLink nodeDomElem, childNode, c.parentAction
 				return nodeDomElem
+
+			#breadth-first-search all nodes
+			foreachNode = (callback) ->
+
 
 			initLinks = () ->
 				plumbInstance = jsPlumb.getInstance({
@@ -87,16 +92,18 @@ angular.module('visualiserApp')
 					$(this).css 'position', 'absolute'
 
 			drawLink = (nodeParent, nodeChild, label) ->
-				link = plumbInstance.connect {source: nodeParent, target: nodeChild}
+				link = plumbInstance.connect {source: nodeParent, target: nodeChild, anchors: [["Left", "Right"], ["Top", "Bottom"]]}
 				link.setLabel label
 
 
 
 			refreshTree = () ->
-				$('._jsPlumb_endpoint').remove()
-				$('._jsPlumb_connector').remove()
-				$('._jsPlumb_overlay').remove()
-				$('._jsPlumb_endpoint').remove()
+#				$('._jsPlumb_endpoint').remove()
+#				$('._jsPlumb_connector').remove()
+#				$('._jsPlumb_overlay').remove()
+#				$('._jsPlumb_endpoint').remove()
+				jsPlumb.detachEveryConnection()
+
 
 				nextNodePos = {x: 0, y:0}
 

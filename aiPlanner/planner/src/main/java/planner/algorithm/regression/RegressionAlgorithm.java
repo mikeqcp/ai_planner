@@ -69,6 +69,7 @@ public class RegressionAlgorithm extends Algorithm {
 			if(!node.isConsistent(constraints, constants)) continue;
 			
 			State nodeState = node.getState();
+			
 			if(nodeState.equals(initialState)) 
 				return tree.findPlanForNode(node);	//final plan
 			
@@ -76,7 +77,7 @@ public class RegressionAlgorithm extends Algorithm {
 			log();
 		}
 
-		return null;
+		return new ResultPlan();
 	}
 	
 
