@@ -2,7 +2,7 @@
 
   .nav-buttons{
 	margin: auto;
-	width: 200px;
+	width: 250px;
 
 	button{
 	  border: none;
@@ -13,6 +13,11 @@
 	  &:hover {
 		background-color: #817D7D;
 	  }
+	}
+
+	.step input{
+	  width: 30px;
+	  text-align: center;
 	}
   }
 

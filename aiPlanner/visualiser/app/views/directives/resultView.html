@@ -3,7 +3,7 @@
 	<div class="nav-buttons">
 		<button ng-click="prevStep()">Prev</button>
 		<button ng-click="nextStep()">Next</button>
-		<span>STEP:<span>{{step}}</span></span>
+		<span>STEP:<span class="step"><input ng-model="step"> / {{maxStep}}</span></span>
 	</div>
 
 	<div ng-if="result.type=='STRIPS'" data-strips-display data-result="result" data-step="step"></div>

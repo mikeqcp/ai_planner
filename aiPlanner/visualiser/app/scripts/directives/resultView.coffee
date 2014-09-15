@@ -15,9 +15,10 @@ angular.module('visualiserApp')
 				if not res then return
 				scope.showResult = true
 				scope.step = 0
+				scope.maxStep = scope.result.stateHistory.length - 1
 
 			scope.nextStep = () ->
-				return unless scope.step < scope.result.stateHistory.length - 1
+				return unless scope.step < scope.maxStep
 				scope.step++
 
 			scope.prevStep = () ->

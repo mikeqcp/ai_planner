@@ -10,7 +10,6 @@ angular.module('visualiserApp')
 			step: '='
 
 		link: (scope, elem) ->
-#			containerWidth = $('body > .container').width()
 			containerWidth = $('body').width()
 			$('#tree-container').css 'left', -($('body').width() - $('body > .container').width()) / 2
 			plumbInstance = null
@@ -19,6 +18,7 @@ angular.module('visualiserApp')
 			rowHeight = 0
 			rowWidth = 0
 			scope.nodesCount = 0
+			scope.validNodesCount = 0
 			nodesToDraw = []
 
 			createDOM = (node) ->
@@ -72,6 +72,7 @@ angular.module('visualiserApp')
 				lvl.nodes = _.sortBy lvl.nodes, (n) -> n.id
 				lvl.nodes.forEach (node) ->
 					scope.nodesCount++
+					if node.valid then scope.validNodesCount++
 
 					nodeDomElem = createDOM node
 					elem.find('#tree-container').append nodeDomElem
@@ -120,6 +121,7 @@ angular.module('visualiserApp')
 
 			refreshTree = () ->
 				scope.nodesCount = 0
+				scope.validNodesCount = 0
 				jsPlumb.detachEveryConnection()
 
 				nextNodePos = {x: 0, y:0}
