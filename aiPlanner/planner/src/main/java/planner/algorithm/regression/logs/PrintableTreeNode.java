@@ -3,7 +3,7 @@ package planner.algorithm.regression.logs;
 import java.util.Collection;
 import java.util.HashSet;
 
-import planner.algorithm.regression.TreeNode;
+import planner.algorithm.regression.model.TreeNode;
 
 public class PrintableTreeNode {
 	private int id;

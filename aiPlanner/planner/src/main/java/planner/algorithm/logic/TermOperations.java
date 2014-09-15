@@ -7,7 +7,7 @@ import java.util.List;
 import pddl4j.exp.AndExp;
 import pddl4j.exp.Exp;
 import pddl4j.exp.OrExp;
-import planner.algorithm.strips.AtomicState;
+import planner.model.AtomicState;
 
 public class TermOperations {
 	

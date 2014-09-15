@@ -3,9 +3,9 @@ package planner.algorithm.regression.logs;
 import java.util.Collection;
 import java.util.HashSet;
 
-import planner.algorithm.regression.RegTree;
-import planner.algorithm.regression.TreeNode;
-import planner.algorithm.strips.AtomicState;
+import planner.algorithm.regression.model.RegTree;
+import planner.algorithm.regression.model.TreeNode;
+import planner.model.AtomicState;
 
 public class PrintableRegTree {
 	PrintableTreeNode root;

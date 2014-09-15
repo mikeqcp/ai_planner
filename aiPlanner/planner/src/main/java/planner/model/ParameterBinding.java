@@ -1,4 +1,4 @@
-package planner.algorithm.strips;
+package planner.model;
 
 import java.util.HashMap;
 

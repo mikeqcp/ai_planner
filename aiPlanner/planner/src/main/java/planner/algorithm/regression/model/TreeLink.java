@@ -1,7 +1,7 @@
-package planner.algorithm.regression;
+package planner.algorithm.regression.model;
 
-import planner.algorithm.strips.AtomicState;
 import planner.model.Action;
+import planner.model.AtomicState;
 
 public class TreeLink {
 	private TreeNode sourceNode;

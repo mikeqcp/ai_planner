@@ -1,4 +1,4 @@
-package planner.algorithm.regression;
+package planner.algorithm.regression.model;
 
 import java.util.ArrayList;
 import java.util.Collection;

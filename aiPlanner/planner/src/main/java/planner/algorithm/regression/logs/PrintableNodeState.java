@@ -1,6 +1,6 @@
 package planner.algorithm.regression.logs;
 
-import planner.algorithm.regression.TreeNode;
+import planner.algorithm.regression.model.TreeNode;
 
 public class PrintableNodeState {
 

@@ -1,4 +1,4 @@
-package planner.algorithm.strips;
+package planner.model;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -11,7 +11,6 @@ import pddl4j.exp.term.Constant;
 import pddl4j.exp.term.Substitution;
 import pddl4j.exp.term.Term;
 import pddl4j.exp.term.Variable;
-import planner.model.State;
 
 public class AtomicState extends State {
 	private AtomicFormula state;

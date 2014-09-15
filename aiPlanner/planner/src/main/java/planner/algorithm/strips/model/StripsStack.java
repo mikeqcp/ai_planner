@@ -1,4 +1,4 @@
-package planner.algorithm.strips;
+package planner.algorithm.strips.model;
 
 import java.util.Stack;
 

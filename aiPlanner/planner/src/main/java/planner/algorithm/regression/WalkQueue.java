@@ -5,7 +5,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
-import planner.algorithm.strips.AtomicState;
+import planner.algorithm.regression.model.TreeNode;
+import planner.model.AtomicState;
 import planner.model.State;
 
 public class WalkQueue {

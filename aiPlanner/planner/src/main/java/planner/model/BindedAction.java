@@ -1,4 +1,4 @@
-package planner.algorithm.strips;
+package planner.model;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -13,8 +13,6 @@ import pddl4j.exp.Exp;
 import pddl4j.exp.term.Constant;
 import pddl4j.exp.term.Term;
 import planner.algorithm.logic.TermOperations;
-import planner.model.Action;
-import planner.model.State;
 
 public class BindedAction extends Action {
 	private Random rand = new Random();

@@ -13,8 +13,6 @@ import pddl4j.exp.action.Action;
 import pddl4j.exp.term.Constant;
 import pddl4j.exp.term.Term;
 import planner.algorithm.logic.TermOperations;
-import planner.algorithm.strips.AtomicState;
-import planner.algorithm.strips.ParameterBinding;
 
 /**
  * @author MichalP

@@ -1,5 +1,6 @@
-package planner.algorithm.strips;
+package planner.algorithm.strips.model;
 
+import planner.model.BindedAction;
 import planner.model.State;
 
 

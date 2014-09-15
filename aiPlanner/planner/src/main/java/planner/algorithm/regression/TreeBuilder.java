@@ -5,10 +5,12 @@ import java.util.HashSet;
 import java.util.Set;
 
 import planner.algorithm.Algorithm;
-import planner.algorithm.strips.AtomicState;
-import planner.algorithm.strips.BindedAction;
+import planner.algorithm.regression.model.RegTree;
+import planner.algorithm.regression.model.TreeNode;
 import planner.algorithm.strips.StripsUtils;
 import planner.model.Action;
+import planner.model.AtomicState;
+import planner.model.BindedAction;
 import planner.model.State;
 
 public class TreeBuilder {

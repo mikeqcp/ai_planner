@@ -1,4 +1,4 @@
-package planner.algorithm.regression;
+package planner.algorithm.regression.model;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -6,8 +6,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 import pddl4j.exp.term.Constant;
-import planner.algorithm.strips.AtomicState;
 import planner.model.Action;
+import planner.model.AtomicState;
 import planner.model.Constraint;
 import planner.model.State;
 

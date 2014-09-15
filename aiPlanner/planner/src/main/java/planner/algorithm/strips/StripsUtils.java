@@ -9,6 +9,9 @@ import java.util.Set;
 
 import pddl4j.exp.term.Constant;
 import planner.model.Action;
+import planner.model.AtomicState;
+import planner.model.BindedAction;
+import planner.model.ParameterBinding;
 import planner.model.State;
 
 public class StripsUtils {

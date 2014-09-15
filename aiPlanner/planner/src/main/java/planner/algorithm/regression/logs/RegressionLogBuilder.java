@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import planner.algorithm.Algorithm.AlgorithmType;
-import planner.algorithm.regression.RegTree;
+import planner.algorithm.regression.model.RegTree;
 import planner.model.ProcessLog;
 import planner.model.ResultPlan;
 import planner.model.State;

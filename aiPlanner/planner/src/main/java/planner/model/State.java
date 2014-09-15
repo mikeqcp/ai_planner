@@ -12,7 +12,6 @@ import pddl4j.exp.NotAtomicFormula;
 import pddl4j.exp.NotExp;
 import pddl4j.exp.term.Constant;
 import planner.algorithm.logic.TermOperations;
-import planner.algorithm.strips.AtomicState;
 
 /**
  * @author MichalP

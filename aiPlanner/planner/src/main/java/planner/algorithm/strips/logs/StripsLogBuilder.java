@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import planner.algorithm.Algorithm.AlgorithmType;
-import planner.algorithm.strips.StripsStack;
+import planner.algorithm.strips.model.StripsStack;
 import planner.model.ProcessLog;
 import planner.model.ResultPlan;
 import planner.model.State;

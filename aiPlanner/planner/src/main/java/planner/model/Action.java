@@ -7,9 +7,6 @@ import pddl4j.exp.AndExp;
 import pddl4j.exp.Exp;
 import pddl4j.exp.action.ActionDef;
 import planner.algorithm.logic.TermOperations;
-import planner.algorithm.strips.AtomicState;
-import planner.algorithm.strips.BindedAction;
-import planner.algorithm.strips.ParameterBinding;
 
 public class Action {	
 	protected pddl4j.exp.action.Action action;

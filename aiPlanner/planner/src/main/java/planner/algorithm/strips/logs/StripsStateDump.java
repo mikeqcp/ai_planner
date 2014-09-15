@@ -1,6 +1,6 @@
 package planner.algorithm.strips.logs;
 
-import planner.algorithm.strips.StripsStack;
+import planner.algorithm.strips.model.StripsStack;
 import planner.model.ResultPlan;
 import planner.model.State;
 import planner.model.interfaces.PrintablePlan;

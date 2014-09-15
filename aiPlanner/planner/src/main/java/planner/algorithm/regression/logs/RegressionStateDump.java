@@ -1,7 +1,7 @@
 package planner.algorithm.regression.logs;
 
-import planner.algorithm.regression.RegTree;
-import planner.algorithm.strips.StripsStack;
+import planner.algorithm.regression.model.RegTree;
+import planner.algorithm.strips.model.StripsStack;
 import planner.model.ResultPlan;
 import planner.model.State;
 import planner.model.interfaces.PrintablePlan;

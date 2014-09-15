@@ -5,6 +5,8 @@ import pddl4j.exp.Exp;
 import planner.algorithm.Algorithm;
 import planner.algorithm.logic.TermOperations;
 import planner.algorithm.regression.logs.RegressionLogBuilder;
+import planner.algorithm.regression.model.RegTree;
+import planner.algorithm.regression.model.TreeNode;
 import planner.model.ProcessLog;
 import planner.model.ResultPlan;
 import planner.model.State;
