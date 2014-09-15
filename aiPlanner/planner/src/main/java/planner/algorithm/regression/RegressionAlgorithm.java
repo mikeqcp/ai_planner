@@ -70,8 +70,11 @@ public class RegressionAlgorithm extends Algorithm {
 			
 			State nodeState = node.getState();
 			
-			if(nodeState.equals(initialState)) 
+			if(nodeState.equals(initialState)) {
+				node.visit();
+				log();
 				return tree.findPlanForNode(node);	//final plan
+			}
 			
 			builder.generateNextLevel(node);
 			log();

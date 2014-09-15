@@ -18,20 +18,20 @@ angular.module('visualiserApp')
 			nodeMargin = {x:150, y: 150}
 			rowHeight = 0
 			rowWidth = 0
+			scope.nodesCount = 0
 			nodesToDraw = []
 
 			createDOM = (node) ->
 				dom = $('<div></div>').addClass('node')
 
 				if not node.valid then dom.addClass 'invalid'
-
 				if node.visited then dom.addClass 'visited'
-
 				if ($.inArray node.id, scope.result.resultPlan.planIds) >= 0
 					dom.addClass 'plan-node'
 				else
 					dom.removeClass 'plan-node'
 
+				node.items = _.sortBy node.items, (i) -> i.label
 				$.each node.items, (k,v) ->
 					dom.append $('<div></div>').append(v.label).addClass('node-state')
 
@@ -69,7 +69,10 @@ angular.module('visualiserApp')
 					clearRow()
 
 			drawTreeLvl = (lvl) ->
+				lvl.nodes = _.sortBy lvl.nodes, (n) -> n.id
 				lvl.nodes.forEach (node) ->
+					scope.nodesCount++
+
 					nodeDomElem = createDOM node
 					elem.find('#tree-container').append nodeDomElem
 					if lvl.parent?
@@ -116,6 +119,7 @@ angular.module('visualiserApp')
 
 
 			refreshTree = () ->
+				scope.nodesCount = 0
 				jsPlumb.detachEveryConnection()
 
 				nextNodePos = {x: 0, y:0}

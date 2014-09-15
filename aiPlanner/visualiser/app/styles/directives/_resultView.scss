@@ -55,6 +55,7 @@
   $color-visited: #ccc9c9;
   $color-invalid: rgb(255, 192, 192);
   $color-final: darkseagreen;
+  $color-final-visited: rgb(74, 222, 74);
   #tree-container {
 	position: relative;
   }
@@ -69,6 +70,7 @@
 	&.visited .node-state {background-color: $color-visited}
 	&.invalid .node-state {background-color: $color-invalid}
 	&.plan-node .node-state {background-color: $color-final}
+	&.plan-node.visited .node-state {background-color: $color-final-visited}
 
 	.node-state {
 	  border: 1px solid;
