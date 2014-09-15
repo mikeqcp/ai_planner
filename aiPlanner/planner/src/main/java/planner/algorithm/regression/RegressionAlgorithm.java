@@ -12,39 +12,24 @@ import planner.model.ResultPlan;
 import planner.model.State;
 
 public class RegressionAlgorithm extends Algorithm {
-	private State initialState;
-	private State currentState;
-	private State goal;
-	private ResultPlan plan;
+	private static final int NODES_VISIT_LIMIT = 2000;
+
 	private RegressionLogBuilder logBuilder;
 	
 	private RegTree tree;
 	private TreeBuilder builder;
 	private WalkQueue walker;
+
+	private int visitedNodes = 0;
 	
 
 	public RegressionAlgorithm(PDDLObject input) {
 		super(input);
-		initializeProblemData(input);
 		initializeStructures();
 		this.logBuilder = new RegressionLogBuilder();
 	}
-
-
-	private void initializeProblemData(PDDLObject input) {
-		this.goal = new State(input.getGoal());
-		this.constants = produceInstanceConstants();
-
-		Exp[] initialExp = input.getInit().toArray(new Exp[0]);
-		this.initialState = new State(
-				TermOperations.joinExprElements(initialExp));
-
-		this.actions = produceInstanceActions();
-		this.constraints = produceInstanceConstraints();
-	}
 	
 	private void initializeStructures() {
-		plan = new ResultPlan();
 		tree = new RegTree(goal);
 		builder = new TreeBuilder(tree, goal, this);
 		builder.setActions(this.actions);
@@ -58,6 +43,7 @@ public class RegressionAlgorithm extends Algorithm {
 		ResultPlan finalPlan = execute();
 		
 		System.out.println(finalPlan);
+		System.out.println("Regression finished after visiting " + visitedNodes + " nodes.");
 		
 		logFinalPlan(finalPlan);
 		
@@ -66,6 +52,8 @@ public class RegressionAlgorithm extends Algorithm {
 	
 	private ResultPlan execute(){		
 		while(walker.hasNodesToVisit()){
+			if(++visitedNodes > NODES_VISIT_LIMIT) break;
+			
 			TreeNode node = walker.getNextNode();
 			
 			if(!node.isConsistent(constraints, constants)) continue;
