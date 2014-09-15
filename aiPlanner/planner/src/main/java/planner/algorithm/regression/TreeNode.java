@@ -114,6 +114,14 @@ public class TreeNode {
 		return incomingLink;
 	}
 	
+	public TreeNode[] getChildren(){
+		Collection<TreeNode> children = new HashSet<TreeNode>();
+		for (TreeLink l : getOutcomingLinks()) {
+			children.add(l.getTargetNode());
+		}
+		return children.toArray(new TreeNode[0]);
+	}
+	
 	public TreeLink[] getLinksFromState(AtomicState s){
 		Collection<TreeLink> links = new HashSet<TreeLink>();
 		for (TreeLink l : getOutcomingLinks()) {
@@ -130,6 +138,18 @@ public class TreeNode {
 			children.add(link.getTargetNode());
 		}
 		return children.toArray(new TreeNode[0]);
+	}
+	
+	/**
+	 * @param node
+	 * @return True if node has child with exactly the same state like specified node
+	 */
+	public boolean hasChild(TreeNode node){
+		TreeNode[] children = getChildren();
+		for (TreeNode n : children) {
+			if(n.state.equals(node.state)) return true;
+		}
+		return false;
 	}
 	
 	@Override

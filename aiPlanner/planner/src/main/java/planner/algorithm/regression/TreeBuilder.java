@@ -60,6 +60,9 @@ public class TreeBuilder {
 		Set<BindedAction> applicable = StripsUtils.findApplicableActions(srcState, actions, parent.getConstants());
 		for (BindedAction action : applicable) {
 			TreeNode newNode = generateNewState(parentNode.getState(), action, srcState);
+			
+			if(parentNode.hasChild(newNode)) continue;
+			
 			parentNode.addLink(srcState, newNode, action);
 			nodes.add(newNode);
 		}
