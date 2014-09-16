@@ -7,8 +7,6 @@ import java.util.List;
 import java.util.Set;
 
 import pddl4j.exp.Exp;
-import pddl4j.exp.NotExp;
-import pddl4j.exp.OrExp;
 import pddl4j.exp.action.Action;
 import pddl4j.exp.term.Constant;
 import pddl4j.exp.term.Term;

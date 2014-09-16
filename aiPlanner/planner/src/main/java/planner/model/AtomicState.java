@@ -111,8 +111,9 @@ public class AtomicState extends State {
 				}
 			}
 		}
-		this.state = this.state.apply(subst);
-		return this;
+		AtomicState binded = new AtomicState(this);
+		binded.state = binded.state.apply(subst);
+		return binded;
 	}
 
 	public Exp[] getTerms(){

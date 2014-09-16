@@ -16,6 +16,10 @@ public class ParameterBinding {
 		this.binding = binding;
 	}
 
+	public ParameterBinding(ParameterBinding other) {
+		this.binding = new HashMap<Term, String>(other.binding);
+	}
+
 	public void addBinding(Term parameter, String value){
 		binding.put(parameter, value);
 	}

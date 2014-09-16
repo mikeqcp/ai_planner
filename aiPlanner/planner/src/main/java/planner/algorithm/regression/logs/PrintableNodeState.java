@@ -1,7 +1,5 @@
 package planner.algorithm.regression.logs;
 
-import planner.algorithm.regression.model.TreeNode;
-
 public class PrintableNodeState {
 
 	private String label;

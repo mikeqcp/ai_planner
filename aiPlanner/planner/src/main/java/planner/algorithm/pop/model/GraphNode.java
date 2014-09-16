@@ -1,6 +1,11 @@
 package planner.algorithm.pop.model;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import planner.model.Action;
+import planner.model.AtomicState;
+import planner.model.BindedAction;
 import planner.model.ParameterBinding;
 
 /**
@@ -11,21 +16,35 @@ import planner.model.ParameterBinding;
 public class GraphNode {
 	private Action action;
 	private ParameterBinding binding;
-	
-	private OrderLink[] outcomingOrderLinks;
-	private OrderLink[] incomingOrderLinks;
-	private CasualLink[] outcomingCasualLinks;
-	private CasualLink[] intcomingCasualLinks;
-	
+
+	protected GraphNode() {
+	}
+
 	public GraphNode(Action action) {
 		this.action = action;
 	}
 	
 	public GraphNode(GraphNode other) {
-		// TODO Auto-generated constructor stub
+		this.action = other.action;
+		this.binding = new ParameterBinding(other.binding);
+	}
+
+	public BindedAction getBindedAction(){
+		return new BindedAction(action, binding);
 	}
 	
-	public void promote(){}
-	public void demote(){}
 	
+	protected AtomicState[] getAtomicPreconditions() {
+		BindedAction binded = getBindedAction();
+		return binded.getBindedPreconditions();
+	}
+	
+	public Set<SubGoal> getPreconditions() {
+		AtomicState[] atomic = getAtomicPreconditions();
+		Set<SubGoal> preconds = new HashSet<SubGoal>();
+		for (AtomicState a : atomic) {
+			preconds.add(new SubGoal(this, a));
+		}
+		return preconds;
+	}
 }

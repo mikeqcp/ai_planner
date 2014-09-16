@@ -19,10 +19,8 @@ import planner.model.ResultPlan;
 import planner.model.State;
 
 public class StripsAlgorithm extends Algorithm {
-	private State initialState;
 	private State currentState;
 	private Set<Action> actions;
-	private State goal;
 	private ResultPlan plan;
 	private StripsStack stack;
 	private Set<Constant> constants;
@@ -30,27 +28,14 @@ public class StripsAlgorithm extends Algorithm {
 
 	public StripsAlgorithm(PDDLObject input) {
 		super(input);
-		initializeProblemData(input);
 		initializeStructures();
 		this.logBuilder = new StripsLogBuilder();
 	}
 	
 	public StripsAlgorithm(StripsAlgorithm otherInstance){
 		super(otherInstance.originalData);
-		initializeProblemData(originalData);
 		initializeStructures(otherInstance.stack, otherInstance.currentState, otherInstance.plan);
 		this.logBuilder = otherInstance.logBuilder;
-	}
-
-	private void initializeProblemData(PDDLObject input) {
-		this.goal = new State(input.getGoal());
-		this.constants = produceInstanceConstants();
-
-		Exp[] initialExp = input.getInit().toArray(new Exp[0]);
-		this.initialState = new State(
-				TermOperations.joinExprElements(initialExp));
-
-		this.actions = produceInstanceActions();
 	}
 	
 	private void initializeStructures() {

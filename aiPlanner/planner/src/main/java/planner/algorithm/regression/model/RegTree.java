@@ -2,9 +2,7 @@ package planner.algorithm.regression.model;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
-import planner.model.Action;
 import planner.model.ResultPlan;
 import planner.model.State;
 

@@ -1,9 +1,7 @@
 package planner.algorithm.regression.logs;
 
 import planner.algorithm.regression.model.RegTree;
-import planner.algorithm.strips.model.StripsStack;
 import planner.model.ResultPlan;
-import planner.model.State;
 import planner.model.interfaces.PrintablePlan;
 import planner.model.interfaces.PrintableState;
 import planner.model.interfaces.ProcessStateDump;

@@ -5,7 +5,7 @@
              (arm-empty)
              (holding ?x)
              (on ?x ?y))
-			 
+
 (:action pickup
   :parameters (?ob)
   :precondition (and (clear ?ob) (on-table ?ob) (arm-empty))
@@ -23,12 +23,17 @@
   :precondition (and (clear ?underob) (holding ?ob))
   :effect (and (arm-empty) (clear ?ob) (on ?ob ?underob)
                (not (clear ?underob)) (not (holding ?ob))))
-			   
+
 (:action unstack
   :parameters  (?ob ?underob)
   :precondition (and (on ?ob ?underob) (clear ?ob) (arm-empty))
   :effect (and (holding ?ob) (clear ?underob)
                (not (on ?ob ?underob)) (not (clear ?ob)) (not (arm-empty))))
-			   
+
 (:safety (forall(?x) (or (and (not(arm-empty)) (holding ?x)) (not(holding ?x)))))
+(:safety (forall(?x ?y) (not (and (holding ?x) (holding ?y)))))
+(:safety (forall(?x) (not (and (holding ?x) (on-table ?x)))))
+(:safety (forall(?x ?y) (not (and (holding ?x) (on ?x ?y)))))
+(:safety (forall(?x ?y) (not (and (holding ?x) (on ?y ?x)))))
+(:safety (forall(?x ?y) (not (and (on ?x ?y) (clear ?y)))))
 )

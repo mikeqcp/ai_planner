@@ -5,23 +5,27 @@ import java.util.Iterator;
 import java.util.Set;
 
 import pddl4j.PDDLObject;
+import pddl4j.exp.Exp;
 import pddl4j.exp.action.ActionDef;
 import pddl4j.exp.term.Constant;
+import planner.algorithm.logic.TermOperations;
 import planner.model.Action;
 import planner.model.Constraint;
 import planner.model.ProcessLog;
 import planner.model.ResultPlan;
+import planner.model.State;
 
 public abstract class Algorithm {
-	public static enum AlgorithmType {STRIPS, REGRESSION};
+	public static enum AlgorithmType {STRIPS, REGRESSION, POP};
 	protected PDDLObject originalData;
 	protected Set<Constant> constants;
 	protected Set<Constraint> constraints;
 	protected Set<Action> actions;
+	protected State initialState;
+	protected State goal;
 	
 	public Algorithm(PDDLObject input) {
-		this.originalData = input;
-		this.constraints = produceInstanceConstraints();
+		initializeProblemData(input);
 	}
 	
 	abstract public ResultPlan solve();
@@ -30,8 +34,22 @@ public abstract class Algorithm {
 	public static AlgorithmType typeFromString(String type){
 		if(type.equalsIgnoreCase("strips")) return AlgorithmType.STRIPS;
 		if(type.equalsIgnoreCase("regression")) return AlgorithmType.REGRESSION;
-		
+		if(type.equalsIgnoreCase("pop")) return AlgorithmType.POP;		
 		return null;
+	}
+	
+	private void initializeProblemData(PDDLObject input) {
+		this.originalData = input;
+		this.constraints = produceInstanceConstraints();
+		
+		this.goal = new State(input.getGoal());
+		this.constants = produceInstanceConstants();
+
+		Exp[] initialExp = input.getInit().toArray(new Exp[0]);
+		this.initialState = new State(TermOperations.joinExprElements(initialExp));
+
+		this.actions = produceInstanceActions();
+		this.constraints = produceInstanceConstraints();
 	}
 	
 	protected Set<Constant> produceInstanceConstants(){

@@ -7,7 +7,6 @@ import planner.algorithm.Algorithm.AlgorithmType;
 import planner.algorithm.regression.model.RegTree;
 import planner.model.ProcessLog;
 import planner.model.ResultPlan;
-import planner.model.State;
 import planner.model.interfaces.PrintablePlan;
 import planner.model.interfaces.ProcessStateDump;
 

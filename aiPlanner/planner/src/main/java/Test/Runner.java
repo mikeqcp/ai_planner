@@ -6,7 +6,7 @@ import java.util.Scanner;
 
 import pddl4j.PDDLObject;
 import planner.algorithm.Algorithm;
-import planner.algorithm.regression.RegressionAlgorithm;
+import planner.algorithm.pop.PopAlgorithm;
 import planner.model.ProcessLog;
 import planner.model.ResultPlan;
 import data.PddlParser;
@@ -28,7 +28,8 @@ public class Runner {
 		for (int i = 0; i < 1; i++) {
 			System.out.println("No." + i);
 //			Algorithm alg = new StripsAlgorithm(problemData);
-			Algorithm alg = new RegressionAlgorithm(problemData);
+//			Algorithm alg = new RegressionAlgorithm(problemData);
+			Algorithm alg = new PopAlgorithm(problemData);
 			
 			ResultPlan plan = alg.solve();
 			ProcessLog log = alg.getLog();
