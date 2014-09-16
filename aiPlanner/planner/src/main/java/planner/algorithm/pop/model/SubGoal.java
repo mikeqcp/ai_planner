@@ -4,20 +4,20 @@ import planner.model.AtomicState;
 
 public class SubGoal {
 	private GraphNode node;
-	private AtomicState precondition;
+	private AtomicState goal;
 	
 	public SubGoal(GraphNode node, AtomicState precondition) {
 		super();
 		this.node = node;
-		this.precondition = precondition;
+		this.goal = precondition;
 	}
 
 	public GraphNode getNode() {
 		return node;
 	}
 
-	public AtomicState getPrecondition() {
-		return precondition;
+	public AtomicState getGoal() {
+		return goal;
 	}
 	
 	

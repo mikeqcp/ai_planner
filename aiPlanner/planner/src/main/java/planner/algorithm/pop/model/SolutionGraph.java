@@ -37,7 +37,7 @@ public class SolutionGraph {
 		
 		this.allNodes = new HashSet<GraphNode>();
 		for (GraphNode node : other.allNodes) {
-			GraphNode mappedNode = nodeMappings.get(other.endNode);
+			GraphNode mappedNode = nodeMappings.get(node);
 			this.allNodes.add(mappedNode);
 		}
 		
@@ -50,12 +50,13 @@ public class SolutionGraph {
 	        Set<GraphLink> links = new HashSet<GraphLink>();
 	        
 	        for (GraphLink l : entry.getValue()) {
+	        	l.getNodeTo().toString();
 				GraphLink newLink = l.clone();
 				newLink.setNodeFrom(nodeMappings.get(l.getNodeFrom()));
 				newLink.setNodeTo(nodeMappings.get(l.getNodeTo()));
 	        	links.add(newLink);
 			}
-	        outcomingLinks.put(n, links);
+	        outcomingLinks.put(nodeMappings.get(n), links);
 	    }
 	    
 	    incomingLinks = new HashMap<GraphNode, Set<GraphLink>>();
@@ -71,7 +72,7 @@ public class SolutionGraph {
 				newLink.setNodeTo(nodeMappings.get(l.getNodeTo()));
 	        	links.add(newLink);
 			}
-	        incomingLinks.put(n, links);
+	        incomingLinks.put(nodeMappings.get(n), links);
 	    }
 		
 		this.unsatisfiedGoals = new RandomSet<SubGoal>(other.unsatisfiedGoals);
@@ -80,7 +81,7 @@ public class SolutionGraph {
 	private Map<GraphNode, GraphNode> generateNodesCopies(Set<GraphNode> oldNodes){
 		Map<GraphNode, GraphNode> nodeMappings = new HashMap<GraphNode, GraphNode>();
 		for (GraphNode node : oldNodes) {
-			nodeMappings.put(node, new GraphNode(node));
+			nodeMappings.put(node, node.clone());
 		}
 		return nodeMappings;
 	}
@@ -90,24 +91,38 @@ public class SolutionGraph {
 		this.startNode = new StartNode(initialState);
 		this.unsatisfiedGoals = new RandomSet<SubGoal>();
 		
-		allNodes = new HashSet<GraphNode>();
-		allNodes.add(startNode);
-		allNodes.add(endNode);
-		
-		unsatisfiedGoals.addAll(endNode.getPreconditions());
 		outcomingLinks = new HashMap<GraphNode, Set<GraphLink>>();
 		incomingLinks = new HashMap<GraphNode, Set<GraphLink>>();
+		
+		allNodes = new HashSet<GraphNode>();
+		addNode(startNode);
+		addNode(endNode);
+		
+		unsatisfiedGoals.addAll(endNode.getPreconditions());
+	}
+
+	
+	public GraphNode getStartNode() {
+		return startNode;
+	}
+
+	public GraphNode getEndNode() {
+		return endNode;
 	}
 
 	public boolean isConsistent() {
 		return true;
 	}
-	
-	public boolean fixConstraints(){
-		return true;
-	}
 
-	private Set<GraphLink> getConstraints(){
+	public GraphNode getNodeById(long id){
+		for (GraphNode n : allNodes) {
+			if(n.getId() == id)
+				return n;
+		}
+		return null;
+	}
+	
+	public Set<GraphLink> getGraphConstraints(){
 		Set<GraphLink> constraints = new HashSet<GraphLink>();
 		for (Set<GraphLink> links : outcomingLinks.values()) {
 			constraints.addAll(links);
@@ -115,4 +130,34 @@ public class SolutionGraph {
 		return constraints;
 	}
 	
+	public SubGoal nextGoalToSatisfy(){
+		return unsatisfiedGoals.getRandomItem();
+	}
+	
+	public boolean isComplete(){
+		return unsatisfiedGoals.size() == 0;
+	}
+
+	public void addNode(GraphNode n){
+		allNodes.add(n);
+		
+		outcomingLinks.put(n, new HashSet<GraphLink>());
+		incomingLinks.put(n, new HashSet<GraphLink>());
+	}
+	
+	public void addLink(GraphLink link){
+		GraphNode fromNode = link.getNodeFrom();
+		GraphNode toNode = link.getNodeTo();
+		
+		outcomingLinks.get(fromNode).add(link);
+		incomingLinks.get(toNode).add(link);
+	}
+
+	public void removeLink(GraphLink link){
+		GraphNode fromNode = link.getNodeFrom();
+		GraphNode toNode = link.getNodeTo();
+		
+		outcomingLinks.get(fromNode).remove(link);
+		incomingLinks.get(toNode).remove(link);
+	}
 }

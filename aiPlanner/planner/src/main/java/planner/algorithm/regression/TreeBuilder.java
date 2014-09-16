@@ -7,7 +7,7 @@ import java.util.Set;
 import planner.algorithm.Algorithm;
 import planner.algorithm.regression.model.RegTree;
 import planner.algorithm.regression.model.TreeNode;
-import planner.algorithm.strips.StripsUtils;
+import planner.algorithm.strips.Utils;
 import planner.model.Action;
 import planner.model.AtomicState;
 import planner.model.BindedAction;
@@ -59,7 +59,7 @@ public class TreeBuilder {
 	private Collection<TreeNode> generateNodesForState(AtomicState srcState, TreeNode parentNode){
 		Set<TreeNode> nodes = new HashSet<TreeNode>();
 		
-		Set<BindedAction> applicable = StripsUtils.findApplicableActions(srcState, actions, parent.getConstants());
+		Set<BindedAction> applicable = Utils.findApplicableActions(srcState, actions, parent.getConstants());
 		for (BindedAction action : applicable) {
 			TreeNode newNode = generateNewState(parentNode.getState(), action, srcState);
 			

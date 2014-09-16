@@ -14,8 +14,10 @@ import planner.model.ParameterBinding;
  *	Contains its preconditions and effects
  */
 public class GraphNode {
-	private Action action;
-	private ParameterBinding binding;
+	private static long IdRandomizer = 0;
+	protected Action action;
+	protected ParameterBinding binding;
+	protected long id = IdRandomizer++;
 
 	protected GraphNode() {
 	}
@@ -24,9 +26,19 @@ public class GraphNode {
 		this.action = action;
 	}
 	
+	public GraphNode(BindedAction action) {
+		this.action = action.unbind();
+		this.binding = action.getBinding();
+		
+	}
+	
 	public GraphNode(GraphNode other) {
 		this.action = other.action;
-		this.binding = new ParameterBinding(other.binding);
+		this.id = other.id;
+		if(action != null)
+			this.binding = new ParameterBinding(other.binding);
+		else
+			this.binding = new ParameterBinding();
 	}
 
 	public BindedAction getBindedAction(){
@@ -34,6 +46,10 @@ public class GraphNode {
 	}
 	
 	
+	public long getId() {
+		return id;
+	}
+
 	protected AtomicState[] getAtomicPreconditions() {
 		BindedAction binded = getBindedAction();
 		return binded.getBindedPreconditions();
@@ -46,5 +62,17 @@ public class GraphNode {
 			preconds.add(new SubGoal(this, a));
 		}
 		return preconds;
+	}
+	
+	@Override
+	public String toString() {
+		if(binding != null)
+			return getBindedAction().toString();
+		
+		return action.toString();
+	}
+	
+	public GraphNode clone(){
+		return new GraphNode(this);
 	}
 }

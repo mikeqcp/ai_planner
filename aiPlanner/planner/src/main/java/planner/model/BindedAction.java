@@ -24,6 +24,10 @@ public class BindedAction extends Action {
 		this.binding = binding;
 	}
 
+	public Action unbind(){
+		return new Action(this.action);
+	}
+	
 	/**
 	 * @param initial state
 	 * @return state after applying action (new object is created, old one is unchanged)
@@ -114,8 +118,15 @@ public class BindedAction extends Action {
 		return val;
 	}
 	
+	
+	
+	public ParameterBinding getBinding() {
+		return binding;
+	}
+
 	@Override
 	public String toString() {
+		if(binding == null) return (new Action(action)).toString();
 		Collection<String> vals = new ArrayList<String>();
 		
 		for (Term t : action.getParameters()) {

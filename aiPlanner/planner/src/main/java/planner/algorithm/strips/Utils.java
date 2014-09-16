@@ -14,15 +14,20 @@ import planner.model.BindedAction;
 import planner.model.ParameterBinding;
 import planner.model.State;
 
-public class StripsUtils {
+public class Utils {
 	public static Set<BindedAction> findApplicableActions(AtomicState state, Set<Action> availableActions, Set<Constant> constants){
+		return findApplicableActions(state, availableActions, constants, true);
+	}
+	
+	public static Set<BindedAction> findApplicableActions(AtomicState state, Set<Action> availableActions, Set<Constant> constants, boolean fillUnbindedParams){
 		Set<BindedAction> applicableActions = new HashSet<BindedAction>();
 		
 		ParameterBinding b;
 		for (Action a : availableActions) {
 			if((b = a.bindToProduce(state)) != null){
 				BindedAction action = a.bindParameters(b);
-				action.fillFreeParameters(constants);
+				if(fillUnbindedParams)
+					action.fillFreeParameters(constants);
 				applicableActions.add(action);
 			}
 		}

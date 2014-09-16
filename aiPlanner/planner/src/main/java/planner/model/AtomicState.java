@@ -73,7 +73,7 @@ public class AtomicState extends State {
 		
 		if(s.satisfies(this)) return binding;
 		
-		if (s.hasUnbindedParams()) return null;	//cannot bind
+//		if (s.hasUnbindedParams()) return null;	//cannot bind
 		if(!s.predicateEquals(this)) return null;
 		
 		ArrayList<Term> thisArgs = getArguments();

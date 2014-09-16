@@ -19,6 +19,9 @@ public class RandomSet<E> extends ArrayList<E> {
 		super();
 	}
 
+	/**
+	 * Returns and removes random item from collection
+	 */
 	public E getRandomItem(){
 		int index = rand.nextInt(this.size());
 		E item = this.get(index);
@@ -26,6 +29,9 @@ public class RandomSet<E> extends ArrayList<E> {
 		return item;
 	}
 	
+	/**
+	 * Returns random item from collection wothout removing it
+	 */
 	public E pollRandomItem(){
 		int index = rand.nextInt(this.size());
 		return this.get(index);

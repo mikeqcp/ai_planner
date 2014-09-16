@@ -113,11 +113,11 @@ public class StripsAlgorithm extends Algorithm {
 	 */
 	private boolean processStateItem(AtomicState s) {
 		//find applicable action
-		Set<BindedAction> applicableActions = StripsUtils.findApplicableActions(s, actions, constants);
+		Set<BindedAction> applicableActions = Utils.findApplicableActions(s, actions, constants);
 		if(applicableActions.isEmpty()) return false;
 
 		
-		List<BindedAction> sortedApplicableActions = StripsUtils.sortActions(applicableActions, currentState, goal);
+		List<BindedAction> sortedApplicableActions = Utils.sortActions(applicableActions, currentState, goal);
 		
 		//use every applicable actions
 		for (BindedAction a : sortedApplicableActions) {

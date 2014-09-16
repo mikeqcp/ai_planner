@@ -4,15 +4,15 @@ import planner.model.AtomicState;
 
 public class CasualLink extends GraphLink {
 	private AtomicState achieves;
+	
+
+	public CasualLink(GraphNode nodeFrom, GraphNode nodeTo, AtomicState achieves) {
+		super(nodeFrom, nodeTo);
+		this.achieves = achieves;
+	}
 
 	@Override
 	public GraphLink clone() {
-		CasualLink link = new CasualLink();
-		
-		link.setNodeFrom(this.nodeFrom);
-		link.setNodeTo(this.nodeTo);
-		link.achieves = this.achieves;
-		
-		return link;
+		return new CasualLink(this.nodeFrom, this.nodeTo, this.achieves);
 	}
 }

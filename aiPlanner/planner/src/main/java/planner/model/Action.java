@@ -61,6 +61,6 @@ public class Action {
 
 	@Override
 	public String toString() {
-		return action.toString();
+		return action.getName() + action.getParameters().toString();
 	}
 }
