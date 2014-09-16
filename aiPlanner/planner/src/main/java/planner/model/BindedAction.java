@@ -125,6 +125,13 @@ public class BindedAction extends Action {
 	}
 
 	@Override
+	public ParameterBinding bindToProduce(AtomicState s) {
+		ParameterBinding binding =  super.bindToProduce(s);
+		if(binding != null && binding.isExtending(this.binding)) return binding;
+		return null;
+	}
+	
+	@Override
 	public String toString() {
 		if(binding == null) return (new Action(action)).toString();
 		Collection<String> vals = new ArrayList<String>();

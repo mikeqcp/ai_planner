@@ -14,9 +14,12 @@ import planner.model.ProcessLog;
 import planner.model.ResultPlan;
 
 public class PopAlgorithm extends Algorithm {
+	private static final int MAX_STEPS = 50;
+	
 	private PopLogBuilder logBuilder;
 	private ConstraintProtector protector;
 	private GraphBuilder builder;
+	private long step = 0;
 	
 
 	public PopAlgorithm(PDDLObject input) {
@@ -41,11 +44,12 @@ public class PopAlgorithm extends Algorithm {
 		else
 			System.out.println("Algorithm did't find any solution");
 		
+		System.out.println("Finished in " + step + " steps.");
 		return finalPlan;
 	}
 
 	public ResultPlan solve(SolutionGraph graph){
-		while(!graph.isComplete()){
+		while(!graph.isComplete() && step++ < MAX_STEPS){
 			builder = new GraphBuilder(this);
 			
 			SubGoal nextGoal = graph.nextGoalToSatisfy();
@@ -59,7 +63,6 @@ public class PopAlgorithm extends Algorithm {
 			if(options.isEmpty()) return null;
 			
 		}
-		System.out.println(graph);
 		SolutionLinearizator linearizator = new SolutionLinearizator(graph);
 		ResultPlan plan = linearizator.linearizeSolution();
 		return plan;

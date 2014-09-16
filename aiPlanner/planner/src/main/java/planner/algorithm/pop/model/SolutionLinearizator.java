@@ -1,6 +1,7 @@
 package planner.algorithm.pop.model;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -22,7 +23,7 @@ public class SolutionLinearizator {
 	public ResultPlan linearizeSolution(){
 		ResultPlan plan = new ResultPlan();
 		List<GraphNode> planNodes = new ArrayList<GraphNode>();
-		Set<GraphNode> nodes = graph.getAllNodes();
+		Set<GraphNode> nodes = new HashSet<GraphNode>(graph.getAllNodes());
 		
 		while(nodes.size() > 0){
 			Iterator<GraphNode> nodesIter = nodes.iterator();

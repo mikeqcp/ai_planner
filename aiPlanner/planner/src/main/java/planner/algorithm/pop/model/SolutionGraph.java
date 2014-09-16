@@ -97,8 +97,6 @@ public class SolutionGraph {
 		allNodes = new HashSet<GraphNode>();
 		addNode(startNode);
 		addNode(endNode);
-		
-		unsatisfiedGoals.addAll(endNode.getPreconditions());
 	}
 
 	
@@ -111,7 +109,8 @@ public class SolutionGraph {
 	}
 
 	public boolean isConsistent() {
-		return true;
+		SolutionLinearizator linearizator = new SolutionLinearizator(this);
+		return linearizator.isConsistent();
 	}
 
 	public GraphNode getNodeById(long id){
@@ -123,7 +122,7 @@ public class SolutionGraph {
 	}
 	
 	public Set<GraphNode> getAllNodes() {
-		return new HashSet<GraphNode>(allNodes);
+		return allNodes;
 	}
 
 	public Set<GraphLink> getGraphConstraints(){
@@ -152,6 +151,7 @@ public class SolutionGraph {
 
 	public void addNode(GraphNode n){
 		allNodes.add(n);
+		unsatisfiedGoals.addAll(n.getPreconditions());
 		
 		outcomingLinks.put(n, new HashSet<GraphLink>());
 		incomingLinks.put(n, new HashSet<GraphLink>());

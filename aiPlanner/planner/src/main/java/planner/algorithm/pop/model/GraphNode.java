@@ -46,7 +46,10 @@ public class GraphNode {
 		return new BindedAction(action, binding);
 	}
 	
-	
+	public void setBinding(ParameterBinding binding) {
+		this.binding = binding;
+	}
+
 	public long getId() {
 		return id;
 	}

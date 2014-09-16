@@ -12,7 +12,7 @@ public class ConstraintProtector {
 		return null;
 	}
 	
-	public SolutionGraph protect(SolutionGraph g, GraphNode node){
+	public SolutionGraph protect(SolutionGraph g){
 		return g;
 	}
 }

@@ -43,4 +43,27 @@ public class ParameterBinding {
 	public boolean isEmpty(){
 		return binding.isEmpty();
 	}
+	
+	public boolean isExtending(ParameterBinding other){
+		for (Term t : binding.keySet()) {
+			String thisVal = getBindingFor(t);
+			String otherVal = other.getBindingFor(t);
+			
+			if(otherVal != null && otherVal != "?" && thisVal != null && thisVal != "?" && !otherVal.equalsIgnoreCase(thisVal)) return false;
+		}
+		
+		for (Term t : other.binding.keySet()) {
+			String thisVal = getBindingFor(t);
+			String otherVal = other.getBindingFor(t);
+			
+			if(otherVal != null && otherVal != "?" && thisVal != null && thisVal != "?" && !otherVal.equalsIgnoreCase(thisVal)) return false;
+		}
+		
+		return true;
+	}
+	
+	@Override
+	public String toString() {
+		return binding.toString();
+	}
 }
