@@ -42,6 +42,7 @@ public class GraphNode {
 	}
 
 	public BindedAction getBindedAction(){
+		if(action == null) return null;
 		return new BindedAction(action, binding);
 	}
 	

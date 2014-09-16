@@ -24,6 +24,7 @@ public class ResultPlan{
 	}
 	
 	public void addNextStep(Action action){
+		if(action == null) return;
 		plan.add(action);
 	}
 	

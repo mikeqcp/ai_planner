@@ -55,7 +55,7 @@ public class GraphBuilder {
 		GraphLink goalOrderLink = new OrderLink(node, updatedGoalNode);
 		updated.addLink(goalOrderLink);
 		
-		GraphLink startOrderLink = new OrderLink(updated.getStartNode(), updatedGoalNode);
+		GraphLink startOrderLink = new OrderLink(updated.getStartNode(), node);
 		updated.addLink(startOrderLink);
 		
 		return updated;

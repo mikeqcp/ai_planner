@@ -122,12 +122,24 @@ public class SolutionGraph {
 		return null;
 	}
 	
+	public Set<GraphNode> getAllNodes() {
+		return new HashSet<GraphNode>(allNodes);
+	}
+
 	public Set<GraphLink> getGraphConstraints(){
 		Set<GraphLink> constraints = new HashSet<GraphLink>();
 		for (Set<GraphLink> links : outcomingLinks.values()) {
 			constraints.addAll(links);
 		}
 		return constraints;
+	}
+	
+	public Set<GraphLink> getOutLinksFor(GraphNode n){
+		return outcomingLinks.get(n);
+	}
+	
+	public Set<GraphLink> getInLinksFor(GraphNode n){
+		return incomingLinks.get(n);
 	}
 	
 	public SubGoal nextGoalToSatisfy(){

@@ -8,6 +8,7 @@ import planner.algorithm.pop.logs.PopLogBuilder;
 import planner.algorithm.pop.model.ConstraintProtector;
 import planner.algorithm.pop.model.GraphBuilder;
 import planner.algorithm.pop.model.SolutionGraph;
+import planner.algorithm.pop.model.SolutionLinearizator;
 import planner.algorithm.pop.model.SubGoal;
 import planner.model.ProcessLog;
 import planner.model.ResultPlan;
@@ -59,7 +60,9 @@ public class PopAlgorithm extends Algorithm {
 			
 		}
 		System.out.println(graph);
-		return new ResultPlan();
+		SolutionLinearizator linearizator = new SolutionLinearizator(graph);
+		ResultPlan plan = linearizator.linearizeSolution();
+		return plan;
 	}
 	
 	@Override
