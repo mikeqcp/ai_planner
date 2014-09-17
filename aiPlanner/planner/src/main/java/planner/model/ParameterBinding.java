@@ -1,6 +1,7 @@
 package planner.model;
 
 import java.util.HashMap;
+import java.util.Set;
 
 import pddl4j.exp.term.Term;
 
@@ -26,6 +27,10 @@ public class ParameterBinding {
 	
 	public HashMap<Term, String> getBinding() {
 		return binding;
+	}
+	
+	public Set<Term> getTerms(){
+		return binding.keySet();
 	}
 	
 	public String getBindingFor(Term t){

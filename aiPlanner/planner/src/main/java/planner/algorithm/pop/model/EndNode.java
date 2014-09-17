@@ -1,9 +1,11 @@
 package planner.algorithm.pop.model;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
 import planner.model.AtomicState;
+import planner.model.ParameterBinding;
 import planner.model.State;
 
 public class EndNode extends GraphNode {
@@ -27,6 +29,7 @@ public class EndNode extends GraphNode {
 	
 	@Override
 	public String toString() {
+//		return Arrays.asList(goals).toString();
 		return "END";
 	}
 	
@@ -35,5 +38,10 @@ public class EndNode extends GraphNode {
 		EndNode clone = new EndNode(goalState);
 		clone.id = id;
 		return clone;
+	}
+	
+	@Override
+	protected ParameterBinding bindToProduce(AtomicState goal) {
+		return null;
 	}
 }

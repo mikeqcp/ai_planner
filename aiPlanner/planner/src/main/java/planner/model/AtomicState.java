@@ -84,10 +84,14 @@ public class AtomicState extends State {
 			String argAStr = thisArgs.get(i).getImage();
 			String argBStr = otherArgs.get(i).getImage();
 			
-			if(argAStr.charAt(0) == '?'){
+			if(argAStr.charAt(0) == '?' && argBStr.charAt(0) != '?'){
 				binding.addBinding(argATerm, argBStr);
-			} else {
+			} else if(argAStr.charAt(0) != '?' && argBStr.charAt(0) == '?'){
 				binding.addBinding(argATerm, argAStr);
+			} else if(argAStr == argBStr){
+				binding.addBinding(argATerm, argAStr);
+			} else {
+				return null;
 			}
 		}
 		return binding.isEmpty() ? null : binding;
@@ -122,6 +126,13 @@ public class AtomicState extends State {
 	
 	@Override
 	public boolean isAtomic() {return true;};
+	
+	public AtomicState toPositive(){
+		if(isNegated())
+			return new AtomicState(state);
+		else
+			return this;
+	}
 	
 	@Override
 	public String toString() {

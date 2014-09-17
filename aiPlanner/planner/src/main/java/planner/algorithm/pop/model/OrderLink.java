@@ -11,4 +11,9 @@ public class OrderLink extends GraphLink {
 		return new OrderLink(nodeFrom, nodeTo);
 	}
 
+	@Override
+	public boolean isRedundantFor(GraphLink[] existing) {
+		return existing.length > 0;
+	}
+
 }

@@ -39,7 +39,7 @@ public class PopAlgorithm extends Algorithm {
 		log();
 		ResultPlan finalPlan = solve(graph);
 		
-		if(finalPlan!= null)
+		if(finalPlan!= null && step < MAX_STEPS)
 			System.out.println(finalPlan);
 		else
 			System.out.println("Algorithm did't find any solution");
@@ -49,7 +49,7 @@ public class PopAlgorithm extends Algorithm {
 	}
 
 	public ResultPlan solve(SolutionGraph graph){
-		while(!graph.isComplete() && step++ < MAX_STEPS){
+		while(!graph.isComplete() && step++ <= MAX_STEPS){
 			builder = new GraphBuilder(this);
 			
 			SubGoal nextGoal = graph.nextGoalToSatisfy();

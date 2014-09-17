@@ -43,6 +43,7 @@ public class SolutionLinearizator {
 		}
 		
 		for (GraphNode sNode : planNodes) {
+			if(sNode instanceof StartNode || sNode instanceof EndNode) continue;
 			plan.addNextStep(sNode.getBindedAction());
 		}
 		

@@ -88,6 +88,17 @@ public class BindedAction extends Action {
 		return bindedStates.toArray(new AtomicState[0]);
 	}
 	
+	public boolean removes(AtomicState s){
+		if(s.hasUnbindedParams()) return false;	//wait until parameters are binded to decide
+		for (AtomicState e : getBindedEffects()) {
+			if(e.hasUnbindedParams()) continue;
+			if(e.equals(s)) return true;
+		}
+		return false;
+	}
+	
+	
+	
 	public void fillFreeParameters(Set<Constant> constants) {
 		for (Term param : this.action.getParameters()) {
 			if(!binding.containsTerm(param)){

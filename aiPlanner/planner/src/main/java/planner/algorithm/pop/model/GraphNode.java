@@ -3,6 +3,7 @@ package planner.algorithm.pop.model;
 import java.util.HashSet;
 import java.util.Set;
 
+import pddl4j.exp.term.Term;
 import planner.model.Action;
 import planner.model.AtomicState;
 import planner.model.BindedAction;
@@ -54,6 +55,11 @@ public class GraphNode {
 		return id;
 	}
 
+	protected ParameterBinding bindToProduce(AtomicState goal){
+		BindedAction a = getBindedAction();
+		return a == null ? null : a.bindToProduce(goal);
+	}
+	
 	protected AtomicState[] getAtomicPreconditions() {
 		BindedAction binded = getBindedAction();
 		return binded.getBindedPreconditions();
@@ -78,5 +84,17 @@ public class GraphNode {
 	
 	public GraphNode clone(){
 		return new GraphNode(this);
+	}
+
+	public void mergeBinding(ParameterBinding b) {
+		ParameterBinding merged = new ParameterBinding(this.binding);
+		
+		for (Term t : b.getTerms()) {
+			if(!merged.containsTerm(t)){
+				merged.addBinding(t, b.getBindingFor(t));
+			}
+		}
+		
+		setBinding(merged);
 	}
 }

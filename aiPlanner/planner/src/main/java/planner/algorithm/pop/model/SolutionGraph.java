@@ -133,6 +133,16 @@ public class SolutionGraph {
 		return constraints;
 	}
 	
+	public Set<CasualLink> getCasualLinks(){
+		Set<GraphLink> allLinks = getGraphConstraints();
+		Set<CasualLink> casualLinks = new HashSet<CasualLink>();
+		for (GraphLink graphLink : allLinks) {
+			if(graphLink instanceof CasualLink)
+				casualLinks.add((CasualLink) graphLink);
+		}
+		return casualLinks;
+	}
+	
 	public Set<GraphLink> getOutLinksFor(GraphNode n){
 		return outcomingLinks.get(n);
 	}
@@ -161,6 +171,12 @@ public class SolutionGraph {
 		GraphNode fromNode = link.getNodeFrom();
 		GraphNode toNode = link.getNodeTo();
 		
+		GraphLink[] existing = getLinks(fromNode, toNode);
+		if(existing.length > 0){
+			if(link.isRedundantFor(existing)) return;
+		}
+		if(fromNode == toNode) return;
+		
 		outcomingLinks.get(fromNode).add(link);
 		incomingLinks.get(toNode).add(link);
 	}
@@ -171,5 +187,28 @@ public class SolutionGraph {
 		
 		outcomingLinks.get(fromNode).remove(link);
 		incomingLinks.get(toNode).remove(link);
+	}
+
+	public boolean hasLink(GraphNode from, GraphNode to){
+		Set<GraphLink> outLinks = outcomingLinks.get(from);
+		for (GraphLink l : outLinks) {
+			if(l.getNodeTo() == to) return true;
+		}
+		return false;
+	}
+	
+	public GraphLink[] getLinks(GraphNode from, GraphNode to){
+		Set<GraphLink> matching =  new HashSet<GraphLink>();
+		Set<GraphLink> outLinks = outcomingLinks.get(from);
+		for (GraphLink l : outLinks) {
+			if(l.getNodeTo() == to)
+				matching.add(l);
+		}
+		return matching.toArray(new GraphLink[0]);
+	}
+	
+	@Override
+	public String toString() {
+		return allNodes.toString();
 	}
 }

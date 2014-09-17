@@ -20,5 +20,8 @@ public class SubGoal {
 		return goal;
 	}
 	
-	
+	@Override
+	public String toString() {
+		return goal.toString();
+	}
 }

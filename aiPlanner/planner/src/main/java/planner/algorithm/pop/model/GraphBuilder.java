@@ -36,16 +36,20 @@ public class GraphBuilder {
 		Set<GraphNode> applicableNodes = findNodesToSatisfy(precondition);
 		for (GraphNode n : applicableNodes) {
 			SolutionGraph updatedGraph = insertLinksForAction(n, goal);
-			SolutionGraph protectedGraph = protector.protect(updatedGraph);
-			if(protectedGraph != null) results.add(protectedGraph);
+			Set<SolutionGraph> protectedGraph = protector.protect(updatedGraph);
+			for (SolutionGraph sol : protectedGraph) {
+				if(sol != null) results.add(sol);
+			}
 		}
 		
 		Set<BindedAction> applicable = Utils.findApplicableActions(precondition, parent.getActions(), parent.getConstants());
 		for (BindedAction a : applicable) {
 			GraphNode actionNode = new GraphNode(a);
 			SolutionGraph updatedGraph = insertAction(actionNode, goal);
-			SolutionGraph protectedGraph = protector.protect(updatedGraph);
-			if(protectedGraph != null) results.add(protectedGraph);
+			Set<SolutionGraph> protectedGraph = protector.protect(updatedGraph);
+			for (SolutionGraph sol : protectedGraph) {
+				if(sol != null) results.add(sol);
+			}
 		}
 		
 		return results;
@@ -53,13 +57,11 @@ public class GraphBuilder {
 	
 	private Set<GraphNode> findNodesToSatisfy(AtomicState goal){
 		Set<GraphNode> nodes  = new HashSet<GraphNode>();
-		for (GraphNode n : this.graph.getAllNodes()) {
-			BindedAction a = n.getBindedAction();
-			
-			ParameterBinding binding = a == null ? null : a.bindToProduce(goal);
+		for (GraphNode n : this.graph.getAllNodes()) {			
+			ParameterBinding binding = n.bindToProduce(goal);
 			
 			if(binding != null){
-				n.setBinding(binding);
+				n.mergeBinding(binding);
 				nodes.add(n);
 			}
 		}

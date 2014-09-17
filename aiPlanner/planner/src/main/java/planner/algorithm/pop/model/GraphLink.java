@@ -42,4 +42,12 @@ public abstract class GraphLink {
 	public String toString() {
 		return nodeFrom.toString() + " --> " + nodeTo.toString();
 	}
+
+
+
+	/**
+	 * @param existing - existing links between same nodes
+	 * @return True if this link is redundant with the existing ones
+	 */
+	public abstract boolean isRedundantFor(GraphLink[] existing);
 }
