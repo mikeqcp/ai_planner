@@ -25,6 +25,9 @@ public class ConstraintProtector {
 			protectedGraphs.addAll(solutions);
 		}
 		
+		if(unprotected.size() == 0)
+			protectedGraphs.add(g);
+		
 		return protectedGraphs;
 	}
 	
@@ -32,10 +35,10 @@ public class ConstraintProtector {
 		Set<SolutionGraph> solutions = new HashSet<SolutionGraph>();
 		
 		SolutionGraph promoted = promoteToProtect(t);
-		if(promoted.isConsistent()) solutions.add(promoted);
+		if(promoted != null && promoted.isConsistent()) solutions.add(promoted);
 		
 		SolutionGraph demoted = demoteToProtect(t);
-		if(demoted.isConsistent()) solutions.add(demoted);
+		if(demoted != null && demoted.isConsistent()) solutions.add(demoted);
 		
 		return solutions;
 	}
@@ -45,6 +48,8 @@ public class ConstraintProtector {
 		
 		GraphNode threateningNode = g.getNodeById(t.getNode().getId());
 		GraphNode threatenedNode = g.getNodeById(t.getLink().getNodeFrom().getId());
+		
+		if(threatenedNode instanceof StartNode) return null;
 
 		GraphLink protectiveLink = new OrderLink(threateningNode, threatenedNode);
 		g.addLink(protectiveLink);
@@ -58,6 +63,8 @@ public class ConstraintProtector {
 		GraphNode threateningNode = g.getNodeById(t.getNode().getId());
 		GraphNode threatenedNode = g.getNodeById(t.getLink().getNodeTo().getId());
 
+		if(threatenedNode instanceof EndNode) return null;
+		
 		GraphLink protectiveLink = new OrderLink(threatenedNode, threateningNode);
 		g.addLink(protectiveLink);
 		
@@ -95,8 +102,10 @@ public class ConstraintProtector {
 		Set<Threat> threats = new HashSet<Threat>();
 		AtomicState subgoal = link.getAchieves();
 		for (GraphNode n : graph.getAllNodes()) {
-			if(n.getBindedAction() != null && n.getBindedAction().removes(subgoal))
-				threats.add(new Threat(link, n));
+			if(n.getBindedAction() != null && n.getBindedAction().removes(subgoal)){
+				if(link.getNodeFrom() != n)
+					threats.add(new Threat(link, n));
+			}
 		}
 		return threats;
 	}

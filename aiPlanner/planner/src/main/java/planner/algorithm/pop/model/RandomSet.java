@@ -37,4 +37,13 @@ public class RandomSet<E> extends ArrayList<E> {
 		return this.get(index);
 	}
 	
+	
+	@Override
+	public boolean addAll(Collection<? extends E> c) {
+		for (E e : c) {
+			if(!contains(e))
+				add(e);
+		}
+		return true;
+	}
 }

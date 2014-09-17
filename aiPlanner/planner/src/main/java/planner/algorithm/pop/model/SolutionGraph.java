@@ -125,7 +125,7 @@ public class SolutionGraph {
 		return allNodes;
 	}
 
-	public Set<GraphLink> getGraphConstraints(){
+	public Set<GraphLink> getAllLinks(){
 		Set<GraphLink> constraints = new HashSet<GraphLink>();
 		for (Set<GraphLink> links : outcomingLinks.values()) {
 			constraints.addAll(links);
@@ -134,7 +134,7 @@ public class SolutionGraph {
 	}
 	
 	public Set<CasualLink> getCasualLinks(){
-		Set<GraphLink> allLinks = getGraphConstraints();
+		Set<GraphLink> allLinks = getAllLinks();
 		Set<CasualLink> casualLinks = new HashSet<CasualLink>();
 		for (GraphLink graphLink : allLinks) {
 			if(graphLink instanceof CasualLink)

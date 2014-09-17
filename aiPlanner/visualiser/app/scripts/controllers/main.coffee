@@ -12,7 +12,7 @@ angular.module('visualiserApp')
 		$http.get('/data/domain.txt').then (response) ->
 			$scope.domain = response.data
 
-		$http.get('/data/instance.txt').then (response) ->
+		$http.get('/data/instance2.txt').then (response) ->
 			$scope.instance = response.data
 
 		$http.defaults.headers.post =
