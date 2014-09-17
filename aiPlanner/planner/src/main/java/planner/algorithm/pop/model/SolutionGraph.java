@@ -87,8 +87,8 @@ public class SolutionGraph {
 	}
 	
 	public SolutionGraph(State initialState, State goal) {
-		this.endNode = new EndNode(goal);
 		this.startNode = new StartNode(initialState);
+		this.endNode = new EndNode(goal);
 		this.unsatisfiedGoals = new RandomSet<SubGoal>();
 		
 		outcomingLinks = new HashMap<GraphNode, Set<GraphLink>>();
@@ -97,6 +97,9 @@ public class SolutionGraph {
 		allNodes = new HashSet<GraphNode>();
 		addNode(startNode);
 		addNode(endNode);
+		
+		GraphLink initialLink = new OrderLink(startNode, endNode);
+		addLink(initialLink);
 	}
 
 	

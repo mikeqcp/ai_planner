@@ -83,7 +83,31 @@
 	  padding: 2px;
 	}
   }
+
+  //POP
+  #graph-container {
+	position: relative;
+  }
+
+  .step-goal-container {
+	> span {font-weight: bold;}
+  }
+
+  .node {
+	width: auto;
+	position: absolute;
+	display: inline-block;
+	margin: 10px;
+	min-width: 100px;
+
+	> div {
+	  border: 1px solid;
+	  margin: -1px -6px;
+	  padding: 2px;
+	}
+  }
 }
+
 
 ._jsPlumb_connector > path {
   stroke: #1e8151 ;
