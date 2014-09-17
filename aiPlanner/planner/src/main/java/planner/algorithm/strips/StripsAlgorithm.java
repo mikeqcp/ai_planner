@@ -20,10 +20,8 @@ import planner.model.State;
 
 public class StripsAlgorithm extends Algorithm {
 	private State currentState;
-	private Set<Action> actions;
 	private ResultPlan plan;
 	private StripsStack stack;
-	private Set<Constant> constants;
 	private StripsLogBuilder logBuilder;
 
 	public StripsAlgorithm(PDDLObject input) {
