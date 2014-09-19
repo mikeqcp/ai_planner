@@ -5,7 +5,7 @@ import java.util.Set;
 import pddl4j.PDDLObject;
 import planner.algorithm.Algorithm;
 import planner.algorithm.pop.logs.PopLogBuilder;
-import planner.algorithm.pop.model.ConstraintProtector;
+import planner.algorithm.pop.model.ThreatProtector;
 import planner.algorithm.pop.model.GraphBuilder;
 import planner.algorithm.pop.model.SolutionGraph;
 import planner.algorithm.pop.model.SolutionLinearizator;
@@ -15,10 +15,9 @@ import planner.model.ProcessLog;
 import planner.model.ResultPlan;
 
 public class PopAlgorithm extends Algorithm {
-	private static final int MAX_ITERATIONS = 1000;
+	private static final int MAX_ITERATIONS = 2000;
 
 	private PopLogBuilder logBuilder;
-	private ConstraintProtector protector;
 	private GraphBuilder builder;
 	private long iteration = 0;
 
@@ -27,7 +26,6 @@ public class PopAlgorithm extends Algorithm {
 		initializeStructures();
 
 		this.logBuilder = new PopLogBuilder();
-		this.protector = new ConstraintProtector();
 	}
 
 	private void initializeStructures() {
@@ -56,12 +54,15 @@ public class PopAlgorithm extends Algorithm {
 
 	public SolutionGraph solve(SolutionGraph graph) {
 		while (!graph.isComplete()) {
-			if(iteration++ > MAX_ITERATIONS) return null;
+			if(iteration >= MAX_ITERATIONS) return null;
+			iteration++;
 			builder = new GraphBuilder(this);
 
 			SubGoal nextGoal = graph.nextGoalToSatisfy();
 			Set<SolutionGraph> options = builder.satisfyGoal(graph, nextGoal);
-
+			
+			Set<SolutionGraph> options2 = builder.satisfyGoal(graph, nextGoal);
+			
 			for (SolutionGraph o : options) {
 				if(o.getAllNodes().size() > (maxPlanLength + 2)) continue;	//count actions without start and end
 				

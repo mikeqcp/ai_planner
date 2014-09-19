@@ -33,6 +33,11 @@ public class StartNode extends GraphNode {
 	}
 	
 	@Override
+	public ParameterBinding getBinding() {
+		return new ParameterBinding();
+	}
+	
+	@Override
 	public Set<SubGoal> getPreconditions() {
 		return new HashSet<SubGoal>();
 	}
@@ -48,5 +53,10 @@ public class StartNode extends GraphNode {
 		StartNode clone = new StartNode(initState);
 		clone.id = id;
 		return clone;
+	}
+	
+	@Override
+	public boolean hasUnbindedParams() {
+		return false;
 	}
 }

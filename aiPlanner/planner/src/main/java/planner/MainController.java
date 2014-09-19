@@ -24,17 +24,6 @@ import data.PddlParser;
 public class MainController {
 	private PddlParser parser = new PddlParser();
 	
-	/**
-	 * Test method to check connectivity
-	 * @return Status OK
-	 */
-	@GET
-	@Produces(MediaType.APPLICATION_JSON)
-	@Path("test")
-	public Response getStatusOk() {
-		return Response.status(Status.OK).header("Access-Control-Allow-Origin", "*").build();
-	}
-	
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("solve")

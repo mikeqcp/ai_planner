@@ -25,6 +25,7 @@ public class GraphNode {
 
 	public GraphNode(Action action) {
 		this.action = action;
+		this.binding = new ParameterBinding();
 	}
 	
 	public GraphNode(BindedAction action) {
@@ -51,12 +52,16 @@ public class GraphNode {
 		this.binding = binding;
 	}
 
+	public ParameterBinding getBinding() {
+		return binding;
+	}
+
 	public long getId() {
 		return id;
 	}
 
 	protected ParameterBinding bindToProduce(AtomicState goal){
-		BindedAction a = getBindedAction();
+		BindedAction a = getBindedAction();		
 		return a == null ? null : a.bindToProduce(goal);
 	}
 	
@@ -89,12 +94,16 @@ public class GraphNode {
 	public void mergeBinding(ParameterBinding b) {
 		ParameterBinding merged = new ParameterBinding(this.binding);
 		
-		for (Term t : b.getTerms()) {
+		for (String t : b.getTerms()) {
 			if(!merged.containsTerm(t)){
 				merged.addBinding(t, b.getBindingFor(t));
 			}
 		}
 		
 		setBinding(merged);
+	}
+	
+	public boolean hasUnbindedParams(){
+		return getBindedAction().hasUnbindedParams();
 	}
 }

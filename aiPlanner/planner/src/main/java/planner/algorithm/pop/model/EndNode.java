@@ -44,4 +44,14 @@ public class EndNode extends GraphNode {
 	protected ParameterBinding bindToProduce(AtomicState goal) {
 		return null;
 	}
+	
+	@Override
+	public boolean hasUnbindedParams() {
+		return false;
+	}
+	
+	@Override
+	public ParameterBinding getBinding() {
+		return new ParameterBinding();
+	}
 }

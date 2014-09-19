@@ -31,6 +31,10 @@
 	margin-top: 10px;
   }
 
+  ._jsPlumb_overlay {
+	min-width: 200px;
+  }
+
 //  STRIPS
   .final-plan-container, .stack-container, .current-plan-container, .current-state-container {
 	> span {font-weight: bold;}
@@ -104,6 +108,7 @@
 	  border: 1px solid;
 	  margin: -1px -6px;
 	  padding: 2px;
+	  text-align: center;
 	}
   }
 }

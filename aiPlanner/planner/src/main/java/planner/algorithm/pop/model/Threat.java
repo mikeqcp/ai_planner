@@ -15,4 +15,9 @@ public class Threat {
 	public GraphNode getNode() {
 		return node;
 	}
+	
+	@Override
+	public String toString() {
+		return link.toString() + " by " + node.toString();
+	}
 }

@@ -29,6 +29,10 @@ public class AtomicState extends State {
 		return state;
 	}
 	
+	public String getPredicate(){
+		return state.getPredicate();
+	}
+	
 	public AtomicState(State state) {
 		if(state instanceof AtomicState){
 			this.state = ((AtomicState)state).state;
@@ -90,11 +94,14 @@ public class AtomicState extends State {
 				binding.addBinding(argATerm, argAStr);
 			} else if(argAStr == argBStr){
 				binding.addBinding(argATerm, argAStr);
+			} else if(argAStr.charAt(0) == '?' && argBStr.charAt(0) == '?'){
+				continue;
 			} else {
 				return null;
 			}
 		}
-		return binding.isEmpty() ? null : binding;
+//		return binding.isEmpty() ? null : binding;
+		return binding;
 	}
 	
 	public boolean isNegated(){
@@ -119,6 +126,7 @@ public class AtomicState extends State {
 		binded.state = binded.state.apply(subst);
 		return binded;
 	}
+	
 
 	public Exp[] getTerms(){
 		return new Exp[] {state};	//single state

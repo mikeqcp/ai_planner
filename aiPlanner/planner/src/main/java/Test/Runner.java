@@ -11,6 +11,7 @@ import planner.algorithm.regression.RegressionAlgorithm;
 import planner.algorithm.strips.StripsAlgorithm;
 import planner.model.ProcessLog;
 import planner.model.ResultPlan;
+import planner.model.interfaces.ProcessStateDump;
 import data.PddlParser;
 
 public class Runner {
@@ -27,16 +28,18 @@ public class Runner {
 		
 		//run algorithm
 		
-		for (int i = 0; i < 1; i++) {
+		for (int i = 0; i < 100; i++) {
 			System.out.println("No." + i);
 //			Algorithm alg = new StripsAlgorithm(problemData);
 //			Algorithm alg = new RegressionAlgorithm(problemData);
 			Algorithm alg = new PopAlgorithm(problemData);
 			
+			alg.setMaxPlanLength(4);
+			
 			ResultPlan plan = alg.solve();
 			ProcessLog log = alg.getLog();
 			
-			System.out.println("Algorithm completed successfully.");
+			System.out.println("Ended.");
 			System.out.println("---");
 		}
 	}

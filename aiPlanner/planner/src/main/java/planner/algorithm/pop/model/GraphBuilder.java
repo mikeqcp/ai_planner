@@ -1,7 +1,8 @@
 package planner.algorithm.pop.model;
 
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.LinkedHashSet;
+import java.util.Map;
 import java.util.Set;
 
 import planner.algorithm.Algorithm;
@@ -17,11 +18,13 @@ import planner.model.ParameterBinding;
 public class GraphBuilder {
 	private Algorithm parent;
 	private SolutionGraph graph;
-	private ConstraintProtector protector;
+	private ThreatProtector protector;
+	private VariableUnifier unifier;
 	
 	public GraphBuilder(Algorithm parent) {
 		this.parent = parent;
-		this.protector = new ConstraintProtector();
+		this.protector = new ThreatProtector();
+		this.unifier = new VariableUnifier();
 	}
 	
 	/**
@@ -33,19 +36,21 @@ public class GraphBuilder {
 		Set<SolutionGraph> results = new LinkedHashSet<SolutionGraph>();
 		AtomicState precondition = goal.getGoal();
 
-		Set<GraphNode> applicableNodes = findNodesToSatisfy(precondition);
-		for (GraphNode n : applicableNodes) {
-			SolutionGraph updatedGraph = insertLinksForAction(n, goal);
+		Map<GraphNode, ParameterBinding> applicableNodes = findNodesToSatisfy(precondition);
+		for (GraphNode n : applicableNodes.keySet()) {
+			SolutionGraph updatedGraph = insertLinksForAction(n, applicableNodes.get(n), goal);
+			if(updatedGraph == null) continue;
 			Set<SolutionGraph> protectedGraph = protector.protect(updatedGraph);
 			for (SolutionGraph sol : protectedGraph) {
 				if(sol != null) results.add(sol);
 			}
 		}
 		
-		Set<BindedAction> applicable = Utils.findApplicableActions(precondition, parent.getActions(), parent.getConstants());
+		Set<BindedAction> applicable = Utils.findApplicableActions(precondition, parent.getActions(), parent.getConstants(), false);
 		for (BindedAction a : applicable) {
 			GraphNode actionNode = new GraphNode(a);
 			SolutionGraph updatedGraph = insertAction(actionNode, goal);
+			if(updatedGraph == null) continue;
 			Set<SolutionGraph> protectedGraph = protector.protect(updatedGraph);
 			for (SolutionGraph sol : protectedGraph) {
 				if(sol != null) results.add(sol);
@@ -55,26 +60,30 @@ public class GraphBuilder {
 		return results;
 	}
 	
-	private Set<GraphNode> findNodesToSatisfy(AtomicState goal){
-		Set<GraphNode> nodes  = new HashSet<GraphNode>();
+	private Map<GraphNode, ParameterBinding> findNodesToSatisfy(AtomicState goal){
+		Map<GraphNode, ParameterBinding> nodes  = new HashMap<GraphNode, ParameterBinding>();
 		for (GraphNode n : this.graph.getAllNodes()) {			
 			ParameterBinding binding = n.bindToProduce(goal);
 			
 			if(binding != null){
-				n.mergeBinding(binding);
-				nodes.add(n);
+//				n.mergeBinding(binding);
+				nodes.put(n, binding);
 			}
 		}
 		return nodes;
 	}
 	
-	private SolutionGraph insertLinksForAction(GraphNode node, SubGoal goal){
+	private SolutionGraph insertLinksForAction(GraphNode node, ParameterBinding binding, SubGoal goal){
 		SolutionGraph updated = new SolutionGraph(graph);
 		GraphNode updatedNode = updated.getNodeById(node.getId());
 		GraphNode updatedGoalNode = updated.getNodeById(goal.getNode().getId());
 		
-		GraphLink casualLink = new CasualLink(updatedNode, updatedGoalNode, goal.getGoal());
+		updatedNode.mergeBinding(binding);
+		
+		CasualLink casualLink = new CasualLink(updatedNode, updatedGoalNode, goal);
 		updated.addLink(casualLink);
+		
+		if(!unifier.unifyVariables(updated, casualLink)) return null;
 		
 		GraphLink goalOrderLink = new OrderLink(updatedNode, updatedGoalNode);
 		updated.addLink(goalOrderLink);
@@ -88,8 +97,10 @@ public class GraphBuilder {
 		updated.addNode(node);
 		GraphNode updatedGoalNode = updated.getNodeById(goal.getNode().getId());
 		
-		GraphLink casualLink = new CasualLink(node, updatedGoalNode, goal.getGoal());
+		CasualLink casualLink = new CasualLink(node, updatedGoalNode, goal);
 		updated.addLink(casualLink);
+		
+		if(!unifier.unifyVariables(updated, casualLink)) return null;
 		
 		GraphLink goalOrderLink = new OrderLink(node, updatedGoalNode);
 		updated.addLink(goalOrderLink);

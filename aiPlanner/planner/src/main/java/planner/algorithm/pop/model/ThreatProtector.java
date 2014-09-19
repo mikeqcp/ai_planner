@@ -6,7 +6,7 @@ import java.util.Set;
 
 import planner.model.AtomicState;
 
-public class ConstraintProtector {
+public class ThreatProtector {
 	private SolutionGraph graph;
 	
 	/**
@@ -115,8 +115,9 @@ public class ConstraintProtector {
 		Set<Threat> threats = new HashSet<Threat>();
 		AtomicState subgoal = link.getAchieves();
 		for (GraphNode n : graph.getAllNodes()) {
-			if(n.getBindedAction() != null && n.getBindedAction().removes(subgoal)){
-				if(link.getNodeFrom() != n)
+//			if(n.getBindedAction() != null && n.getBindedAction().canRemove(subgoal)){
+			if(n.getBindedAction() != null && !n.hasUnbindedParams() && !subgoal.hasUnbindedParams() && n.getBindedAction().removes(subgoal)){
+				if(link.getNodeTo() != n && link.getNodeFrom() != n)
 					threats.add(new Threat(link, n));
 			}
 		}

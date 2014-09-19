@@ -3,28 +3,32 @@ package planner.algorithm.pop.model;
 import planner.model.AtomicState;
 
 public class CasualLink extends GraphLink {
-	private AtomicState achieves;
+	private SubGoal subgoal;
 	
 
-	public CasualLink(GraphNode nodeFrom, GraphNode nodeTo, AtomicState achieves) {
+	public CasualLink(GraphNode nodeFrom, GraphNode nodeTo, SubGoal subgoal) {
 		super(nodeFrom, nodeTo);
-		this.achieves = achieves;
+		this.subgoal = subgoal;
 	}
 
 	
-	
+	public SubGoal getSubgoal() {
+		return subgoal;
+	}
+
+
 	public AtomicState getAchieves() {
-		return achieves;
+		return subgoal.getGoal();
 	}
 
 	@Override
 	public String toString() {
-		return nodeFrom.toString() + " -- " + achieves.toString() + " --> " + nodeTo.toString();
+		return nodeFrom.toString() + " -- " + getAchieves().toString() + " --> " + nodeTo.toString();
 	}
 
 	@Override
 	public GraphLink clone() {
-		return new CasualLink(this.nodeFrom, this.nodeTo, this.achieves);
+		return new CasualLink(this.nodeFrom, this.nodeTo, this.subgoal);
 	}
 
 
@@ -34,7 +38,7 @@ public class CasualLink extends GraphLink {
 		for (GraphLink l : existing) {
 			if(l instanceof CasualLink){
 				CasualLink casual = (CasualLink)l;
-				if(casual.achieves.equals(this.achieves)) return true;
+				if(casual.getAchieves().equals(this.getAchieves())) return true;
 			}
 		}
 		return false;
