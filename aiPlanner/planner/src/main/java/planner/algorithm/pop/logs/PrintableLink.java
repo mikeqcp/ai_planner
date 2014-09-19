@@ -22,6 +22,14 @@ public class PrintableLink {
 		}
 	}
 
+	
+	
+	public void setParam(String param) {
+		this.param = param;
+	}
+
+
+
 	public long getIdFrom() {
 		return idFrom;
 	}

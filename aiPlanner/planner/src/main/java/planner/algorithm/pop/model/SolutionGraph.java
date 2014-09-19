@@ -103,6 +103,11 @@ public class SolutionGraph {
 	}
 
 	
+	
+	public RandomSet<SubGoal> getUnsatisfiedGoals() {
+		return unsatisfiedGoals;
+	}
+
 	public GraphNode getStartNode() {
 		return startNode;
 	}

@@ -61,5 +61,9 @@ public class PopStateDump implements ProcessStateDump {
 	public void setGoal(SubGoal goal) {
 		if(goal != null) this.goal = goal.getGoal().toString();
 	}
+	
+	public String getGoals(){
+		return graph.getGoals();
+	}
 
 }

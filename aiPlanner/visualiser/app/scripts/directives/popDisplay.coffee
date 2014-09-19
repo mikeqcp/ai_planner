@@ -10,10 +10,12 @@ angular.module('visualiserApp')
 			step: '='
 
 		link: (scope, elem) ->
+			containerWidth = $('.container').width()
 			plumbInstance = null
 			nextNodePos = {x: 0, y:0}
 			nodeMargin = {x:150, y: 300}
 			scope.nodesCount = 0
+			odd = false
 
 			createDOM = (node) ->
 				dom = $('<div></div>').addClass('node')
@@ -23,7 +25,12 @@ angular.module('visualiserApp')
 				dom.append $('<div></div>').append(node.id).addClass('node-id')
 				dom.append $('<div></div>').append(node.label).addClass('node-label')
 
-				dom.css {left: nextNodePos.x, top: nextNodePos.y}
+				if odd
+					dom.css {left:0, top: nextNodePos.y}
+				else
+					dom.css {left: containerWidth - 200, top: nextNodePos.y}
+
+				odd = not odd
 				nextNodePos.y += nodeMargin.y
 				dom
 
@@ -67,7 +74,7 @@ angular.module('visualiserApp')
 					HoverPaintStyle : {strokeStyle:"#1e8151", lineWidth:2 },
 					ConnectionOverlays : [
 						[ "Arrow", {
-							location:1,
+							location:0.9,
 							id:"arrow",
 							length:14,
 							foldback:0.1,
@@ -88,6 +95,7 @@ angular.module('visualiserApp')
 				link.setLabel label
 
 			refreshGraph = () ->
+				odd = false
 				scope.nodesCount = 0
 				scope.validNodesCount = 0
 				jsPlumb.detachEveryConnection()
