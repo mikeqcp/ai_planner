@@ -1,6 +1,7 @@
 package planner.algorithm.pop.model;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 import planner.model.AtomicState;
@@ -25,7 +26,6 @@ public class ConstraintProtector {
 			Set<SolutionGraph> protectedGraphs = new HashSet<SolutionGraph>();
 			for (SolutionGraph solutionGraph : queue) {
 				Set<SolutionGraph> solutions = protectThreat(t, solutionGraph);
-//				if(solutions.size() == 0) return solutions;	//unable to protect
 				protectedGraphs.addAll(solutions);
 			}
 			queue = protectedGraphs;
@@ -33,6 +33,13 @@ public class ConstraintProtector {
 		
 		if(unprotected.size() == 0)
 			queue.add(g);
+		
+		Iterator<SolutionGraph> iter = queue.iterator();
+		while(iter.hasNext()){
+			SolutionGraph iterGraph = iter.next();
+			if(!iterGraph.isConsistent())
+				iter.remove();
+		}
 		
 		return queue;
 	}

@@ -24,22 +24,22 @@ public class SolutionLinearizator {
 		ResultPlan plan = new ResultPlan();
 		List<GraphNode> planNodes = new ArrayList<GraphNode>();
 		Set<GraphNode> nodes = new HashSet<GraphNode>(graph.getAllNodes());
+		boolean selected;
 		
 		while(nodes.size() > 0){
+			selected = false;
 			Iterator<GraphNode> nodesIter = nodes.iterator();
-			GraphNode selectedNode = null;
 			while(nodesIter.hasNext()){
 				GraphNode n = nodesIter.next();
 				
 				if(canBeInserted(n, planNodes)){
-					selectedNode = n;
+					planNodes.add(n);
+					nodes.remove(n);
+					selected = true;
 					break;
 				}
 			}
-			
-			if(selectedNode == null) return null;
-			planNodes.add(selectedNode);
-			nodes.remove(selectedNode);
+			if(!selected) return null;
 		}
 		
 		for (GraphNode sNode : planNodes) {
