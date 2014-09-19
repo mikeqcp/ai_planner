@@ -38,7 +38,8 @@ public class PopAlgorithm extends Algorithm {
 		SolutionGraph graph = new SolutionGraph(initialState, goal);
 		log(graph, null);
 		SolutionGraph finalGraph = solve(graph);
-		log(finalGraph, null);
+		if(finalGraph != null)
+			log(finalGraph, null);
 		
 		ResultPlan finalPlan = finalGraph != null ? linearize(finalGraph) : new ResultPlan();
 		

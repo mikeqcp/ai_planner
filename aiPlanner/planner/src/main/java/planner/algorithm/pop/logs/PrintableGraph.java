@@ -38,8 +38,11 @@ public class PrintableGraph {
 				merged.add(l);
 			} else {
 				String mergedLabel = mergedLink.getParam();
-				if(!l.getParam().equals(""))
-					mergedLabel = mergedLabel + " , " + l.getParam();
+				String otherLabel = l.getParam();
+				String joiner = "";
+				if(!otherLabel.equals(""))
+					joiner = (mergedLabel != "") ? " , " : ""; 
+					mergedLabel = mergedLabel + joiner + otherLabel;
 				mergedLink.setParam(mergedLabel);
 			}
 		}
