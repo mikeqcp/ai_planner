@@ -23,6 +23,7 @@ public abstract class Algorithm {
 	protected Set<Action> actions;
 	protected State initialState;
 	protected State goal;
+	protected int maxPlanLength = 10;
 	
 	public Algorithm(PDDLObject input) {
 		initializeProblemData(input);
@@ -99,5 +100,8 @@ public abstract class Algorithm {
 		return actions;
 	}
 
-	
+	public void setMaxPlanLength(int maxPlanLength) {
+		this.maxPlanLength = maxPlanLength;
+	}
+
 }

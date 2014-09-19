@@ -9,7 +9,9 @@
 						<div text-input data-content="instance" data-title="instance"></div>
 
 						<a class="btn btn-lg btn-success" ng-click="solve()">Solve<span class="glyphicon glyphicon-ok"></span></a>
+
 						<select ng-options="alg.label for alg in algorithms" ng-model="selectedAlgorithm"></select>
+						<span class="limit-wrapper"> <label for="limit">Max result plan length:</label> <input type="number" id="limit" ng-model="limit"/> </span>
 					</div>
 
 					<div class="solution">

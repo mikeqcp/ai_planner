@@ -15,12 +15,12 @@ import planner.model.ProcessLog;
 import planner.model.ResultPlan;
 
 public class PopAlgorithm extends Algorithm {
-	private static final int MAX_STEPS = 50;
+	private static final int MAX_ITERATIONS = 1000;
 
 	private PopLogBuilder logBuilder;
 	private ConstraintProtector protector;
 	private GraphBuilder builder;
-	private long step = 0;
+	private long iteration = 0;
 
 	public PopAlgorithm(PDDLObject input) {
 		super(input);
@@ -37,42 +37,46 @@ public class PopAlgorithm extends Algorithm {
 	public ResultPlan solve() {
 		SolutionGraph graph = new SolutionGraph(initialState, goal);
 		log(graph, null);
-		ResultPlan finalPlan = solve(graph);
+		SolutionGraph finalGraph = solve(graph);
+		log(finalGraph, null);
+		
+		ResultPlan finalPlan = finalGraph != null ? linearize(finalGraph) : new ResultPlan();
+		
+		logBuilder.setFinalPlan(finalPlan);
 
-		if (finalPlan != null && step < MAX_STEPS)
+		if (finalGraph != null)
 			System.out.println(finalPlan);
 		else
 			System.out.println("Algorithm did't find any solution");
 
-		System.out.println("Finished in " + step + " steps.");
+		System.out.println("Finished in " + iteration + " iterations.");
 		return finalPlan;
 	}
 
-	public ResultPlan solve(SolutionGraph graph) {
-		while (!graph.isComplete() && step++ <= MAX_STEPS) {
+	public SolutionGraph solve(SolutionGraph graph) {
+		while (!graph.isComplete()) {
+			if(iteration++ > MAX_ITERATIONS) return null;
 			builder = new GraphBuilder(this);
 
 			SubGoal nextGoal = graph.nextGoalToSatisfy();
 			Set<SolutionGraph> options = builder.satisfyGoal(graph, nextGoal);
 
 			for (SolutionGraph o : options) {
+				if(o.getAllNodes().size() > (maxPlanLength + 2)) continue;	//count actions without start and end
+				
 				log(o, nextGoal);
-				ResultPlan solution = solve(o);
+				SolutionGraph solution = solve(o);
 				if (solution != null)
 					return solution;
 			}
-
-			if (options.isEmpty())
-				return null;
-
+			return null;
 		}
-		
+		return graph;	//return if complete
+	}
+	
+	private ResultPlan linearize(SolutionGraph graph){
 		SolutionLinearizator linearizator = new SolutionLinearizator(graph);
-		ResultPlan plan = linearizator.linearizeSolution();
-		
-		logBuilder.setFinalPlan(plan);
-		log(graph, null);	//final solution
-		
+		ResultPlan plan = linearizator.linearizeSolution();		
 		return plan;
 	}
 

@@ -8,6 +8,7 @@ angular.module('visualiserApp')
 			{id:'pop', label:'POP'}
 		]
 		$scope.selectedAlgorithm = $scope.algorithms[0]
+		$scope.limit = 2
 
 		$http.get('/data/domain.txt').then (response) ->
 			$scope.domain = response.data
@@ -28,6 +29,7 @@ angular.module('visualiserApp')
 				type: $scope.selectedAlgorithm.id
 				domain: $scope.domain
 				instance: $scope.instance
+				limit: $scope.limit
 
 			$http.post("http://127.0.0.1:8085/planner/solve", $.param data)
 			.then (d) ->

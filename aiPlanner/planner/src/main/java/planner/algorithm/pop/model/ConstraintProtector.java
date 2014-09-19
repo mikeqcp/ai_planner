@@ -15,35 +15,41 @@ public class ConstraintProtector {
 	 */
 	public Set<SolutionGraph> protect(SolutionGraph g){
 		this.graph = g;
-		Set<SolutionGraph> protectedGraphs = new HashSet<SolutionGraph>();
+		Set<SolutionGraph> queue = new HashSet<SolutionGraph>();
+		queue.add(g);
 		
 		Set<Threat> possibleThreats = findPotentialThreats();
 		Set<Threat> unprotected = selectUnprotectedThreats(possibleThreats);
 		
 		for (Threat t : unprotected) {
-			Set<SolutionGraph> solutions = protectThreat(t);
-			protectedGraphs.addAll(solutions);
+			Set<SolutionGraph> protectedGraphs = new HashSet<SolutionGraph>();
+			for (SolutionGraph solutionGraph : queue) {
+				Set<SolutionGraph> solutions = protectThreat(t, solutionGraph);
+//				if(solutions.size() == 0) return solutions;	//unable to protect
+				protectedGraphs.addAll(solutions);
+			}
+			queue = protectedGraphs;
 		}
 		
 		if(unprotected.size() == 0)
-			protectedGraphs.add(g);
+			queue.add(g);
 		
-		return protectedGraphs;
+		return queue;
 	}
 	
-	private Set<SolutionGraph> protectThreat(Threat t) {
+	private Set<SolutionGraph> protectThreat(Threat t, SolutionGraph g) {
 		Set<SolutionGraph> solutions = new HashSet<SolutionGraph>();
 		
-		SolutionGraph promoted = promoteToProtect(t);
+		SolutionGraph promoted = promoteToProtect(t, g);
 		if(promoted != null && promoted.isConsistent()) solutions.add(promoted);
 		
-		SolutionGraph demoted = demoteToProtect(t);
+		SolutionGraph demoted = demoteToProtect(t, g);
 		if(demoted != null && demoted.isConsistent()) solutions.add(demoted);
 		
 		return solutions;
 	}
 	
-	private SolutionGraph promoteToProtect(Threat t){
+	private SolutionGraph promoteToProtect(Threat t, SolutionGraph graph){
 		SolutionGraph g = new SolutionGraph(graph);
 		
 		GraphNode threateningNode = g.getNodeById(t.getNode().getId());
@@ -57,7 +63,7 @@ public class ConstraintProtector {
 		return g;
 	}
 	
-	private SolutionGraph demoteToProtect(Threat t){
+	private SolutionGraph demoteToProtect(Threat t, SolutionGraph graph){
 		SolutionGraph g = new SolutionGraph(graph);
 		
 		GraphNode threateningNode = g.getNodeById(t.getNode().getId());

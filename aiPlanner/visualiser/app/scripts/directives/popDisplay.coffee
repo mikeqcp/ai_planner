@@ -91,7 +91,11 @@ angular.module('visualiserApp')
 					$(this).css 'position', 'absolute'
 
 			drawLink = (nodeFrom, nodeTo, label) ->
-				link = plumbInstance.connect {source: nodeFrom, target: nodeTo, anchors: [["Left", "Right", "Top", "Bottom"], ["Left", "Right", "Top", "Bottom"]]}
+				link = plumbInstance.connect {
+					source: nodeFrom,
+					target: nodeTo,
+					anchors: [["Left", "Right", "Top", "Bottom"], ["Left", "Right", "Top", "Bottom"]],
+				}
 				link.setLabel label
 
 			refreshGraph = () ->

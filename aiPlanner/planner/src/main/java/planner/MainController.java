@@ -39,13 +39,14 @@ public class MainController {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("solve")
 	public ProcessLog solve(@Context HttpHeaders header, @Context HttpServletResponse response, 
-			@FormParam("domain") String domain, @FormParam("instance") String instance, @FormParam("type") String type) {
+			@FormParam("domain") String domain, @FormParam("instance") String instance, @FormParam("type") String type, @FormParam("limit") int limit) {
 		response.setHeader("Access-Control-Allow-Origin", "*");
 		
 		PDDLObject inputData = parser.parse(domain, instance);
 		AlgorithmType algType = Algorithm.typeFromString(type);
 		
 		Algorithm alg = AlgorithmFactory.createAlgorithm(algType, inputData);
+		alg.setMaxPlanLength(limit);
 		alg.solve();
 
 		return alg.getLog();
