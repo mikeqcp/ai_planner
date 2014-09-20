@@ -15,6 +15,7 @@ import pddl4j.exp.term.Variable;
 public class AtomicState extends State {
 	private AtomicFormula state;
 	private boolean negation = false;
+	private ArrayList<Term> params = new ArrayList<Term>();
 
 	public AtomicState(AtomicFormula state) {
 		this.state = state;
@@ -72,6 +73,7 @@ public class AtomicState extends State {
 		return args;
 	}
 	
+	
 	public ParameterBinding bindToSatisfy(AtomicState s){
 		ParameterBinding binding = new ParameterBinding();
 		
@@ -123,6 +125,10 @@ public class AtomicState extends State {
 			}
 		}
 		AtomicState binded = new AtomicState(this);
+		
+		
+		binded.params = this.getArguments();
+		
 		binded.state = binded.state.apply(subst);
 		return binded;
 	}
@@ -147,4 +153,8 @@ public class AtomicState extends State {
 		String negation = isNegated() ? "not " : "";
 		return negation + this.state.toString();
 	}
+
+	public ArrayList<Term> getParams() {
+		return params;
+	}	
 }

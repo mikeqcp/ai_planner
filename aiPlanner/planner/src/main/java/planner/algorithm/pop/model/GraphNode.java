@@ -92,14 +92,7 @@ public class GraphNode {
 	}
 
 	public void mergeBinding(ParameterBinding b) {
-		ParameterBinding merged = new ParameterBinding(this.binding);
-		
-		for (String t : b.getTerms()) {
-			if(!merged.containsTerm(t)){
-				merged.addBinding(t, b.getBindingFor(t));
-			}
-		}
-		
+		ParameterBinding merged = this.binding.merge(b);
 		setBinding(merged);
 	}
 	

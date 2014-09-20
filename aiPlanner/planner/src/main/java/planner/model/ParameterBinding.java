@@ -95,4 +95,16 @@ public class ParameterBinding {
 		}
 		return true;
 	}
+	
+	public ParameterBinding merge(ParameterBinding b){
+		ParameterBinding merged = new ParameterBinding(this);
+		
+		for (String t : b.getTerms()) {
+			if(!merged.containsTerm(t)){
+				merged.addBinding(t, b.getBindingFor(t));
+			}
+		}
+		
+		return merged;
+	}
 }

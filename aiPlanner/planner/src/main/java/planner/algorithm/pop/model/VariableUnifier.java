@@ -44,7 +44,7 @@ public class VariableUnifier {
 		
 		String predicate = goal.getGoal().getPredicate();
 		ArrayList<ArrayList<Term>> fromTermsList = fromNode.getBindedAction().getEffectParams(predicate);
-		ArrayList<Term> toTerms = goal.getGoal().getArguments();
+		ArrayList<Term> toTerms = goal.getGoal().getParams();
 		
 		for (ArrayList<Term> fromTerms : fromTermsList) {
 			ParameterBinding[] mergedBindings = unifyTermBinding(fromTerms, toTerms, fromBinding, toBinding);
@@ -55,12 +55,15 @@ public class VariableUnifier {
 			
 			if(!fromNode.binding.validate() || !toNode.binding.validate()) return false;
 			
+			link.getSubgoal().updateBinding(mergedBindings[1]);
+			
 			for (GraphLink l : graph.getOutLinksFor(toNode)) {
 				if(l instanceof CasualLink){
-					if(!toNode.hasUnbindedParams()) continue;
+					CasualLink cl = (CasualLink)l;
+					if(!cl.getAchieves().hasUnbindedParams()) continue;
 					
 					if(!graph.isConsistent()) continue;
-					if(!unifyLinkVariables((CasualLink)l)) continue;
+					if(!unifyLinkVariables(cl)) continue;
 				}
 			}
 			
@@ -71,10 +74,12 @@ public class VariableUnifier {
 
 	private ParameterBinding[] unifyTermBinding(ArrayList<Term> fromTerms, ArrayList<Term> toTerms, ParameterBinding fromBinding, ParameterBinding toBinding){
 		if(fromTerms.size() != toTerms.size()) return null;
-		ParameterBinding[] bindings = new ParameterBinding[2];
+		ParameterBinding[] bindings = new ParameterBinding[3];
 		
 		bindings[0] = fromBinding;
 		bindings[1] = toBinding;
+		
+		
 		
 		for (int i = 0; i < fromTerms.size(); i++) {
 			Term a = fromTerms.get(i);
@@ -85,11 +90,9 @@ public class VariableUnifier {
 			
 			if(isAFree && !isBFree){
 				bindings[0].addBinding(a, getBindingFor(b, toBinding));
-			}
-			if(!isAFree && isBFree){
+			} else if(!isAFree && isBFree){
 				bindings[1].addBinding(b, getBindingFor(a, fromBinding));
 			}
-			
 			if(!isAFree && !isBFree && getBindingFor(a, fromBinding) != getBindingFor(b, toBinding))
 				return null;
 		}

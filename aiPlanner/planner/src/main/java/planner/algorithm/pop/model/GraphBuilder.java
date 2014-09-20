@@ -66,7 +66,6 @@ public class GraphBuilder {
 			ParameterBinding binding = n.bindToProduce(goal);
 			
 			if(binding != null){
-//				n.mergeBinding(binding);
 				nodes.put(n, binding);
 			}
 		}

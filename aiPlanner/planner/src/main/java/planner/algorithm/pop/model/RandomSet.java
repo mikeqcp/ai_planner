@@ -9,8 +9,8 @@ public class RandomSet<E> extends ArrayList<E> {
 	 * 
 	 */
 	private static final long serialVersionUID = 2044138032137271587L;
+	private static Random rand = new Random(6);
 //	private Random rand = new Random();
-	private Random rand = new Random(100);
 	
 	public RandomSet(Collection<E> collection) {
 		super(collection);
@@ -19,7 +19,7 @@ public class RandomSet<E> extends ArrayList<E> {
 	public RandomSet() {
 		super();
 	}
-
+	
 	/**
 	 * Returns and removes random item from collection
 	 */
