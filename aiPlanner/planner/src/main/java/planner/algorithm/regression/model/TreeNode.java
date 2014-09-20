@@ -1,5 +1,6 @@
 package planner.algorithm.regression.model;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
@@ -9,6 +10,7 @@ import pddl4j.exp.term.Constant;
 import planner.model.Action;
 import planner.model.AtomicState;
 import planner.model.Constraint;
+import planner.model.ResultPlan;
 import planner.model.State;
 
 public class TreeNode {

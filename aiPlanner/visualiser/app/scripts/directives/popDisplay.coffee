@@ -15,7 +15,7 @@ angular.module('visualiserApp')
 			nextNodePos = {x: 0, y:0}
 			nodeMargin = {x:150, y: 300}
 			scope.nodesCount = 0
-			odd = false
+			odd = true
 
 			createDOM = (node) ->
 				dom = $('<div></div>').addClass('node')
@@ -99,7 +99,7 @@ angular.module('visualiserApp')
 				link.setLabel label
 
 			refreshGraph = () ->
-				odd = false
+				odd = true
 				scope.nodesCount = 0
 				scope.validNodesCount = 0
 				jsPlumb.detachEveryConnection()

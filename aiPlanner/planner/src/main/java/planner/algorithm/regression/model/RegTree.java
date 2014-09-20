@@ -42,4 +42,16 @@ public class RegTree {
 		plan.setPlanIds(ids.toArray(new Integer[0]));
 		return plan;
 	}
+	
+	public int getNodeLvl(TreeNode n){
+		int lvl = 0;
+		
+		TreeNode current = n;
+		while(current != root){
+			lvl++;
+			TreeLink stepLink = current.getIncomingLink();
+			current = current.getParentNode();
+		}
+		return lvl;
+	}
 }

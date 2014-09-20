@@ -64,7 +64,8 @@ public class RegressionAlgorithm extends Algorithm {
 				return tree.findPlanForNode(node);	//final plan
 			}
 			
-			builder.generateNextLevel(node);
+			if(tree.getNodeLvl(node) < (maxPlanLength))
+				builder.generateNextLevel(node);
 			log();
 		}
 
