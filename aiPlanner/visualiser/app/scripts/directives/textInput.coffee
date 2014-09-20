@@ -8,6 +8,7 @@ angular.module('visualiserApp')
 		scope:
 			title: '@'
 			sourceFiles: '='
+			content: '='
 
 		link: (scope) ->
 			scope.content = null
@@ -16,4 +17,7 @@ angular.module('visualiserApp')
 					$http.get(f.src).then (response) ->
 						scope.examples.push {label: f.label, data: response.data}
 						if not scope.content?
-							scope.content = scope.examples[0]
+							scope.contentItem = scope.examples[0]
+
+			scope.$watch 'contentItem', (i) ->
+				scope.content = i?.data

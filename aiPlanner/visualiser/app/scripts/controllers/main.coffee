@@ -13,7 +13,7 @@ angular.module('visualiserApp')
 		$scope.domains = [
 			{label:'blocks world', src: '/data/domain.txt'}
 		]
-		
+
 		$scope.instances = [
 			{label:'2 blocks', src:'/data/instance2.txt'},
 			{label:'3 blocks', src:'/data/instance.txt'},
