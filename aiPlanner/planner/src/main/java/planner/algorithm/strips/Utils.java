@@ -23,12 +23,14 @@ public class Utils {
 		Set<BindedAction> applicableActions = new HashSet<BindedAction>();
 		
 		ParameterBinding b;
+//		BindedAction[] filled;
 		for (Action a : availableActions) {
 			if((b = a.bindToProduce(state)) != null){
 				BindedAction action = a.bindParameters(b);
 				if(fillUnbindedParams)
-					action.fillFreeParameters(constants);
-				applicableActions.add(action);
+					applicableActions.addAll(action.getPossibleParameterFillings(constants));
+				else
+					applicableActions.add(action);
 			}
 		}
 		return applicableActions;

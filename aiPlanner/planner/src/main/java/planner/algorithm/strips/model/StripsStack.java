@@ -30,4 +30,26 @@ public class StripsStack {
 	public boolean isEmpty(){
 		return stack.isEmpty();
 	}
+	
+	@Override
+	public String toString() {
+		String s = "---";
+		
+		for (StackItem i : stack) {
+			s += "\n";
+			s += i.toString();
+		}
+		
+		s+= "\n---";
+		
+		return s;
+	}
+
+	public int getPlanLength() {
+		int actionsCount = 0;
+		for (StackItem item : stack) {
+			actionsCount += item.isActionType() ? 1 : 0;
+		}
+		return actionsCount;
+	}
 }

@@ -3,6 +3,7 @@ package planner.model;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
@@ -23,6 +24,11 @@ public class BindedAction extends Action {
 	public BindedAction(Action parent, ParameterBinding binding) {
 		super(parent.getAction());
 		this.binding = binding;
+	}
+	
+	public BindedAction(BindedAction other) {
+		super(other.getAction());
+		this.binding = new ParameterBinding(other.binding);
 	}
 
 	public Action unbind() {
@@ -119,13 +125,51 @@ public class BindedAction extends Action {
 		return false;
 	}
 
-	public void fillFreeParameters(Set<Constant> constants) {
-		for (Term param : this.action.getParameters()) {
+    public void fillFreeParameters(Set<Constant> constants) {
+    	for (Term param : this.action.getParameters()) {
 			if (!binding.containsTerm(param)) {
 				String randVal = randConstant(constants, binding);
 				binding.addBinding(param, randVal);
 			}
 		}
+    }
+	
+	public List<BindedAction> getPossibleParameterFillings(Set<Constant> constants) {
+		List<BindedAction> queue = new ArrayList<BindedAction>();
+		List<BindedAction> filled = new ArrayList<BindedAction>();
+		
+		queue.add(this);
+		
+		while(queue.size() > 0){
+			BindedAction current = queue.remove(0);
+			
+			if(!current.hasUnbindedParams()){
+				filled.add(current);
+				continue;
+			}
+			
+			for (Term param : current.action.getParameters()) {
+				if (!current.binding.containsTerm(param)) {
+					List<String> allVals = otherConstants(constants, binding);
+					for (String v : allVals) {
+						BindedAction ba = new BindedAction(current);
+						ba.binding.addBinding(param, v);
+						queue.add(ba);
+					}
+//					binding.addBinding(param, allVals);
+					break;	//get first unbinded
+				}
+			}
+		}
+		
+//		for (Term param : this.action.getParameters()) {
+//			if (!binding.containsTerm(param)) {
+//				String randVal = randConstant(constants, binding);
+//				binding.addBinding(param, randVal);
+//			}
+//		}
+		
+		return filled;
 	}
 	
 	public boolean hasUnbindedParams(){
@@ -158,6 +202,20 @@ public class BindedAction extends Action {
 		if (i >= iterationLimit)
 			return null;
 		return val;
+	}
+	
+	private List<String> otherConstants(Set<Constant> constants,
+			ParameterBinding existingValues) {
+		List<String> possible = new ArrayList<String>();
+		Constant[] cArray = constants.toArray(new Constant[0]);
+		
+		for (Constant constant : cArray) {
+			String val = constant.getImage();
+			if(!existingValues.containsValue(val))
+				possible.add(val);
+		}
+
+		return possible;
 	}
 
 	public ParameterBinding getBinding() {

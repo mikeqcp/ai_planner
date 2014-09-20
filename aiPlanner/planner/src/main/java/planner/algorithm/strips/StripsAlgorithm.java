@@ -3,6 +3,8 @@ package planner.algorithm.strips;
 import java.util.List;
 import java.util.Set;
 
+import javax.print.attribute.standard.MediaSize.Other;
+
 import pddl4j.PDDLObject;
 import pddl4j.exp.Exp;
 import pddl4j.exp.term.Constant;
@@ -23,6 +25,7 @@ public class StripsAlgorithm extends Algorithm {
 	private ResultPlan plan;
 	private StripsStack stack;
 	private StripsLogBuilder logBuilder;
+	private int iteration = 0;
 
 	public StripsAlgorithm(PDDLObject input) {
 		super(input);
@@ -34,6 +37,8 @@ public class StripsAlgorithm extends Algorithm {
 		super(otherInstance.originalData);
 		initializeStructures(otherInstance.stack, otherInstance.currentState, otherInstance.plan);
 		this.logBuilder = otherInstance.logBuilder;
+		this.iteration = otherInstance.iteration;
+		this.maxPlanLength = otherInstance.maxPlanLength;
 	}
 	
 	private void initializeStructures() {
@@ -63,8 +68,11 @@ public class StripsAlgorithm extends Algorithm {
 		log();
 		ResultPlan finalPlan = execute();
 		
-		System.out.println(finalPlan);
+		if(finalPlan == null)
+			finalPlan = new ResultPlan();
 		
+		System.out.println(finalPlan);
+		System.out.println("STRIPS finished.");
 		return finalPlan;
 	}
 	
@@ -81,43 +89,59 @@ public class StripsAlgorithm extends Algorithm {
 	}
 	
 	private boolean processStackItem(StackItem item){
-		boolean succeeded = true;
+//		boolean succeeded = true;
 		if(item.isActionType()) {
 			BindedAction action = item.getAction();
+			
+			if(!verifyActionPreconditions(action)) return false;	//preconditions are not satisfied
+			
 			currentState = action.applyTo(currentState);
 			plan.addNextStep(action);	//add action to plan
 			log();	//every action added to plan
+			return true;
 		} else {
 			State s = item.getState();
 			if(currentState.satisfies(s)){
 				return true;
 			}
-			if(!s.isAtomic()){	//break complex state into simple ones
+			if(!s.isAtomic()){
+//				return true;
+				//break complex state into simple ones
 				State[] states = s.breakIntoAtomic();
 				for (State st : states) {
 					stack.push(new StackItem(st));
-					log();	//every item added to stack
 				}
+				log();
+				return true;
 			} else {	//handle simple state
-				succeeded = processStateItem(s.toAtomic());
+				if((stack.getPlanLength() + plan.getLength()) >= maxPlanLength) return false;
+				
+				return processStateItem(s.toAtomic());
 			}
 		}
-		return succeeded;
+//		return succeeded;
 	}
 
+	private boolean verifyActionPreconditions(BindedAction action){
+		AtomicState[] pre = action.getBindedPreconditions();
+		for (AtomicState p : pre) {
+			if(!currentState.satisfies(p)) return false;
+		}
+		return true;
+	}
+	
 	/**
 	 * @param s
-	 * @return true if succeeded, false if there is no solution was found
+	 * @return true if succeeded, false if no solution was found
 	 */
 	private boolean processStateItem(AtomicState s) {
 		//find applicable action
 		Set<BindedAction> applicableActions = Utils.findApplicableActions(s, actions, constants);
 		if(applicableActions.isEmpty()) return false;
-
 		
 		List<BindedAction> sortedApplicableActions = Utils.sortActions(applicableActions, currentState, goal);
 		
-		//use every applicable actions
+		//use every applicable action
 		for (BindedAction a : sortedApplicableActions) {
 			//and now recursion
 			StripsAlgorithm inner = new StripsAlgorithm(this);
@@ -131,9 +155,10 @@ public class StripsAlgorithm extends Algorithm {
 				this.stack = inner.stack;
 				return true;
 			}
-			break;
+//			break;
+//			return false;	
 		}
-		return true;
+		return false;//no action led to solution
 	}
 	
 	private void prepareAction(BindedAction actionToUse){		
@@ -146,12 +171,12 @@ public class StripsAlgorithm extends Algorithm {
 		log();	//afer selected action pushed on stack
 		
 		this.stack.push(new StackItem(joinedState));
-		log();	//after action preconditions added to stack
+//		log();	//after action preconditions added to stack
 		
 		for (AtomicState atomic : preconditions) {
 			this.stack.push(new StackItem(atomic));
-			log();	//after broken action preconditions added to stack
 		}
+		log();	//after broken action preconditions added to stack
 	}
 	
 	private void log(){
@@ -162,5 +187,10 @@ public class StripsAlgorithm extends Algorithm {
 	@Override
 	public ProcessLog getLog() {
 		return logBuilder.getProcessLog();
+	}
+	
+	@Override
+	public String toString() {
+		return stack.toString();
 	}
 }

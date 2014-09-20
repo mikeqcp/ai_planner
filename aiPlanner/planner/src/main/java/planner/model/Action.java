@@ -2,6 +2,7 @@ package planner.model;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import pddl4j.exp.AndExp;
@@ -75,6 +76,35 @@ public class Action {
 		}
 		return null;
 	}
+	
+//	public ParameterBinding[] bindAllToProduce(AtomicState s){
+//		List<ParameterBinding> bindings = new ArrayList<ParameterBinding>();
+//		Exp effects = action.getEffect();
+//
+//		Exp[] allEffects;
+//		if (effects instanceof AndExp)
+//			allEffects = TermOperations.splitExprElements((AndExp) effects);
+//		else
+//			allEffects = new Exp[] { effects }; // single effect
+//
+//		for (Exp e : allEffects) {
+//			State state = new State(e);
+//			if (!(state.isAtomic()))
+//				continue;
+//			AtomicState atomic = state.toAtomic();
+//
+//			if (atomic.isNegated())
+//				return null; // skip negations
+//
+//			ParameterBinding applicable = atomic.bindToSatisfy(s);
+//			for (ParameterBinding b : applicable) {
+//				bindings.add(b);
+//			}
+//		}
+//		if(bindings.size() == 0)
+//			return null;
+//		return bindings.toArray(new ParameterBinding[0]);
+//	}
 
 	@Override
 	public String toString() {

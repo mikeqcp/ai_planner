@@ -53,4 +53,7 @@ public class ResultPlan{
 		return plan.size() == 0;
 	}
 	
+	public int getLength(){
+		return plan.size();
+	}
 }
