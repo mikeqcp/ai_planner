@@ -5,8 +5,10 @@
 				<div class="content">
 					<div class="toggle-problem glyphicon glyphicon-minus" ng-click="toggleProblem()"></div>
 					<div class="problem">
-						<div text-input data-content="domain" data-title="domain"></div>
-						<div text-input data-content="instance" data-title="instance"></div>
+
+						<div text-input data-title="domain" data-source-files="domains"></div>
+
+						<div text-input data-title="instance" data-source-files="instances"></div>
 
 						<a class="btn btn-lg btn-success" ng-click="solve()">Solve<span class="glyphicon glyphicon-ok"></span></a>
 

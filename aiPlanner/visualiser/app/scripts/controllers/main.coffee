@@ -10,11 +10,14 @@ angular.module('visualiserApp')
 		$scope.selectedAlgorithm = $scope.algorithms[0]
 		$scope.limit = 2
 
-		$http.get('/data/domain.txt').then (response) ->
-			$scope.domain = response.data
-
-		$http.get('/data/instance.txt').then (response) ->
-			$scope.instance = response.data
+		$scope.domains = [
+			{label:'blocks world', src: '/data/domain.txt'}
+		]
+		
+		$scope.instances = [
+			{label:'2 blocks', src:'/data/instance2.txt'},
+			{label:'3 blocks', src:'/data/instance.txt'},
+		]
 
 		$http.defaults.headers.post =
 			'Content-Type' : 'application/x-www-form-urlencoded; charset=UTF-8'

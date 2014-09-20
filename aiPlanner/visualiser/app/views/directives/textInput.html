@@ -1,4 +1,8 @@
 <div class="text-input">
 	<span class="title">{{title}}</span>
-	<textarea ng-model="content"></textarea>
+
+	<select class="examples" ng-model="content" ng-options="ex.label for ex in examples"></select>
+	<span class="example-label">Examples:</span>
+
+	<textarea ng-model="content.data"></textarea>
 </div>
