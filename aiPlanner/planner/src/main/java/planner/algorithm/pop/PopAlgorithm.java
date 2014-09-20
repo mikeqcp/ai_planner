@@ -61,7 +61,7 @@ public class PopAlgorithm extends Algorithm {
 			SubGoal nextGoal = graph.nextGoalToSatisfy();
 			Set<SolutionGraph> options = builder.satisfyGoal(graph, nextGoal);
 			
-			Set<SolutionGraph> options2 = builder.satisfyGoal(graph, nextGoal);
+//			Set<SolutionGraph> options2 = builder.satisfyGoal(graph, nextGoal);
 			
 			for (SolutionGraph o : options) {
 				if(o.getAllNodes().size() > (maxPlanLength + 2)) continue;	//count actions without start and end

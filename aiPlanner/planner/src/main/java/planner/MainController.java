@@ -17,11 +17,13 @@ import planner.algorithm.Algorithm;
 import planner.algorithm.Algorithm.AlgorithmType;
 import planner.algorithm.AlgorithmFactory;
 import planner.model.ProcessLog;
+import planner.model.ResultPlan;
 import data.PddlParser;
 
 
 @Path("")
 public class MainController {
+	private static final int TRIES = 5;
 	private PddlParser parser = new PddlParser();
 	
 	@POST
@@ -33,11 +35,15 @@ public class MainController {
 		
 		PDDLObject inputData = parser.parse(domain, instance);
 		AlgorithmType algType = Algorithm.typeFromString(type);
+		Algorithm alg = null;
 		
-		Algorithm alg = AlgorithmFactory.createAlgorithm(algType, inputData);
-		alg.setMaxPlanLength(limit);
-		alg.solve();
+		for (int i = 0; i < TRIES; i++) {
+			alg = AlgorithmFactory.createAlgorithm(algType, inputData);
+			alg.setMaxPlanLength(limit);
+			ResultPlan plan = alg.solve();
 
+			if(!plan.isEmpty()) break;
+		}
 		return alg.getLog();
 	}
 }

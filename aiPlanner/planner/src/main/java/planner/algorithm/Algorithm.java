@@ -32,6 +32,7 @@ public abstract class Algorithm {
 	abstract public ResultPlan solve();
 	abstract public ProcessLog getLog();
 	
+	
 	public static AlgorithmType typeFromString(String type){
 		if(type.equalsIgnoreCase("strips")) return AlgorithmType.STRIPS;
 		if(type.equalsIgnoreCase("regression")) return AlgorithmType.REGRESSION;

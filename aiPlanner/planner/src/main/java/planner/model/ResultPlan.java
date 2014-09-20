@@ -49,5 +49,8 @@ public class ResultPlan{
 		this.planIds = planIds;
 	}
 	
+	public boolean isEmpty(){
+		return plan.size() == 0;
+	}
 	
 }

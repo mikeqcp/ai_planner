@@ -29,18 +29,26 @@ public class Runner {
 		//run algorithm
 		
 		for (int i = 0; i < 10; i++) {
-			System.out.println("No." + i);
-//			Algorithm alg = new StripsAlgorithm(problemData);
-//			Algorithm alg = new RegressionAlgorithm(problemData);
-			Algorithm alg = new PopAlgorithm(problemData);
 			
-			alg.setMaxPlanLength(4);
+			for(int j = 0; j< 5; j++){
+				System.out.println("No." + i);
+//				Algorithm alg = new StripsAlgorithm(problemData);
+//				Algorithm alg = new RegressionAlgorithm(problemData);
+				Algorithm alg = new PopAlgorithm(problemData);
+				
+				alg.setMaxPlanLength(4);
+				
+				ResultPlan plan = alg.solve();
+				ProcessLog log = alg.getLog();
+				
+				if(plan.isEmpty()) continue;
+				
+				System.out.println("---");
+				System.out.println("SOLVED.");
+				System.out.println("---");
+				break;
+			}
 			
-			ResultPlan plan = alg.solve();
-			ProcessLog log = alg.getLog();
-			
-			System.out.println("Ended.");
-			System.out.println("---");
 		}
 	}
 	
