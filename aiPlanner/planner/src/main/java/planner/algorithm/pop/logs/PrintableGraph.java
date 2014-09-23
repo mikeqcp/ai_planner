@@ -7,6 +7,8 @@ import planner.algorithm.pop.model.GraphLink;
 import planner.algorithm.pop.model.GraphNode;
 import planner.algorithm.pop.model.SolutionGraph;
 import planner.algorithm.pop.model.SubGoal;
+import planner.model.AtomicState;
+import planner.model.ParameterBinding;
 
 public class PrintableGraph {
 	private Set<PrintableNode> nodes;
@@ -21,13 +23,23 @@ public class PrintableGraph {
 			nodes.add(new PrintableNode(n));
 		}
 		for (GraphLink l : graph.getAllLinks()) {
-			links.add(new PrintableLink(l));
+			links.add(new PrintableLink(l, graph));
 		}
 		links = mergeLinks(links);
+		SubGoal uGoal = null;
 		for (SubGoal sg : graph.getUnsatisfiedGoals()) {
 			if(sg != null && sg.getGoal() != null)
-				goals += sg.getGoal().toString() + ", ";
+				uGoal = updateGoal(graph, sg);
+				goals += uGoal.getGoal().toString() + ", ";
 		}
+	}
+
+	private SubGoal updateGoal(SolutionGraph g, SubGoal goal) {
+		GraphNode oldNode = goal.getNode();
+		GraphNode node = g.getNodeById(oldNode.getId());
+		ParameterBinding currentBinding = node.getBinding();
+		goal.updateBinding(currentBinding);
+		return goal;
 	}
 
 	private Set<PrintableLink> mergeLinks(Set<PrintableLink> links){

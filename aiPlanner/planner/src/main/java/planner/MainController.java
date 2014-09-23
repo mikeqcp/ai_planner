@@ -23,7 +23,7 @@ import data.PddlParser;
 
 @Path("")
 public class MainController {
-	private static final int TRIES = 5;
+	private static final int TRIES = 1;
 	private PddlParser parser = new PddlParser();
 	
 	@POST

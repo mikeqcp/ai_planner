@@ -32,7 +32,7 @@ public class GraphBuilder {
 	 * @return All possible new solution graphs to satisfy goal, with constraints resolved
 	 */
 	public Set<SolutionGraph> satisfyGoal(SolutionGraph graph, SubGoal goal){
-		this.graph = graph;
+		this.graph = new SolutionGraph(graph);
 		Set<SolutionGraph> results = new LinkedHashSet<SolutionGraph>();
 		AtomicState precondition = goal.getGoal();
 

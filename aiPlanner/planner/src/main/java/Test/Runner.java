@@ -30,11 +30,11 @@ public class Runner {
 		
 		for (int i = 0; i < 10; i++) {
 			
-			for(int j = 0; j< 5; j++){
+			for(int j = 0; j< 1; j++){
 				System.out.println("No." + i);
-//				Algorithm alg = new StripsAlgorithm(problemData);
+				Algorithm alg = new StripsAlgorithm(problemData);
 //				Algorithm alg = new RegressionAlgorithm(problemData);
-				Algorithm alg = new PopAlgorithm(problemData);
+//				Algorithm alg = new PopAlgorithm(problemData);
 				
 				alg.setMaxPlanLength(4);
 				

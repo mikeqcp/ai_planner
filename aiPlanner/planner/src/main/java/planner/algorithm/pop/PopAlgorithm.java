@@ -15,7 +15,7 @@ import planner.model.ProcessLog;
 import planner.model.ResultPlan;
 
 public class PopAlgorithm extends Algorithm {
-	private static final int MAX_ITERATIONS = 2000;
+	private static final int MAX_ITERATIONS = 10000;
 
 	private PopLogBuilder logBuilder;
 	private GraphBuilder builder;

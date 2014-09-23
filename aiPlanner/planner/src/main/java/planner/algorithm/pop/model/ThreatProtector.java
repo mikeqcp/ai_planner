@@ -96,7 +96,7 @@ public class ThreatProtector {
 		GraphNode threateningNode = t.getNode();
 		
 		boolean isDemoted = graph.hasLink(t.getLink().nodeTo, threateningNode);
-		boolean isPromoted = graph.hasLink(threateningNode, t.getLink().getNodeFrom());
+		boolean isPromoted = graph.hasLink(threateningNode, t.getLink().nodeFrom);
 		
 		return isDemoted || isPromoted;
 	}
