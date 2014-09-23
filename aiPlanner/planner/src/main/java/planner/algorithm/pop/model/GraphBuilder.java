@@ -34,7 +34,7 @@ public class GraphBuilder {
 	public Set<SolutionGraph> satisfyGoal(SolutionGraph graph, SubGoal goal){
 		this.graph = new SolutionGraph(graph);
 		Set<SolutionGraph> results = new LinkedHashSet<SolutionGraph>();
-		AtomicState precondition = goal.getGoal();
+		AtomicState precondition = goal.getGoal(graph);
 
 		Map<GraphNode, ParameterBinding> applicableNodes = findNodesToSatisfy(precondition);
 		for (GraphNode n : applicableNodes.keySet()) {
@@ -79,7 +79,7 @@ public class GraphBuilder {
 		
 		updatedNode.mergeBinding(binding);
 		
-		CasualLink casualLink = new CasualLink(updatedNode, updatedGoalNode, goal);
+		CasualLink casualLink = new CasualLink(updated, updatedNode, updatedGoalNode, goal);
 		updated.addLink(casualLink);
 		
 		if(!unifier.unifyVariables(updated, casualLink)) return null;
@@ -96,7 +96,7 @@ public class GraphBuilder {
 		updated.addNode(node);
 		GraphNode updatedGoalNode = updated.getNodeById(goal.getNode().getId());
 		
-		CasualLink casualLink = new CasualLink(node, updatedGoalNode, goal);
+		CasualLink casualLink = new CasualLink(updated, node, updatedGoalNode, goal);
 		updated.addLink(casualLink);
 		
 		if(!unifier.unifyVariables(updated, casualLink)) return null;

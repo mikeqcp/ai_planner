@@ -22,12 +22,14 @@ public class SubGoal {
 		return node;
 	}
 	
-	public AtomicState getGoal() {
-		return goal;
+	public AtomicState getGoal(SolutionGraph upToDateGraph) {
+		GraphNode n = upToDateGraph.getNodeById(node.getId());
+		ParameterBinding binding = n.getBinding();
+		return updateBinding(binding);
 	}
 	
-	public void updateBinding(ParameterBinding b){
-		this.goal = originalGoal.bind(b);
+	public AtomicState updateBinding(ParameterBinding b){
+		return this.goal = originalGoal.bind(b);
 	}
 	
 	@Override

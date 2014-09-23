@@ -42,9 +42,9 @@ public class VariableUnifier {
 		ParameterBinding fromBinding = fromNode.getBinding();
 		ParameterBinding toBinding = toNode.getBinding();
 		
-		String predicate = goal.getGoal().getPredicate();
+		String predicate = goal.getGoal(graph).getPredicate();
 		ArrayList<ArrayList<Term>> fromTermsList = fromNode.getBindedAction().getEffectParams(predicate);
-		ArrayList<Term> toTerms = goal.getGoal().getParams();
+		ArrayList<Term> toTerms = goal.getGoal(graph).getParams();
 		
 		for (ArrayList<Term> fromTerms : fromTermsList) {
 			ParameterBinding[] mergedBindings = unifyTermBinding(fromTerms, toTerms, fromBinding, toBinding);

@@ -11,10 +11,12 @@ import planner.model.interfaces.ProcessStateDump;
 public class PopStateDump implements ProcessStateDump {
 
 	private PrintableGraph graph;
+	private SolutionGraph originalGraph;
 	private ResultPlan plan;
 	private String goal;
 	
 	public void setGraph(SolutionGraph graph) {
+		this.originalGraph = graph;
 		this.graph = new PrintableGraph(graph);
 	}
 	
@@ -59,7 +61,7 @@ public class PopStateDump implements ProcessStateDump {
 	}
 
 	public void setGoal(SubGoal goal) {
-		if(goal != null) this.goal = goal.getGoal().toString();
+		if(goal != null) this.goal = goal.getGoal(originalGraph).toString();
 	}
 	
 	public String getGoals(){

@@ -4,11 +4,13 @@ import planner.model.AtomicState;
 
 public class CasualLink extends GraphLink {
 	private SubGoal subgoal;
+	private SolutionGraph graph;
 	
 
-	public CasualLink(GraphNode nodeFrom, GraphNode nodeTo, SubGoal subgoal) {
+	public CasualLink(SolutionGraph g, GraphNode nodeFrom, GraphNode nodeTo, SubGoal subgoal) {
 		super(nodeFrom, nodeTo);
 		this.subgoal = subgoal;
+		this.graph = g;
 	}
 
 	
@@ -18,7 +20,7 @@ public class CasualLink extends GraphLink {
 
 
 	public AtomicState getAchieves() {
-		return subgoal.getGoal();
+		return subgoal.getGoal(graph);
 	}
 
 	@Override
@@ -26,11 +28,14 @@ public class CasualLink extends GraphLink {
 		return nodeFrom.toString() + " -- " + getAchieves().toString() + " --> " + nodeTo.toString();
 	}
 
-	@Override
-	public GraphLink clone() {
-		return new CasualLink(this.nodeFrom, this.nodeTo, this.subgoal);
+	public GraphLink clone(SolutionGraph g) {
+		return new CasualLink(g, this.nodeFrom, this.nodeTo, this.subgoal);
 	}
 
+	@Override
+	public GraphLink clone() {
+		return new CasualLink(graph, this.nodeFrom, this.nodeTo, this.subgoal);
+	}
 
 
 	@Override

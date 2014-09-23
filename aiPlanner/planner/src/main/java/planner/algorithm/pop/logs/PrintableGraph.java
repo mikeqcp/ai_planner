@@ -28,9 +28,9 @@ public class PrintableGraph {
 		links = mergeLinks(links);
 		SubGoal uGoal = null;
 		for (SubGoal sg : graph.getUnsatisfiedGoals()) {
-			if(sg != null && sg.getGoal() != null)
+			if(sg != null && sg.getGoal(graph) != null)
 				uGoal = updateGoal(graph, sg);
-				goals += uGoal.getGoal().toString() + ", ";
+				goals += uGoal.getGoal(graph).toString() + ", ";
 		}
 	}
 
