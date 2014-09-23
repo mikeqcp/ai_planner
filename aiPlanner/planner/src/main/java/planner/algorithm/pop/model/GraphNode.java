@@ -99,4 +99,8 @@ public class GraphNode {
 	public boolean hasUnbindedParams(){
 		return getBindedAction().hasUnbindedParams();
 	}
+	
+	public boolean idEquals(GraphNode other){
+		return this.id == other.id;
+	}
 }

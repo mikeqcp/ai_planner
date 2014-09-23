@@ -89,7 +89,7 @@ public class ParameterBinding {
 
 		for (int i = 0; i < values.length; i++) {
 			for (int j = 0; j < values.length; j++) {
-				if (i != j && values[i] == values[j])
+				if (i != j && values[i].equals(values[j]))
 					return false;
 			}
 		}

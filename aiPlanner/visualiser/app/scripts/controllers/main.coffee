@@ -16,6 +16,7 @@ angular.module('visualiserApp')
 
 		$scope.instances = [
 			{label:'2 blocks', src:'/data/instance2.txt'},
+			{label:'2 blocks v 2', src:'/data/instance2-2.txt'},
 			{label:'3 blocks', src:'/data/instance.txt'},
 			{label:'3 blocks hard', src:'/data/instance3.txt'},
 		]

@@ -36,7 +36,7 @@ public abstract class GraphLink {
 
 
 
-	public abstract GraphLink clone();
+	public abstract GraphLink clone(SolutionGraph g);
 	
 	@Override
 	public String toString() {

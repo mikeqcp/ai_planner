@@ -156,18 +156,10 @@ public class BindedAction extends Action {
 						ba.binding.addBinding(param, v);
 						queue.add(ba);
 					}
-//					binding.addBinding(param, allVals);
 					break;	//get first unbinded
 				}
 			}
 		}
-		
-//		for (Term param : this.action.getParameters()) {
-//			if (!binding.containsTerm(param)) {
-//				String randVal = randConstant(constants, binding);
-//				binding.addBinding(param, randVal);
-//			}
-//		}
 		
 		return filled;
 	}

@@ -117,8 +117,9 @@ public class ThreatProtector {
 		for (GraphNode n : graph.getAllNodes()) {
 //			if(n.getBindedAction() != null && n.getBindedAction().canRemove(subgoal)){
 			if(n.getBindedAction() != null && !n.hasUnbindedParams() && !subgoal.hasUnbindedParams() && n.getBindedAction().removes(subgoal)){
-				if(link.getNodeTo() != n && link.getNodeFrom() != n)
+				if((link.getNodeTo().getId() != n.getId()) && (link.getNodeFrom().getId() != n.getId())){
 					threats.add(new Threat(link, n));
+				}
 			}
 		}
 		return threats;

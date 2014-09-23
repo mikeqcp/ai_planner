@@ -28,24 +28,14 @@ public class CasualLink extends GraphLink {
 		return nodeFrom.toString() + " -- " + getAchieves().toString() + " --> " + nodeTo.toString();
 	}
 
+	@Override
 	public GraphLink clone(SolutionGraph g) {
 		return new CasualLink(g, this.nodeFrom, this.nodeTo, this.subgoal);
-	}
-
-	@Override
-	public GraphLink clone() {
-		return new CasualLink(graph, this.nodeFrom, this.nodeTo, this.subgoal);
 	}
 
 
 	@Override
 	public boolean isRedundantFor(GraphLink[] existing) {
-		for (GraphLink l : existing) {
-			if(l instanceof CasualLink){
-				CasualLink casual = (CasualLink)l;
-				if(casual.getAchieves().equals(this.getAchieves())) return true;
-			}
-		}
 		return false;
 	}
 }

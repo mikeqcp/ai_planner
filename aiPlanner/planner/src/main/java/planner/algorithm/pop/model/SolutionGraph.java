@@ -19,11 +19,11 @@ public class SolutionGraph {
 	/**
 	 * Set of all outcoming links in graph
 	 */
-	private Map<GraphNode, Set<GraphLink>> outcomingLinks;
+	private Map<Long, Set<GraphLink>> outcomingLinks;
 	/**
 	 * Set of all inoming links in graph
 	 */
-	private Map<GraphNode, Set<GraphLink>> incomingLinks;
+	private Map<Long, Set<GraphLink>> incomingLinks;
 
 	/**
 	 * Copy other graph instance
@@ -43,43 +43,43 @@ public class SolutionGraph {
 		}
 
 		// copy links
-		outcomingLinks = new HashMap<GraphNode, Set<GraphLink>>();
-		Iterator<Entry<GraphNode, Set<GraphLink>>> it = other.outcomingLinks
+		outcomingLinks = new HashMap<Long, Set<GraphLink>>();
+		Iterator<Entry<Long, Set<GraphLink>>> it = other.outcomingLinks
 				.entrySet().iterator();
 		while (it.hasNext()) {
-			Entry<GraphNode, Set<GraphLink>> entry = (Entry<GraphNode, Set<GraphLink>>) it
+			Entry<Long, Set<GraphLink>> entry = (Entry<Long, Set<GraphLink>>) it
 					.next();
-			GraphNode n = entry.getKey();
 			Set<GraphLink> links = new HashSet<GraphLink>();
 
 			for (GraphLink l : entry.getValue()) {
-				l.getNodeTo().toString();
-				GraphLink newLink = l.clone();
+				GraphLink newLink = l.clone(this);
 				newLink.setNodeFrom(nodeMappings.get(l.getNodeFrom()));
 				newLink.setNodeTo(nodeMappings.get(l.getNodeTo()));
 				links.add(newLink);
 			}
-			outcomingLinks.put(nodeMappings.get(n), links);
+			outcomingLinks.put(entry.getKey(), links);
 		}
 
-		incomingLinks = new HashMap<GraphNode, Set<GraphLink>>();
+		incomingLinks = new HashMap<Long, Set<GraphLink>>();
 		it = other.incomingLinks.entrySet().iterator();
 		while (it.hasNext()) {
-			Entry<GraphNode, Set<GraphLink>> entry = (Entry<GraphNode, Set<GraphLink>>) it
+			Entry<Long, Set<GraphLink>> entry = (Entry<Long, Set<GraphLink>>) it
 					.next();
-			GraphNode n = entry.getKey();
 			Set<GraphLink> links = new HashSet<GraphLink>();
 
 			for (GraphLink l : entry.getValue()) {
-				GraphLink newLink = l.clone();
+				GraphLink newLink = l.clone(this);
 				newLink.setNodeFrom(nodeMappings.get(l.getNodeFrom()));
 				newLink.setNodeTo(nodeMappings.get(l.getNodeTo()));
 				links.add(newLink);
 			}
-			incomingLinks.put(nodeMappings.get(n), links);
+			incomingLinks.put(entry.getKey(), links);
 		}
 
-		this.unsatisfiedGoals = new RandomSet<SubGoal>(other.unsatisfiedGoals);
+		this.unsatisfiedGoals = new RandomSet<SubGoal>();
+		for (SubGoal g : other.unsatisfiedGoals) {
+			this.unsatisfiedGoals.add(new SubGoal(g.getNode(), g.getGoal(this)));
+		}
 	}
 
 	private Map<GraphNode, GraphNode> generateNodesCopies(
@@ -96,8 +96,8 @@ public class SolutionGraph {
 		this.endNode = new EndNode(goal);
 		this.unsatisfiedGoals = new RandomSet<SubGoal>();
 
-		outcomingLinks = new HashMap<GraphNode, Set<GraphLink>>();
-		incomingLinks = new HashMap<GraphNode, Set<GraphLink>>();
+		outcomingLinks = new HashMap<Long, Set<GraphLink>>();
+		incomingLinks = new HashMap<Long, Set<GraphLink>>();
 
 		allNodes = new HashSet<GraphNode>();
 		addNode(startNode);
@@ -155,11 +155,11 @@ public class SolutionGraph {
 	}
 
 	public Set<GraphLink> getOutLinksFor(GraphNode n) {
-		return outcomingLinks.get(n);
+		return outcomingLinks.get(n.getId());
 	}
 
 	public Set<GraphLink> getInLinksFor(GraphNode n) {
-		return incomingLinks.get(n);
+		return incomingLinks.get(n.getId());
 	}
 
 	public SubGoal nextGoalToSatisfy() {
@@ -174,8 +174,8 @@ public class SolutionGraph {
 		allNodes.add(n);
 		unsatisfiedGoals.addAll(n.getPreconditions());
 
-		outcomingLinks.put(n, new HashSet<GraphLink>());
-		incomingLinks.put(n, new HashSet<GraphLink>());
+		outcomingLinks.put(n.getId(), new HashSet<GraphLink>());
+		incomingLinks.put(n.getId(), new HashSet<GraphLink>());
 	}
 
 	public void addLink(GraphLink link) {
@@ -187,25 +187,25 @@ public class SolutionGraph {
 			if (link.isRedundantFor(existing))
 				return;
 		}
-		if (fromNode == toNode)
+		if (fromNode.getId() == toNode.getId())
 			return;
 
-		outcomingLinks.get(fromNode).add(link);
-		incomingLinks.get(toNode).add(link);
+		outcomingLinks.get(fromNode.getId()).add(link);
+		incomingLinks.get(toNode.getId()).add(link);
 	}
 
 	public void removeLink(GraphLink link) {
 		GraphNode fromNode = link.getNodeFrom();
 		GraphNode toNode = link.getNodeTo();
 
-		outcomingLinks.get(fromNode).remove(link);
-		incomingLinks.get(toNode).remove(link);
+		outcomingLinks.get(fromNode.getId()).remove(link);
+		incomingLinks.get(toNode.getId()).remove(link);
 	}
 
 	public boolean hasLink(GraphNode from, GraphNode to) {
-		Set<GraphLink> outLinks = outcomingLinks.get(from);
+		Set<GraphLink> outLinks = outcomingLinks.get(from.getId());
 		for (GraphLink l : outLinks) {
-			if (l.getNodeTo() == to)
+			if (l.getNodeTo().getId() == to.getId())
 				return true;
 		}
 		return false;
@@ -213,9 +213,9 @@ public class SolutionGraph {
 
 	public GraphLink[] getLinks(GraphNode from, GraphNode to) {
 		Set<GraphLink> matching = new HashSet<GraphLink>();
-		Set<GraphLink> outLinks = outcomingLinks.get(from);
+		Set<GraphLink> outLinks = outcomingLinks.get(from.getId());
 		for (GraphLink l : outLinks) {
-			if (l.getNodeTo() == to)
+			if (l.getNodeTo().getId() == to.getId())
 				matching.add(l);
 		}
 		return matching.toArray(new GraphLink[0]);

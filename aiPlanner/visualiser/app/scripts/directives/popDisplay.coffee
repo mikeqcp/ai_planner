@@ -102,7 +102,8 @@ angular.module('visualiserApp')
 				odd = true
 				scope.nodesCount = 0
 				scope.validNodesCount = 0
-				jsPlumb.detachEveryConnection()
+#				jsPlumb.detachEveryConnection()
+				jsPlumb.reset()
 
 				nextNodePos = {x: 0, y:0}
 

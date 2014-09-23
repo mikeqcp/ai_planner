@@ -1,9 +1,11 @@
 package planner.algorithm.pop.model;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
 
 import pddl4j.exp.term.Term;
-import planner.model.AtomicState;
 import planner.model.ParameterBinding;
 
 public class VariableUnifier {
@@ -13,13 +15,30 @@ public class VariableUnifier {
 	 * @param graph - context graph
 	 * @param node - inserted node
 	 */
-	public boolean unifyVariables(SolutionGraph graph, CasualLink link){
-		this.graph = graph;
+	public SolutionGraph unifyVariables(SolutionGraph graph, CasualLink link){
+		this.graph = new SolutionGraph(graph);
 		
-		if (!unifyLinkVariables(link)) return false;
+		List<GraphLink> visited = new ArrayList<GraphLink>();
+		Queue<GraphLink> queue = new LinkedList<GraphLink>();
+		queue.add(link);
+		while(!queue.isEmpty()){
+			GraphLink l = queue.poll();
+			if(visited.contains(l)) continue;
+			visited.add(l);
+			if(l instanceof CasualLink){
+				CasualLink cl = (CasualLink)l;
+				if(!cl.getNodeFrom().hasUnbindedParams() && !cl.getNodeTo().hasUnbindedParams()) continue;
+				
+				queue.addAll(graph.getOutLinksFor(cl.getNodeTo()));
+				queue.addAll(graph.getInLinksFor(cl.getNodeFrom()));
+				
+				if(!unifyLinkVariables(cl)) return null;;
+			}
+		}
+		
 		refreshGraphGoals(graph);
 		
-		return true;
+		return this.graph;
 	}
 	
 	private void refreshGraphGoals(SolutionGraph g) {
@@ -32,10 +51,11 @@ public class VariableUnifier {
 	}
 
 	private boolean unifyLinkVariables(CasualLink link){
-		GraphNode fromNode = link.nodeFrom;
-		GraphNode toNode = link.nodeTo;
+		GraphNode fromNode = graph.getNodeById(link.nodeFrom.getId());
+		GraphNode toNode = graph.getNodeById(link.nodeTo.getId());
 		
 		if(toNode instanceof EndNode) return true;
+		if(!fromNode.binding.validate() || !toNode.binding.validate()) return false;
 		
 		SubGoal goal = link.getSubgoal();
 		
@@ -57,29 +77,17 @@ public class VariableUnifier {
 			
 			link.getSubgoal().updateBinding(mergedBindings[1]);
 			
-			for (GraphLink l : graph.getOutLinksFor(toNode)) {
-				if(l instanceof CasualLink){
-					CasualLink cl = (CasualLink)l;
-					if(!cl.getAchieves().hasUnbindedParams()) continue;
-					
-					if(!graph.isConsistent()) continue;
-					if(!unifyLinkVariables(cl)) continue;
-				}
-			}
-			
-			return true;
+			if(!graph.isConsistent()) return false;
 		}
-		return false;
+		return true;
 	}
 
 	private ParameterBinding[] unifyTermBinding(ArrayList<Term> fromTerms, ArrayList<Term> toTerms, ParameterBinding fromBinding, ParameterBinding toBinding){
 		if(fromTerms.size() != toTerms.size()) return null;
-		ParameterBinding[] bindings = new ParameterBinding[3];
+		ParameterBinding[] bindings = new ParameterBinding[2];
 		
 		bindings[0] = fromBinding;
 		bindings[1] = toBinding;
-		
-		
 		
 		for (int i = 0; i < fromTerms.size(); i++) {
 			Term a = fromTerms.get(i);

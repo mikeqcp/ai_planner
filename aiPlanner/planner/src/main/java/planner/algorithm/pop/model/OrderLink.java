@@ -7,7 +7,7 @@ public class OrderLink extends GraphLink {
 	}
 
 	@Override
-	public GraphLink clone() {
+	public GraphLink clone(SolutionGraph g) {
 		return new OrderLink(nodeFrom, nodeTo);
 	}
 
