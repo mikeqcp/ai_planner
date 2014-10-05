@@ -43,3 +43,4 @@ angular.module('visualiserApp')
 				$scope.toggleProblem()
 			.catch (e) ->
 					$log.error 'error: ', e
+					alert 'Unable to solve problem'

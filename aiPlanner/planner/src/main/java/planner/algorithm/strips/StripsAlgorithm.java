@@ -89,7 +89,6 @@ public class StripsAlgorithm extends Algorithm {
 	}
 	
 	private boolean processStackItem(StackItem item){
-//		boolean succeeded = true;
 		if(item.isActionType()) {
 			BindedAction action = item.getAction();
 			
@@ -105,7 +104,6 @@ public class StripsAlgorithm extends Algorithm {
 				return true;
 			}
 			if(!s.isAtomic()){
-//				return true;
 				//break complex state into simple ones
 				State[] states = s.breakIntoAtomic();
 				for (State st : states) {
@@ -119,7 +117,6 @@ public class StripsAlgorithm extends Algorithm {
 				return processStateItem(s.toAtomic());
 			}
 		}
-//		return succeeded;
 	}
 
 	private boolean verifyActionPreconditions(BindedAction action){
@@ -155,8 +152,6 @@ public class StripsAlgorithm extends Algorithm {
 				this.stack = inner.stack;
 				return true;
 			}
-//			break;
-//			return false;	
 		}
 		return false;//no action led to solution
 	}

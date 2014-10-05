@@ -8,7 +8,7 @@ import planner.algorithm.pop.logs.PopLogBuilder;
 import planner.algorithm.pop.model.ThreatProtector;
 import planner.algorithm.pop.model.GraphBuilder;
 import planner.algorithm.pop.model.SolutionGraph;
-import planner.algorithm.pop.model.SolutionLinearizator;
+import planner.algorithm.pop.model.SolutionLinearizer;
 import planner.algorithm.pop.model.SubGoal;
 import planner.model.AtomicState;
 import planner.model.ProcessLog;
@@ -36,10 +36,12 @@ public class PopAlgorithm extends Algorithm {
 		SolutionGraph graph = new SolutionGraph(initialState, goal);
 		log(graph, null);
 		SolutionGraph finalGraph = solve(graph);
+		
 		if(finalGraph != null)
 			log(finalGraph, null);
 		
 		ResultPlan finalPlan = finalGraph != null ? linearize(finalGraph) : new ResultPlan();
+		if(finalPlan == null) finalPlan = new ResultPlan();
 		
 		logBuilder.setFinalPlan(finalPlan);
 
@@ -75,7 +77,7 @@ public class PopAlgorithm extends Algorithm {
 	}
 	
 	private ResultPlan linearize(SolutionGraph graph){
-		SolutionLinearizator linearizator = new SolutionLinearizator(graph);
+		SolutionLinearizer linearizator = new SolutionLinearizer(graph);
 		ResultPlan plan = linearizator.linearizeSolution();		
 		return plan;
 	}

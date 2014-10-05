@@ -1,5 +1,6 @@
 package planner.algorithm.pop.model;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -14,7 +15,7 @@ public class SolutionGraph {
 
 	private GraphNode startNode;
 	private GraphNode endNode;
-	private Set<GraphNode> allNodes;
+	private HashMap<Long,GraphNode> allNodes;
 
 	/**
 	 * Set of all outcoming links in graph
@@ -31,15 +32,15 @@ public class SolutionGraph {
 	 * @param other
 	 */
 	public SolutionGraph(SolutionGraph other) {
-		Map<GraphNode, GraphNode> nodeMappings = generateNodesCopies(other.allNodes);
+		Map<GraphNode, GraphNode> nodeMappings = generateNodesCopies(other.allNodes.values());
 
 		this.startNode = nodeMappings.get(other.startNode);
 		this.endNode = nodeMappings.get(other.endNode);
 
-		this.allNodes = new HashSet<GraphNode>();
-		for (GraphNode node : other.allNodes) {
+		this.allNodes = new HashMap<Long, GraphNode>();
+		for (GraphNode node : other.allNodes.values()) {
 			GraphNode mappedNode = nodeMappings.get(node);
-			this.allNodes.add(mappedNode);
+			this.allNodes.put(mappedNode.id, mappedNode);
 		}
 
 		// copy links
@@ -83,7 +84,7 @@ public class SolutionGraph {
 	}
 
 	private Map<GraphNode, GraphNode> generateNodesCopies(
-			Set<GraphNode> oldNodes) {
+			Collection<GraphNode> oldNodes) {
 		Map<GraphNode, GraphNode> nodeMappings = new HashMap<GraphNode, GraphNode>();
 		for (GraphNode node : oldNodes) {
 			nodeMappings.put(node, node.clone());
@@ -99,7 +100,7 @@ public class SolutionGraph {
 		outcomingLinks = new HashMap<Long, Set<GraphLink>>();
 		incomingLinks = new HashMap<Long, Set<GraphLink>>();
 
-		allNodes = new HashSet<GraphNode>();
+		allNodes = new HashMap<Long, GraphNode>();
 		addNode(startNode);
 		addNode(endNode);
 
@@ -120,20 +121,16 @@ public class SolutionGraph {
 	}
 
 	public boolean isConsistent() {
-		SolutionLinearizator linearizator = new SolutionLinearizator(this);
+		SolutionLinearizer linearizator = new SolutionLinearizer(this);
 		return linearizator.isConsistent();
 	}
 
 	public GraphNode getNodeById(long id) {
-		for (GraphNode n : allNodes) {
-			if (n.getId() == id)
-				return n;
-		}
-		return null;
+		return allNodes.get(id);
 	}
 
-	public Set<GraphNode> getAllNodes() {
-		return allNodes;
+	public Collection<GraphNode> getAllNodes() {
+		return allNodes.values();
 	}
 
 	public Set<GraphLink> getAllLinks() {
@@ -171,7 +168,7 @@ public class SolutionGraph {
 	}
 
 	public void addNode(GraphNode n) {
-		allNodes.add(n);
+		allNodes.put(n.id, n);
 		unsatisfiedGoals.addAll(n.getPreconditions());
 
 		outcomingLinks.put(n.getId(), new HashSet<GraphLink>());

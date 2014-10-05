@@ -24,11 +24,16 @@ public class Runner {
 		String testDomain = Runner.readFileToString(Runner.TEST_DOMAIN);
 		String testInstance = Runner.readFileToString(Runner.TEST_INSTANCE);
 
-		PDDLObject problemData = problemParser.parse(testDomain, testInstance);
-		
+		PDDLObject problemData = null;
+		try{
+			problemData = problemParser.parse(testDomain, testInstance);
+		}catch (Exception e ) {
+			System.out.println("ERROR");
+			return;
+		}
 		//run algorithm
 		
-		for (int i = 0; i < 1; i++) {
+		for (int i = 0; i < 10; i++) {
 			
 			for(int j = 0; j< 1; j++){
 				System.out.println("No." + i);
@@ -41,7 +46,7 @@ public class Runner {
 				ResultPlan plan = alg.solve();
 				ProcessLog log = alg.getLog();
 				
-				if(plan.isEmpty()) continue;
+				if(plan == null || plan.isEmpty()) continue;
 				
 				System.out.println("---");
 				System.out.println("SOLVED.");

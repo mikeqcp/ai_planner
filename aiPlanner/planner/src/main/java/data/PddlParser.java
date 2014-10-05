@@ -17,7 +17,7 @@ import pddl4j.RequireKey;
 public class PddlParser {
 	private final String TMP_PATH = "\\solver_tmp\\";
 
-	public PDDLObject parse(String domain, String instance) {
+	public PDDLObject parse(String domain, String instance) throws Exception {
 		try {
 			createMissingDirectory(TMP_PATH);
 			
@@ -29,8 +29,8 @@ public class PddlParser {
 		} catch (IOException ex) {
 			System.out.println("Error parsing PPDL.");
 			System.out.println(ex);
+			throw ex;
 		}
-		return null;
 	}
 
 	private void createMissingDirectory(String path) {
@@ -69,7 +69,7 @@ public class PddlParser {
 		return filenames;
 	}
 
-	private PDDLObject parseFiles(String[] files) throws FileNotFoundException {
+	private PDDLObject parseFiles(String[] files) throws Exception {
 		Properties options = new Properties();
 		options.put(RequireKey.STRIPS, true);
 		options.put(RequireKey.NEGATIVE_PRECONDITIONS, true);
@@ -86,6 +86,7 @@ public class PddlParser {
 		ErrorManager mgr = parser.getErrorManager();
 		if (mgr.contains(Message.ERROR)) {
 			mgr.print(Message.ALL);
+			throw new Exception("Parsing error");
 		} // else we print the warnings
 		else {
 			mgr.print(Message.WARNING);

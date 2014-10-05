@@ -8,10 +8,10 @@ import java.util.Set;
 
 import planner.model.ResultPlan;
 
-public class SolutionLinearizator {
+public class SolutionLinearizer {
 	private SolutionGraph graph;
 	
-	public SolutionLinearizator(SolutionGraph graph) {
+	public SolutionLinearizer(SolutionGraph graph) {
 		super();
 		this.graph = graph;
 	}

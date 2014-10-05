@@ -46,8 +46,8 @@ public class GraphBuilder {
 			}
 		}
 		
-		Set<BindedAction> applicable = Utils.findApplicableActions(precondition, parent.getActions(), parent.getConstants(), false);
-		for (BindedAction a : applicable) {
+		Set<BindedAction> applicableActions = Utils.findApplicableActions(precondition, parent.getActions(), parent.getConstants(), false);
+		for (BindedAction a : applicableActions) {
 			GraphNode actionNode = new GraphNode(a);
 			SolutionGraph updatedGraph = insertAction(actionNode, goal);
 			if(updatedGraph == null) continue;

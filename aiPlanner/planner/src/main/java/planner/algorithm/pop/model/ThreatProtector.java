@@ -2,6 +2,8 @@ package planner.algorithm.pop.model;
 
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Set;
 
 import planner.model.AtomicState;
@@ -16,8 +18,9 @@ public class ThreatProtector {
 	 */
 	public Set<SolutionGraph> protect(SolutionGraph g){
 		this.graph = g;
-		Set<SolutionGraph> queue = new HashSet<SolutionGraph>();
-		queue.add(g);
+		Queue<SolutionGraph> queue = new LinkedList<SolutionGraph>();
+		if(g.isConsistent())
+			queue.add(g);
 		
 		Set<Threat> possibleThreats = findPotentialThreats();
 		Set<Threat> unprotected = selectUnprotectedThreats(possibleThreats);
@@ -28,11 +31,11 @@ public class ThreatProtector {
 				Set<SolutionGraph> solutions = protectThreat(t, solutionGraph);
 				protectedGraphs.addAll(solutions);
 			}
-			queue = protectedGraphs;
+			queue = new LinkedList<SolutionGraph>(protectedGraphs);
 		}
 		
-		if(unprotected.size() == 0)
-			queue.add(g);
+//		if(unprotected.size() == 0)
+//			queue.add(g);
 		
 		Iterator<SolutionGraph> iter = queue.iterator();
 		while(iter.hasNext()){
@@ -41,7 +44,7 @@ public class ThreatProtector {
 				iter.remove();
 		}
 		
-		return queue;
+		return new HashSet<SolutionGraph>(queue);
 	}
 	
 	private Set<SolutionGraph> protectThreat(Threat t, SolutionGraph g) {

@@ -25,7 +25,7 @@ public class StripsLogBuilder {
 	}
 	
 	private PrintablePlan getResultPlan(){
-		ProcessStateDump finalState =  stateHistory.get(stateHistory.size() - 1);
+		StripsStateDump finalState =  (StripsStateDump) stateHistory.get(stateHistory.size() - 1);
 		return finalState.getPlan();
 	}
 	

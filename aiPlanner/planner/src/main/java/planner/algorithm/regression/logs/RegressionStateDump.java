@@ -19,34 +19,6 @@ public class RegressionStateDump implements ProcessStateDump {
 		this.plan = plan;
 	}
 
-	public PrintableState getState() {
-		return new PrintableState() {
-			
-			public String getLabel() {
-				return "";
-			}
-			
-			@Override
-			public String toString() {
-				return getLabel();
-			}
-		};
-	}
-
-	public PrintablePlan getPlan() {
-		return new PrintablePlan() {
-			
-			public String getLabel() {
-				return "";
-			}
-			
-			@Override
-			public String toString() {
-				return "";
-			}
-		};
-	}
-
 	public Object getStructure() {
 		return tree;
 	}
