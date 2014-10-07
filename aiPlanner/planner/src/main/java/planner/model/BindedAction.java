@@ -150,7 +150,7 @@ public class BindedAction extends Action {
 			
 			for (Term param : current.action.getParameters()) {
 				if (!current.binding.containsTerm(param)) {
-					List<String> allVals = otherConstants(constants, binding);
+					List<String> allVals = otherConstants(constants, current.binding);
 					for (String v : allVals) {
 						BindedAction ba = new BindedAction(current);
 						ba.binding.addBinding(param, v);

@@ -54,7 +54,11 @@ public class ParameterBinding {
 	}
 	
 	public boolean containsValue(String val){
-		return binding.containsValue(val);
+		for (String v : binding.values()) {
+			if(v.equalsIgnoreCase(val)) return true;
+		}
+		return false;
+//		return binding.containsValue(val);
 	}
 	
 	public boolean isEmpty(){
