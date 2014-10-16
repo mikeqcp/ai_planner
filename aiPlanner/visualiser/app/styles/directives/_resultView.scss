@@ -90,6 +90,12 @@
   }
 
   //POP
+  .fallback {
+	float: right;
+	transform: scale(2);
+	color: #E07672;
+  }
+
   #graph-container {
 	position: relative;
   }
@@ -110,6 +116,14 @@
 	  margin: -1px -6px;
 	  padding: 2px;
 	  text-align: center;
+
+	  &.node-id, &.node-label {
+		background-color: antiquewhite;
+	  }
+
+	  &.selected {
+		background-color: #d9534f;
+	  }
 	}
   }
 }

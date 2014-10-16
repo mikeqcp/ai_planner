@@ -20,7 +20,7 @@ public class PrintableGraph {
 		links = new HashSet<PrintableLink>();
 		
 		for (GraphNode n : graph.getAllNodes()) {
-			nodes.add(new PrintableNode(n));
+			nodes.add(new PrintableNode(n, graph));
 		}
 		for (GraphLink l : graph.getAllLinks()) {
 			links.add(new PrintableLink(l, graph));

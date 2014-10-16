@@ -14,6 +14,8 @@ public class PopStateDump implements ProcessStateDump {
 	private SolutionGraph originalGraph;
 	private ResultPlan plan;
 	private String goal;
+	private long goalNodeId;
+	private boolean fallback = false;
 	
 	public void setGraph(SolutionGraph graph) {
 		this.originalGraph = graph;
@@ -32,12 +34,29 @@ public class PopStateDump implements ProcessStateDump {
 		return goal;
 	}
 
+	public long getGoalNodeId() {
+		return goalNodeId;
+	}
+
 	public void setGoal(SubGoal goal) {
-		if(goal != null) this.goal = goal.getGoal(originalGraph).toString();
+		if(goal != null) {
+			this.goal = goal.getGoal(originalGraph).toString();
+			this.goalNodeId = goal.getNode().getId();
+		}
 	}
 	
 	public String getGoals(){
 		return graph.getGoals();
 	}
+
+	public void markFallback() {
+		this.fallback = true;
+	}
+
+	public boolean isFallback() {
+		return fallback;
+	}
+	
+	
 
 }

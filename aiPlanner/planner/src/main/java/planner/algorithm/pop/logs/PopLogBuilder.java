@@ -16,12 +16,18 @@ import planner.model.interfaces.ProcessStateDump;
 public class PopLogBuilder {
 	List<ProcessStateDump> stateHistory = new ArrayList<ProcessStateDump>();
 	private ResultPlan finalPlan;
+	private boolean markFallback = false;
 	
 	public void dump(SolutionGraph graph, SubGoal goal){
 		PopStateDump dump = new PopStateDump();
 		dump.setGraph(graph);
 		dump.setGoal(goal);
-
+		
+		if(markFallback) {
+			markFallback= false;
+			dump.markFallback();
+		}
+			
 		stateHistory.add(dump);
 	}
 	
@@ -54,4 +60,10 @@ public class PopLogBuilder {
 		
 		return log;
 	}
+
+	public void markFallback() {
+		this.markFallback = true;
+	}
+	
+	
 }

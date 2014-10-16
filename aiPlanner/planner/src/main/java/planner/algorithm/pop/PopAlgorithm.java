@@ -71,6 +71,8 @@ public class PopAlgorithm extends Algorithm {
 				if (solution != null)
 					return solution;
 			}
+			
+			logBuilder.markFallback();
 			return null;
 		}
 		return graph;	//return if complete

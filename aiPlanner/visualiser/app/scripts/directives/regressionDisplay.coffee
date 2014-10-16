@@ -8,6 +8,7 @@ angular.module('visualiserApp')
 		scope:
 			result: '='
 			step: '='
+			showPlan: '='
 
 		link: (scope, elem) ->
 			containerWidth = $('body').width()

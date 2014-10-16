@@ -8,6 +8,7 @@ angular.module('visualiserApp')
 		scope:
 			result: '='
 			step: '='
+			showPlan: '='
 
 		link: (scope, elem) ->
 			containerWidth = $('.container').width()
@@ -23,6 +24,19 @@ angular.module('visualiserApp')
 				dom.attr 'id', 'node-' + node.id
 
 				dom.append $('<div></div>').append(node.id).addClass('node-id')
+
+				selectedClass = ''
+				allGoals = node.goals.slice 0
+
+				if scope.currentStepState.goalNodeId == node.id and scope.currentStepState.goal
+					allGoals.push scope.currentStepState.goal
+
+				allGoals = _.sortBy allGoals
+
+				_.each allGoals, (g) ->
+					selectedClass = if (scope.currentStepState.goalNodeId == node.id and scope.currentStepState.goal == g) then 'selected' else ''
+					dom.append $('<div></div>').append(g).addClass('node-goal').addClass(selectedClass)
+
 				dom.append $('<div></div>').append(node.label).addClass('node-label')
 
 				if odd
@@ -51,6 +65,8 @@ angular.module('visualiserApp')
 					l.idTo -= scope.minId
 					l
 
+				scope.currentStepState.goalNodeId -= scope.minId
+
 				nodes.forEach (n) ->
 					drawNode n
 
@@ -65,7 +81,6 @@ angular.module('visualiserApp')
 
 				nodeDomElem = createDOM node
 				elem.find('#graph-container').append nodeDomElem
-
 
 
 			initLinks = () ->
